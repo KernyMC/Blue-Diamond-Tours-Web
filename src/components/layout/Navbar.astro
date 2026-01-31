@@ -7,6 +7,7 @@ const navLinks = [
     { name: "Inicio", path: "/" },
     { name: "Tours", path: "/tours" },
     { name: "Paquetes", path: "/paquetes" },
+    { name: "Nosotros", path: "/nosotros" },
     { name: "Ferries", path: "/ferries" },
     { name: "Contacto", path: "/contacto" },
 ];
@@ -122,27 +123,11 @@ const isActive = (path) =>
             // Solo aplicar el efecto en pantallas menores a 768px (móviles)
             if (window.innerWidth < 768) {
                 if (window.scrollY > 50) {
-                    nav.classList.add(
-                        "w-[92%]",
-                        "max-w-5xl",
-                        "scale-95",
-                    );
-                    nav.classList.remove(
-                        "w-[95%]",
-                        "max-w-6xl",
-                        "scale-100",
-                    );
+                    nav.classList.add("w-[92%]", "max-w-5xl", "scale-95");
+                    nav.classList.remove("w-[95%]", "max-w-6xl", "scale-100");
                 } else {
-                    nav.classList.remove(
-                        "w-[92%]",
-                        "max-w-5xl",
-                        "scale-95",
-                    );
-                    nav.classList.add(
-                        "w-[95%]",
-                        "max-w-6xl",
-                        "scale-100",
-                    );
+                    nav.classList.remove("w-[92%]", "max-w-5xl", "scale-95");
+                    nav.classList.add("w-[95%]", "max-w-6xl", "scale-100");
                 }
             }
         });

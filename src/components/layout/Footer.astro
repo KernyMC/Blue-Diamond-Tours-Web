@@ -4,142 +4,240 @@ const currentYear = new Date().getFullYear();
 ---
 
 <footer class="bg-[#0B3C6D] text-white pt-20 pb-10 relative overflow-hidden">
-    <div class="absolute inset-0 opacity-5 pointer-events-none">
-        <Icon
-            name="ant-design:bg-colors-outlined"
-            size={800}
-            class="text-white absolute -bottom-40 -right-40"
+    {/* Background Image */}
+    <div class="absolute inset-0">
+        <img
+            src="https://cdn.sanity.io/images/f6sa56jz/production/8f026c5d6760a1f0cb91d0afd7618ecddfb1c805-1024x600.webp"
+            alt="Footer Background"
+            class="w-full h-full object-cover"
         />
+        <div class="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
     </div>
-    <div class="container mx-auto px-6 relative z-10">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
-            <div>
-                <h4 class="font-serif text-3xl font-bold mb-6">
-                    Galápagos Bluediamond
-                </h4>
-                <p
-                    class="text-blue-100 text-sm leading-relaxed mb-8 opacity-80"
-                >
-                    Somos especialistas en crear experiencias inolvidables en
-                    las Islas Encantadas. Turismo responsable y personalizado
-                    con la mejor calidad.
-                </p>
-                <div class="flex gap-4">
-                    <div
-                        class="w-10 h-10 bg-[#1F5F99] rounded-full flex items-center justify-center hover:bg-[#2EC4C6] transition-colors cursor-pointer text-white"
-                    >
-                        <Icon name="ant-design:instagram-outlined" size={18} />
+
+    <div class="container mx-auto px-6 relative z-20">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16 items-center">
+            {/* COLUMNA IZQUIERDA: Logo + Todas las secciones */}
+            <div class="space-y-12">
+                {/* Logo y Descripción */}
+                <div class="flex flex-col items-center lg:items-start">
+                    <div class="bg-white p-4 rounded-xl inline-block mb-6">
+                        <img
+                            src="https://cdn.sanity.io/images/f6sa56jz/production/fa3c10af1e1c38c08534c17e1c7f0820890010dd-3508x2481.svg"
+                            alt="Galápagos Bluediamond Logo"
+                            class="h-20 w-auto"
+                        />
                     </div>
-                    <div
-                        class="w-10 h-10 bg-[#1F5F99] rounded-full flex items-center justify-center hover:bg-[#2EC4C6] transition-colors cursor-pointer text-white"
+                    <p
+                        class="text-blue-100 text-sm leading-relaxed mb-6 opacity-80 max-w-md text-center lg:text-left"
                     >
-                        <Icon name="ant-design:facebook-outlined" size={18} />
+                        Somos especialistas en crear experiencias inolvidables
+                        en las Islas Encantadas. Turismo responsable y
+                        personalizado con la mejor calidad.
+                    </p>
+                    <div class="flex gap-4 justify-center lg:justify-start">
+                        <a
+                            href="#"
+                            class="w-10 h-10 bg-[#1F5F99] rounded-full flex items-center justify-center hover:bg-[#2EC4C6] transition-colors cursor-pointer text-white"
+                        >
+                            <Icon
+                                name="ant-design:instagram-outlined"
+                                size={18}
+                            />
+                        </a>
+                        <a
+                            href="#"
+                            class="w-10 h-10 bg-[#1F5F99] rounded-full flex items-center justify-center hover:bg-[#2EC4C6] transition-colors cursor-pointer text-white"
+                        >
+                            <Icon
+                                name="ant-design:facebook-outlined"
+                                size={18}
+                            />
+                        </a>
+                        <a
+                            href="#"
+                            class="w-10 h-10 bg-[#1F5F99] rounded-full flex items-center justify-center hover:bg-[#2EC4C6] transition-colors cursor-pointer text-white"
+                        >
+                            <Icon
+                                name="ant-design:message-outlined"
+                                size={18}
+                            />
+                        </a>
                     </div>
-                    <div
-                        class="w-10 h-10 bg-[#1F5F99] rounded-full flex items-center justify-center hover:bg-[#2EC4C6] transition-colors cursor-pointer text-white"
-                    >
-                        <Icon name="ant-design:message-outlined" size={18} />
+                </div>
+
+                {/* Grid de 3 columnas para Explora, Legal y Contacto */}
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    {/* Explora */}
+                    <div>
+                        <h5
+                            class="font-bold text-[#2EC4C6] mb-6 uppercase tracking-wider text-xs"
+                        >
+                            Explora
+                        </h5>
+                        <ul class="space-y-4 text-sm text-gray-200">
+                            <li>
+                                <a
+                                    href="/tours"
+                                    class="hover:text-[#2EC4C6] transition-colors"
+                                    >Tours Diarios</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="/paquetes"
+                                    class="hover:text-[#2EC4C6] transition-colors"
+                                    >Paquetes Completos</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="/ferries"
+                                    class="hover:text-[#2EC4C6] transition-colors"
+                                    >Horarios de Ferry</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="#"
+                                    class="hover:text-[#2EC4C6] transition-colors"
+                                    >Blog de Viajes</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+
+                    {/* Legal */}
+                    <div>
+                        <h5
+                            class="font-bold text-[#2EC4C6] mb-6 uppercase tracking-wider text-xs"
+                        >
+                            Legal
+                        </h5>
+                        <ul class="space-y-4 text-sm text-gray-200">
+                            <li>
+                                <a
+                                    href="/terminos"
+                                    class="hover:text-[#2EC4C6] transition-colors"
+                                    >Términos y Condiciones</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="/terminos"
+                                    class="hover:text-[#2EC4C6] transition-colors"
+                                    >Políticas de Cancelación</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="/privacy"
+                                    class="hover:text-[#2EC4C6] transition-colors"
+                                    >Privacidad</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+
+                    {/* Contacto */}
+                    <div>
+                        <h5
+                            class="font-bold text-[#2EC4C6] mb-6 uppercase tracking-wider text-xs"
+                        >
+                            Contacto
+                        </h5>
+                        <ul class="space-y-4 text-sm text-gray-200">
+                            <li class="flex items-center gap-3">
+                                <Icon
+                                    name="ant-design:environment-outlined"
+                                    size={18}
+                                    class="text-[#2EC4C6] flex-shrink-0"
+                                />
+                                <span>Puerto Ayora, Santa Cruz</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <Icon
+                                    name="ant-design:phone-outlined"
+                                    size={18}
+                                    class="text-[#2EC4C6] flex-shrink-0"
+                                />
+                                <a
+                                    href="tel:+593999999999"
+                                    class="hover:text-[#2EC4C6] transition-colors"
+                                    >+593 99 999 9999</a
+                                >
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <Icon
+                                    name="ant-design:mail-outlined"
+                                    size={18}
+                                    class="text-[#2EC4C6] flex-shrink-0"
+                                />
+                                <a
+                                    href="mailto:info@galapagosbluediamond.com"
+                                    class="hover:text-[#2EC4C6] transition-colors"
+                                    >info@galapagosbluediamond.com</a
+                                >
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
-            <div>
-                <h5
-                    class="font-bold text-[#2EC4C6] mb-6 uppercase tracking-wider text-xs"
+
+            {/* COLUMNA DERECHA: Blob Image con Animación */}
+            <div
+                class="relative h-[400px] lg:h-[500px] flex items-center justify-center lg:justify-end"
+            >
+                <div
+                    id="footerBlob"
+                    class="relative w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] transition-all duration-[1500ms] ease-out opacity-0 translate-x-32 rotate-[360deg] scale-50"
                 >
-                    Explora
-                </h5>
-                <ul class="space-y-4 text-sm text-gray-200">
-                    <li>
-                        <a
-                            href="/tours"
-                            class="hover:text-[#2EC4C6] transition-colors"
-                            >Tours Diarios</a
+                    {/* El contenedor con la forma blob */}
+                    <div
+                        class="w-full h-full overflow-hidden border-4 border-white/20 shadow-2xl relative z-10 bg-gray-800"
+                        style={{
+                            borderRadius: "42% 58% 70% 30% / 45% 45% 55% 55%",
+                            boxShadow: "20px 20px 60px rgba(0,0,0,0.5)",
+                        }}
+                    >
+                        {
+                            /* AQUÍ VA TU IMAGEN - Reemplaza el src con tu imagen */
+                        }
+                        <img
+                            src="https://cdn.sanity.io/images/f6sa56jz/production/93d3beae09add0d8f3e86f07d3bfc086648fc39f-500x500.webp"
+                            alt="Galápagos Wildlife"
+                            class="w-full h-full object-cover scale-125 hover:scale-110 transition-transform duration-700"
+                            style={{ objectPosition: "center 20%" }}
+                        />
+
+                        {/* Capa de superposición para profundidad */}
+                        <div
+                            class="absolute inset-0 ring-1 ring-inset ring-black/20 rounded-[inherit] pointer-events-none"
                         >
-                    </li>
-                    <li>
-                        <a
-                            href="/paquetes"
-                            class="hover:text-[#2EC4C6] transition-colors"
-                            >Paquetes Completos</a
-                        >
-                    </li>
-                    <li>
-                        <a
-                            href="/ferries"
-                            class="hover:text-[#2EC4C6] transition-colors"
-                            >Horarios de Ferry</a
-                        >
-                    </li>
-                    <li>
-                        <a
-                            href="#"
-                            class="hover:text-[#2EC4C6] transition-colors"
-                            >Blog de Viajes</a
-                        >
-                    </li>
-                </ul>
-            </div>
-            <div>
-                <h5
-                    class="font-bold text-[#2EC4C6] mb-6 uppercase tracking-wider text-xs"
-                >
-                    Legal
-                </h5>
-                <ul class="space-y-4 text-sm text-gray-200">
-                    <li>
-                        <a
-                            href="#"
-                            class="hover:text-[#2EC4C6] transition-colors"
-                            >Términos y Condiciones</a
-                        >
-                    </li>
-                    <li>
-                        <a
-                            href="#"
-                            class="hover:text-[#2EC4C6] transition-colors"
-                            >Políticas de Cancelación</a
-                        >
-                    </li>
-                    <li>
-                        <a
-                            href="#"
-                            class="hover:text-[#2EC4C6] transition-colors"
-                            >Privacidad</a
-                        >
-                    </li>
-                </ul>
-            </div>
-            <div>
-                <h5
-                    class="font-bold text-[#2EC4C6] mb-6 uppercase tracking-wider text-xs"
-                >
-                    Contacto
-                </h5>
-                <ul class="space-y-4 text-sm text-gray-200">
-                    <li class="flex items-center gap-3">
-                        <Icon
-                            name="ant-design:environment-outlined"
-                            size={18}
-                            class="text-[#2EC4C6]"
-                        /> Puerto Ayora, Santa Cruz
-                    </li>
-                    <li class="flex items-center gap-3">
-                        <Icon
-                            name="ant-design:phone-outlined"
-                            size={18}
-                            class="text-[#2EC4C6]"
-                        /> +593 99 999 9999
-                    </li>
-                    <li class="flex items-center gap-3">
-                        <Icon
-                            name="ant-design:mail-outlined"
-                            size={18}
-                            class="text-[#2EC4C6]"
-                        /> info@galapagosbluediamond.com
-                    </li>
-                </ul>
+                        </div>
+                    </div>
+
+                    {/* Elemento decorativo oscuro */}
+                    <div
+                        class="absolute -bottom-4 -right-4 w-40 h-40 bg-gray-900/90 backdrop-blur-sm z-20"
+                        style={{
+                            borderRadius: "30% 70% 70% 30% / 30% 30% 70% 70%",
+                        }}
+                    >
+                    </div>
+
+                    {/* Forma decorativa detrás (aura) */}
+                    <div
+                        class="absolute top-4 -left-4 w-full h-full bg-white/5 -z-10 blur-xl"
+                        style={{
+                            borderRadius: "50% 50% 50% 50% / 50% 50% 50% 50%",
+                        }}
+                    >
+                    </div>
+                </div>
             </div>
         </div>
+
+        {/* Footer Bottom */}
         <div
             class="border-t border-[#1F5F99] pt-8 text-center text-xs text-gray-400 font-medium"
         >
@@ -147,3 +245,59 @@ const currentYear = new Date().getFullYear();
         </div>
     </div>
 </footer>
+
+<script>
+    // Animación de entrada del blob cuando el footer es visible
+    const observeFooter = () => {
+        const blob = document.getElementById("footerBlob");
+        if (!blob) return;
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        // Activar animación cuando entra
+                        blob.classList.remove(
+                            "opacity-0",
+                            "translate-x-32",
+                            "rotate-[360deg]",
+                            "scale-50",
+                        );
+                        blob.classList.add(
+                            "opacity-100",
+                            "translate-x-0",
+                            "rotate-0",
+                            "scale-100",
+                        );
+                    } else {
+                        // Resetear animación cuando sale (optimizado con requestAnimationFrame)
+                        requestAnimationFrame(() => {
+                            blob.classList.remove(
+                                "opacity-100",
+                                "translate-x-0",
+                                "rotate-0",
+                                "scale-100",
+                            );
+                            blob.classList.add(
+                                "opacity-0",
+                                "translate-x-32",
+                                "rotate-[360deg]",
+                                "scale-50",
+                            );
+                        });
+                    }
+                });
+            },
+            { threshold: 0.2, rootMargin: "0px" },
+        );
+
+        observer.observe(blob);
+    };
+
+    // Ejecutar cuando el DOM esté listo
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", observeFooter);
+    } else {
+        observeFooter();
+    }
+</script>

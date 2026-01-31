@@ -7,18 +7,17 @@ import sanity from "@sanity/astro";
 
 import icon from "astro-icon";
 
+import react from "@astrojs/react";
+
 // https://astro.build/config
 export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
 
-  integrations: [
-    sanity({
-      projectId: "f6sa56jz",
-      dataset: "production",
-      useCdn: true,
-    }),
-    icon(),
-  ],
+  integrations: [sanity({
+    projectId: "f6sa56jz",
+    dataset: "production",
+    useCdn: true,
+  }), icon(), react()],
 });
