@@ -2,7 +2,22 @@
 import Layout from "../layouts/Layout.astro";
 import SectionTitle from "../components/common/SectionTitle.astro";
 import Card from "../components/cards/Card.astro";
-import { PACKAGES_DATA } from "../data/tours";
+import { sanityClient } from "../lib/sanityClient";
+
+const packages = await sanityClient.fetch(`
+    *[_type == "package"]|order(_createdAt desc){
+        _id,
+        title,
+        "slug": slug.current,
+        duration,
+        price,
+        difficulty,
+        location,
+        rating,
+        "image": image.asset->url,
+        "includes": coalesce(includes, [])
+    }
+`);
 ---
 
 <Layout title="Paquetes | Galápagos Bluediamond">
@@ -33,10 +48,10 @@ import { PACKAGES_DATA } from "../data/tours";
                 class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10"
             >
                 {
-                    PACKAGES_DATA.map((pkg) => (
+                    packages.map((pkg) => (
                         <div class="h-full">
                             <a
-                                href={`/paquete/${pkg.id}`}
+                                href={`/paquete/${pkg.slug || pkg._id}`}
                                 class="no-underline block h-full"
                             >
                                 <Card item={pkg} type="package" />

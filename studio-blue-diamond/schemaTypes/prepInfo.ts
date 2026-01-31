@@ -17,11 +17,5 @@ export default defineType({
       type: 'text',
       rows: 3,
     }),
-    defineField({
-      name: 'fitness',
-      title: 'Fitness',
-      type: 'text',
-      rows: 3,
-    }),
   ],
 })

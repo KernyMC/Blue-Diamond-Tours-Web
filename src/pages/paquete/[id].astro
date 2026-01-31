@@ -1,16 +1,44 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import DetailView from "../../components/views/DetailView.astro";
-import { PACKAGES_DATA } from "../../data/tours";
+import { sanityClient } from "../../lib/sanityClient";
 
 export async function getStaticPaths() {
-    return PACKAGES_DATA.map((pkg) => ({
-        params: { id: pkg.id.toString() },
-        props: { pkg },
-    }));
+        const packages = await sanityClient.fetch(`
+            *[_type == "package"]{
+                _id,
+                "slug": slug.current
+            }
+        `);
+
+        return packages.map((pkg) => ({
+                params: { id: pkg.slug || pkg._id },
+        }));
 }
 
-const { pkg } = Astro.props;
+const { id } = Astro.params;
+
+const pkg = await sanityClient.fetch(
+        `
+            *[_type == "package" && (slug.current == $id || _id == $id)][0]{
+                title,
+                duration,
+                price,
+                difficulty,
+                location,
+                rating,
+                overview,
+                "image": image.asset->url,
+                "gallery": gallery[].asset->url,
+                "includes": coalesce(includes, []),
+                "notIncludes": coalesce(notIncludes, []),
+                "highlights": coalesce(highlights, []),
+                "itinerary": coalesce(itinerary, []),
+                prep{tips, weather}
+            }
+        `,
+        { id }
+);
 ---
 
 <Layout title={`${pkg.title} | Galápagos Bluediamond`}>

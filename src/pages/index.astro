@@ -3,16 +3,39 @@ import Layout from "../layouts/Layout.astro";
 import Button from "../components/common/Button.astro";
 import SectionTitle from "../components/common/SectionTitle.astro";
 import Card from "../components/cards/Card.astro";
+import PackageCarousel from "../components/cards/PackageCarousel.astro";
 import CategoryCard from "../components/cards/CategoryCard.astro";
 import { Icon } from "astro-icon/components";
 import AnchorIcon from "../components/common/AnchorIcon.astro";
 import ContactFormModal from "../components/common/ContactFormModal.astro";
-import { CATEGORIES, TOURS_DATA, PACKAGES_DATA } from "../data/tours";
+import { CATEGORIES, TOURS_DATA } from "../data/tours";
+import { sanityClient } from "../lib/sanityClient";
 
-// Select only first 3 tours and 1st package for consistency with original design
-const featuredTours = TOURS_DATA.slice(0, 3);
-const mainPackage = PACKAGES_DATA[0];
-const secondaryPackage = PACKAGES_DATA[1];
+// Fetch featured packages from Sanity
+const packages = await sanityClient.fetch(`
+    *[_type == "package" && featured == true] | order(_createdAt desc) {
+        _id,
+        title,
+        "slug": slug.current,
+        duration,
+        price,
+        difficulty,
+        location,
+        rating,
+        overview,
+        "image": image.asset->url,
+        includes,
+        notIncludes,
+        highlights,
+        gallery,
+        itinerary,
+        prep,
+        categoria
+    }
+`);
+
+// Select only first 3 tours for consistency with original design
+const featuredTours = TOURS_DATA && Array.isArray(TOURS_DATA) ? TOURS_DATA.slice(0, 3) : [];
 ---
 
 <Layout title="Galápagos Bluediamond | Inicio">
@@ -208,8 +231,16 @@ const secondaryPackage = PACKAGES_DATA[1];
 	</section>
 
 	{/* FEATURED TOURS */}
-	<section class="py-20 bg-white">
-		<div class="container mx-auto px-6">
+	<section class="py-20 bg-white relative overflow-hidden">
+		{/* Background SVG */}
+		<div class="absolute inset-0 opacity-5 pointer-events-none">
+			<img
+				src="https://cdn.sanity.io/images/f6sa56jz/production/c3e37595e20c4e096a15d872f6e6eabe1535ed00-1510x1064.svg"
+				alt=""
+				class="w-full h-full object-cover"
+			/>
+		</div>
+		<div class="container mx-auto px-6 relative z-10">
 			<div class="text-center mb-16">
 				<h3 class="text-[#2EC4C6] font-script text-2xl mb-2">
 					Los mejores lugares para ti
@@ -253,98 +284,13 @@ const secondaryPackage = PACKAGES_DATA[1];
 				centered={true}
 			/>
 
-			{/* Custom Layout for Packages */}
-			<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-				{/* Left Small Card */}
-				<div
-					class="hidden lg:block lg:col-span-3 transform translate-y-12 opacity-80 hover:opacity-100 transition-opacity"
-				>
-					<div class="bg-white rounded-[2rem] p-4 shadow-lg">
-						<img
-							src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=400"
-							class="w-full h-48 object-cover rounded-2xl mb-4"
-							alt="Small"
-						/>
-						<h4 class="text-[#0B3C6D] font-bold text-center">
-							Relax Total
-						</h4>
-					</div>
+			{packages && packages.length > 0 ? (
+				<PackageCarousel packages={packages} />
+			) : (
+				<div class="bg-gray-200 rounded-[2.5rem] h-[500px] flex items-center justify-center text-gray-500">
+					No hay paquetes destacados disponibles
 				</div>
-
-				{/* Center Main Card (Featured Package) */}
-				<div class="col-span-1 lg:col-span-6 z-10">
-					<a
-						href={`/paquete/${mainPackage.id}`}
-						class="no-underline block group"
-					>
-						<div
-							class="bg-white rounded-[2.5rem] shadow-2xl overflow-hidden relative group cursor-pointer"
-						>
-							<div class="h-[500px] relative">
-								<img
-									src={mainPackage.image}
-									class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-									alt="Main"
-								/>
-								<div
-									class="absolute inset-0 bg-gradient-to-t from-[#0B3C6D] via-transparent to-transparent opacity-90"
-								>
-								</div>
-								<div
-									class="absolute bottom-0 left-0 p-8 md:p-12 w-full text-center"
-								>
-									<span
-										class="bg-[#2EC4C6] text-white px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-4 inline-block"
-										>Best Seller</span
-									>
-									<h3
-										class="text-3xl md:text-5xl font-bold text-white font-serif mb-4"
-									>
-										{mainPackage.title}
-									</h3>
-									<p
-										class="text-white/80 mb-6 line-clamp-2 max-w-lg mx-auto"
-									>
-										{mainPackage.overview}
-									</p>
-									<div class="inline-block">
-										<span
-											class="bg-[#2EC4C6] text-white px-8 py-3 rounded-full font-bold text-sm shadow-lg hover:bg-[#1F5F99] transition-colors"
-											>Ver Paquete</span
-										>
-									</div>
-								</div>
-							</div>
-						</div>
-					</a>
-				</div>
-
-				{/* Right Small Card */}
-				<div
-					class="hidden lg:block lg:col-span-3 transform translate-y-12 opacity-80 hover:opacity-100 transition-opacity"
-				>
-					<div class="bg-white rounded-[2rem] p-4 shadow-lg">
-						<img
-							src="https://images.unsplash.com/photo-1506461883276-594a12b11cf3?auto=format&fit=crop&q=80&w=400"
-							class="w-full h-48 object-cover rounded-2xl mb-4"
-							alt="Small"
-						/>
-						<h4 class="text-[#0B3C6D] font-bold text-center">
-							Aventura Pura
-						</h4>
-					</div>
-				</div>
-			</div>
-
-			{/* Mobile view for extra packages */}
-			<div class="mt-8 lg:hidden">
-				<a
-					href={`/paquete/${secondaryPackage.id}`}
-					class="no-underline block"
-				>
-					<Card item={secondaryPackage} type="package" />
-				</a>
-			</div>
+			)}
 		</div>
 	</section>
 

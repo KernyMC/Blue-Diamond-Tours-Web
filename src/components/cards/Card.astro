@@ -83,12 +83,14 @@ const { item, type } = Astro.props; // type: 'tour' | 'package'
         <div class="bg-gray-50 rounded-xl p-4 mb-6 flex-grow">
             <ul class="space-y-2">
                 {
-                    item.includes.slice(0, 3).map((feat) => (
+                    item.includes && Array.isArray(item.includes) 
+                        ? item.includes.slice(0, 3).map((feat) => (
                         <li class="flex items-start gap-2 text-xs text-gray-500">
                             <span class="text-[#2EC4C6] mt-0.5">✓</span>
                             {feat}
                         </li>
                     ))
+                        : <li class="text-xs text-gray-400 italic">Incluidos según itinerario</li>
                 }
             </ul>
         </div>

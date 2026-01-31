@@ -6,44 +6,101 @@ import Button from "../common/Button.astro";
 const { item } = Astro.props;
 ---
 
-<div class="min-h-screen bg-[#F2F6FA] pt-20">
-    {/* Top Info Bar */}
-    <div class="bg-white shadow-sm py-4 border-b border-gray-200">
+<div class="min-h-screen bg-[#F2F6FA]">
+    {/* Hero Banner */}
+    <div class="relative h-[60vh] md:h-[70vh] w-full">
+        <img
+            src={item.image}
+            alt={item.title}
+            class="w-full h-full object-cover"
+        />
         <div
-            class="container mx-auto px-4 flex flex-wrap justify-center md:justify-between items-center gap-4 text-sm text-gray-500"
+            class="absolute inset-0 bg-gradient-to-b from-black/40 via-black/50 to-black/70"
         >
-            <div class="flex items-center gap-6">
-                <span class="flex items-center gap-2"
-                    ><Icon
-                        name="ant-design:clock-circle-outlined"
-                        size={16}
-                        class="text-[#2EC4C6]"
-                    />
-                    {item.duration}</span
+        </div>
+        <div class="absolute inset-0 flex flex-col items-center justify-center">
+            <div
+                class="container mx-auto px-4 text-center flex-1 flex items-center justify-center"
+            >
+                <h1
+                    class="text-4xl md:text-6xl font-bold text-white font-serif leading-tight"
                 >
-                <span class="flex items-center gap-2"
-                    ><Icon
-                        name="ant-design:team-outlined"
-                        size={16}
-                        class="text-[#2EC4C6]"
-                    /> Max 16 personas</span
-                >
-                <span class="flex items-center gap-2"
-                    ><Icon
-                        name="ant-design:calendar-outlined"
-                        size={16}
-                        class="text-[#2EC4C6]"
-                    /> Salidas Diarias</span
-                >
+                    {item.title}
+                </h1>
             </div>
-            <div class="flex items-center gap-2 font-medium text-[#0B3C6D]">
+
+            {/* Info Bar - Dentro del Banner */}
+            <div class="w-full py-6">
+                <div
+                    class="container mx-auto px-4 flex flex-wrap justify-center md:justify-between items-center gap-4 text-sm"
+                >
+                    <div class="flex items-center gap-6">
+                        <span class="flex items-center gap-2 text-white"
+                            ><Icon
+                                name="ant-design:clock-circle-outlined"
+                                size={18}
+                                class="text-[#2EC4C6]"
+                            />
+                            {item.duration}</span
+                        >
+                        <span class="flex items-center gap-2 text-white"
+                            ><Icon
+                                name="ant-design:team-outlined"
+                                size={18}
+                                class="text-[#2EC4C6]"
+                            /> Max 16 personas</span
+                        >
+                        <span class="flex items-center gap-2 text-white"
+                            ><Icon
+                                name="ant-design:calendar-outlined"
+                                size={18}
+                                class="text-[#2EC4C6]"
+                            /> Salidas Diarias</span
+                        >
+                    </div>
+                    <div class="flex items-center gap-2 font-medium text-white">
+                        <Icon
+                            name="ant-design:environment-outlined"
+                            size={18}
+                            class="text-[#2EC4C6]"
+                        />
+                        {item.location}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {/* Breadcrumb Navigation */}
+    <div class="bg-[#0B3C6D]">
+        <div class="container mx-auto px-4 py-3">
+            <nav class="flex items-center gap-2 text-sm">
+                <a
+                    href="/"
+                    class="text-white hover:text-[#2EC4C6] transition-colors"
+                >
+                    Home
+                </a>
                 <Icon
-                    name="ant-design:environment-outlined"
-                    size={16}
-                    class="text-[#2EC4C6]"
+                    name="ant-design:right-outlined"
+                    size={12}
+                    class="text-white/60"
                 />
-                {item.location}
-            </div>
+                <a
+                    href="/paquetes"
+                    class="text-white hover:text-[#2EC4C6] transition-colors"
+                >
+                    Paquetes
+                </a>
+                <Icon
+                    name="ant-design:right-outlined"
+                    size={12}
+                    class="text-white/60"
+                />
+                <span class="text-white font-bold uppercase">
+                    {item.title}
+                </span>
+            </nav>
         </div>
     </div>
 
@@ -52,28 +109,6 @@ const { item } = Astro.props;
     >
         {/* Main Content */}
         <div class="lg:col-span-2 space-y-8">
-            {/* Header */}
-            <div>
-                <h1
-                    class="text-4xl md:text-5xl font-bold text-[#0B3C6D] font-serif mb-4 leading-tight"
-                >
-                    {item.title}
-                </h1>
-                <div
-                    class="relative h-[400px] md:h-[500px] rounded-[2.5rem] overflow-hidden shadow-2xl group"
-                >
-                    <img
-                        src={item.image}
-                        alt={item.title}
-                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                    />
-                    <div
-                        class="absolute inset-0 bg-gradient-to-t from-[#0B3C6D]/60 via-transparent to-transparent"
-                    >
-                    </div>
-                </div>
-            </div>
-
             {/* Tabs Navigation */}
             <div
                 class="flex border-b border-gray-200 mb-8 overflow-x-auto no-scrollbar gap-8"
@@ -96,12 +131,16 @@ const { item } = Astro.props;
                 >
                     Preparación
                 </button>
-                <button
-                    class="tab-btn pb-4 text-lg font-bold text-gray-400 border-b-4 border-transparent hover:text-[#0B3C6D] transition-colors whitespace-nowrap"
-                    data-tab="accommodation"
-                >
-                    Alojamiento
-                </button>
+                {
+                    item.gallery && item.gallery.length > 0 && (
+                        <button
+                            class="tab-btn pb-4 text-lg font-bold text-gray-400 border-b-4 border-transparent hover:text-[#0B3C6D] transition-colors whitespace-nowrap"
+                            data-tab="gallery"
+                        >
+                            Galería
+                        </button>
+                    )
+                }
             </div>
 
             {/* Tab Content */}
@@ -134,7 +173,7 @@ const { item } = Astro.props;
                             </h4>
                             <ul class="space-y-3">
                                 {
-                                    item.includes.map((inc) => (
+                                    (item.includes || []).map((inc) => (
                                         <li class="flex items-start gap-3 text-gray-600 text-sm">
                                             <span class="text-green-500 mt-0.5">
                                                 ✓
@@ -159,7 +198,7 @@ const { item } = Astro.props;
                             </h4>
                             <ul class="space-y-3">
                                 {
-                                    item.notIncludes.map((exc) => (
+                                    (item.notIncludes || []).map((exc) => (
                                         <li class="flex items-start gap-3 text-gray-600 text-sm">
                                             <span class="text-red-500 mt-0.5">
                                                 ✕
@@ -184,7 +223,7 @@ const { item } = Astro.props;
                         </h4>
                         <div class="flex flex-wrap gap-2">
                             {
-                                item.highlights.map((h) => (
+                                (item.highlights || []).map((h) => (
                                     <span class="bg-yellow-50 text-yellow-700 px-3 py-1 rounded-full text-sm font-medium border border-yellow-100">
                                         {h}
                                     </span>
@@ -201,28 +240,35 @@ const { item } = Astro.props;
                     >
                         Itinerario Detallado
                     </h3>
-                    <div
-                        class="space-y-8 relative before:absolute before:left-4 before:top-4 before:bottom-4 before:w-0.5 before:bg-gray-200"
-                    >
+                    <div class="space-y-4">
                         {
-                            item.itinerary.map((day) => (
-                                <div class="relative pl-12 group">
-                                    <div class="absolute left-0 top-0 w-8 h-8 bg-[#2EC4C6] rounded-full text-white flex items-center justify-center font-bold text-sm shadow-md group-hover:scale-110 transition-transform z-10">
-                                        {day.day}
-                                    </div>
-                                    <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100 hover:shadow-md transition-shadow">
-                                        <h4 class="font-bold text-[#0B3C6D] text-lg mb-2">
-                                            {day.title}
-                                        </h4>
-                                        <p class="text-gray-600 text-sm leading-relaxed mb-4">
-                                            {day.description}
-                                        </p>
-                                        <div class="flex items-center gap-2 text-xs font-bold text-[#2EC4C6] bg-white px-3 py-1 rounded-full w-fit shadow-sm border border-gray-100">
+                            (item.itinerary || []).map((day, index) => (
+                                <div class="relative group">
+                                    <div class="bg-gray-50 rounded-2xl border border-gray-100 hover:shadow-md transition-shadow overflow-hidden">
+                                        <button
+                                            class="accordion-btn w-full text-left p-6 flex items-center justify-between gap-4 hover:bg-gray-100 transition-colors"
+                                            data-index={index}
+                                        >
+                                            <h4 class="font-bold text-[#0B3C6D] text-lg flex-1">
+                                                Día {day.day}: {day.title}
+                                            </h4>
                                             <Icon
-                                                name="ant-design:coffee-outlined"
-                                                size={14}
-                                            />{" "}
-                                            {day.meals}
+                                                name="ant-design:down-outlined"
+                                                size={16}
+                                                class="accordion-icon text-[#0B3C6D] transition-transform"
+                                            />
+                                        </button>
+                                        <div class="accordion-content hidden px-6 pb-6">
+                                            <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                                                {day.description}
+                                            </p>
+                                            <div class="flex items-center gap-2 text-xs font-bold text-[#2EC4C6] bg-white px-3 py-1 rounded-full w-fit shadow-sm border border-gray-100">
+                                                <Icon
+                                                    name="ant-design:coffee-outlined"
+                                                    size={14}
+                                                />{" "}
+                                                {day.meals}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -256,7 +302,7 @@ const { item } = Astro.props;
                                     Tips de Viaje
                                 </h4>
                                 <p class="text-gray-600 leading-relaxed">
-                                    {item.prep.tips}
+                                    {item.prep?.tips || ""}
                                 </p>
                             </div>
                         </div>
@@ -274,70 +320,155 @@ const { item } = Astro.props;
                                     Clima y Ropa
                                 </h4>
                                 <p class="text-gray-600 leading-relaxed">
-                                    {item.prep.weather}
-                                </p>
-                            </div>
-                        </div>
-                        <div class="flex gap-4 items-start">
-                            <div
-                                class="bg-green-100 p-3 rounded-full text-green-700"
-                            >
-                                <AnchorIcon size={24} />
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-[#0B3C6D] mb-2">
-                                    Nivel Físico
-                                </h4>
-                                <p class="text-gray-600 leading-relaxed">
-                                    {item.prep.fitness}
+                                    {item.prep?.weather || ""}
                                 </p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                {/* Accommodation Tab */}
-                <div
-                    id="accommodation"
-                    class="tab-content hidden animate-fade-in"
-                >
-                    <h3
-                        class="text-2xl font-bold text-[#0B3C6D] mb-6 font-serif"
-                    >
-                        Tu Alojamiento
-                    </h3>
-                    <div
-                        class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center"
-                    >
-                        <div>
-                            <img
-                                src={item.accommodation.image ||
-                                    "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=600"}
-                                class="rounded-2xl shadow-lg w-full h-64 object-cover"
-                                alt="Hotel"
-                            />
-                        </div>
-                        <div>
-                            <h4 class="text-xl font-bold text-[#0B3C6D] mb-3">
-                                {item.accommodation.name}
-                            </h4>
-                            <p class="text-gray-600 leading-relaxed mb-6">
-                                {item.accommodation.desc}
-                            </p>
-                            <div class="flex flex-wrap gap-2">
-                                {
-                                    item.accommodation.amenities
-                                        .filter((a) => a)
-                                        .map((am) => (
-                                            <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-xs font-medium">
-                                                {am}
-                                            </span>
-                                        ))
-                                }
+                {/* Gallery Tab */}
+                {
+                    item.gallery && item.gallery.length > 0 && (
+                        <div
+                            id="gallery"
+                            class="tab-content hidden animate-fade-in"
+                        >
+                            <h3 class="text-2xl font-bold text-[#0B3C6D] mb-8 font-serif">
+                                Galería de Fotos
+                            </h3>
+                            <div class="gallery-main-container">
+                                {item.gallery.length === 1 && (
+                                    <div class="gallery-column gallery-col-1">
+                                        <div class="gallery-item" data-index={0}>
+                                            <img
+                                                src={item.gallery[0]}
+                                                alt={`${item.title} - Foto 1`}
+                                                class="w-full h-full object-cover"
+                                            />
+                                        </div>
+                                    </div>
+                                )}
+                                {item.gallery.length === 2 && (
+                                    <>
+                                        <div class="gallery-column gallery-col-1">
+                                            <div class="gallery-item" data-index={0} style="flex: 1;">
+                                                <img
+                                                    src={item.gallery[0]}
+                                                    alt={`${item.title} - Foto 1`}
+                                                    class="w-full h-full object-cover"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div class="gallery-column gallery-col-2">
+                                            <div class="gallery-item" data-index={1} style="flex: 1;">
+                                                <img
+                                                    src={item.gallery[1]}
+                                                    alt={`${item.title} - Foto 2`}
+                                                    class="w-full h-full object-cover"
+                                                />
+                                            </div>
+                                        </div>
+                                    </>
+                                )}
+                                {item.gallery.length >= 3 && (
+                                    <>
+                                        <div class="gallery-column gallery-col-1">
+                                            <div class="gallery-item" data-index={0} style="flex: {item.gallery[0] ? '3.5' : '1'};">
+                                                <img
+                                                    src={item.gallery[0]}
+                                                    alt={`${item.title} - Foto 1`}
+                                                    class="w-full h-full object-cover"
+                                                />
+                                            </div>
+                                            {item.gallery.length > 3 && (
+                                                <div class="gallery-item" data-index={1} style="flex: 6.5;">
+                                                    <img
+                                                        src={item.gallery[1]}
+                                                        alt={`${item.title} - Foto 2`}
+                                                        class="w-full h-full object-cover"
+                                                    />
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        {item.gallery.length >= 4 && (
+                                            <div class="gallery-column gallery-col-2">
+                                                <div class="gallery-item" data-index={2} style="flex: 3.5;">
+                                                    <img
+                                                        src={item.gallery[2]}
+                                                        alt={`${item.title} - Foto 3`}
+                                                        class="w-full h-full object-cover"
+                                                    />
+                                                </div>
+                                                <div class="gallery-item" data-index={3} style="flex: 6.5;">
+                                                    <img
+                                                        src={item.gallery[3]}
+                                                        alt={`${item.title} - Foto 4`}
+                                                        class="w-full h-full object-cover"
+                                                    />
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {item.gallery.length >= 5 && (
+                                            <div class="gallery-column gallery-col-3">
+                                                <div class="gallery-item" data-index={4} style="flex: 4;">
+                                                    <img
+                                                        src={item.gallery[4]}
+                                                        alt={`${item.title} - Foto 5`}
+                                                        class="w-full h-full object-cover"
+                                                    />
+                                                </div>
+                                                {item.gallery.length > 5 && (
+                                                    <>
+                                                        <div class="gallery-item" data-index={5} style="flex: 2.5;">
+                                                            <img
+                                                                src={item.gallery[5]}
+                                                                alt={`${item.title} - Foto 6`}
+                                                                class="w-full h-full object-cover"
+                                                            />
+                                                        </div>
+                                                        {item.gallery.length > 6 && (
+                                                            <div class="gallery-item" data-index={6} style="flex: 3.5;">
+                                                                <img
+                                                                    src={item.gallery[6]}
+                                                                    alt={`${item.title} - Foto 7`}
+                                                                    class="w-full h-full object-cover"
+                                                                />
+                                                            </div>
+                                                        )}
+                                                    </>
+                                                )}
+                                            </div>
+                                        )}
+
+                                        {item.gallery.length >= 7 && (
+                                            <div class="gallery-column gallery-col-4">
+                                                <div class="gallery-item" data-index={item.gallery.length > 8 ? 7 : 6} style="flex: 6;">
+                                                    <img
+                                                        src={item.gallery[item.gallery.length > 8 ? 7 : 6]}
+                                                        alt={`${item.title} - Foto ${item.gallery.length > 8 ? 8 : 7}`}
+                                                        class="w-full h-full object-cover"
+                                                    />
+                                                </div>
+                                                {item.gallery.length > 8 && (
+                                                    <div class="gallery-item" data-index={8} style="flex: 4;">
+                                                        <img
+                                                            src={item.gallery[8]}
+                                                            alt={`${item.title} - Foto 9`}
+                                                            class="w-full h-full object-cover"
+                                                        />
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
+                                    </>
+                                )}
                             </div>
                         </div>
-                    </div>
-                </div>
+                    )
+                }
             </div>
         </div>
 
@@ -346,11 +477,11 @@ const { item } = Astro.props;
             <div
                 class="sticky top-28 bg-white p-8 rounded-[2rem] shadow-xl border border-gray-100"
             >
-                <div class="text-center mb-8 pb-8 border-b border-gray-100">
+                <div class="text-center mb-4 pb-3 border-b border-gray-100">
                     <p
                         class="text-gray-400 text-sm uppercase tracking-wider mb-2"
                     >
-                        Precio por persona
+                        Desde
                     </p>
                     <div class="text-5xl font-bold text-[#0B3C6D] font-serif">
                         ${item.price}
@@ -360,20 +491,7 @@ const { item } = Astro.props;
                     </p>
                 </div>
 
-                <div class="space-y-4 mb-8">
-                    <div class="flex justify-between text-sm">
-                        <span class="text-gray-500">Próxima Salida:</span>
-                        <span class="font-bold text-[#0B3C6D]"
-                            >Mañana, 8:00 AM</span
-                        >
-                    </div>
-                    <div class="flex justify-between text-sm">
-                        <span class="text-gray-500">Disponibilidad:</span>
-                        <span class="font-bold text-green-500">4 cupos</span>
-                    </div>
-                </div>
-
-                <div class="space-y-3">
+                <div class="mb-4">
                     <a href="/contacto" class="no-underline block">
                         <Button
                             variant="primary"
@@ -381,14 +499,9 @@ const { item } = Astro.props;
                             >Reservar Ahora</Button
                         >
                     </a>
-                    <a href="#" class="no-underline block">
-                        <Button variant="outline" className="w-full py-4"
-                            >Descargar PDF</Button
-                        >
-                    </a>
                 </div>
 
-                <div class="mt-8 text-center">
+                <div class="text-center">
                     <p class="text-xs text-gray-400">
                         ¿Tienes dudas? <a
                             href="/contacto"
@@ -400,6 +513,8 @@ const { item } = Astro.props;
             </div>
         </div>
     </div>
+
+    {/* Gallery Section - Removed to avoid duplication */}
 </div>
 
 <script>
@@ -438,4 +553,166 @@ const { item } = Astro.props;
             }
         });
     });
+
+    // Accordion Logic for Itinerary
+    const accordionBtns = document.querySelectorAll(".accordion-btn");
+
+    accordionBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const content = btn.nextElementSibling;
+            const icon = btn.querySelector(".accordion-icon");
+
+            if (content.classList.contains("hidden")) {
+                content.classList.remove("hidden");
+                icon.style.transform = "rotate(180deg)";
+            } else {
+                content.classList.add("hidden");
+                icon.style.transform = "rotate(0deg)";
+            }
+        });
+    });
+
+    // Gallery Lightbox Logic
+    const galleryItems = document.querySelectorAll(".gallery-item");
+    let currentImageIndex = 0;
+    let images = [];
+
+    galleryItems.forEach((item, index) => {
+        const img = item.querySelector("img");
+        if (img) images.push(img.src);
+
+        item.addEventListener("click", () => {
+            currentImageIndex = index;
+            openLightbox();
+        });
+    });
+
+    function openLightbox() {
+        const lightbox = document.createElement("div");
+        lightbox.id = "lightbox";
+        lightbox.className =
+            "fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4";
+        lightbox.innerHTML = `
+            <button class="absolute top-4 right-4 text-white text-4xl hover:text-[#2EC4C6] transition-colors" onclick="closeLightbox()">&times;</button>
+            ${
+                images.length > 1
+                    ? `
+                <button class="absolute left-4 top-1/2 -translate-y-1/2 text-white text-4xl hover:text-[#2EC4C6] transition-colors" onclick="prevImage()">&lsaquo;</button>
+                <button class="absolute right-4 top-1/2 -translate-y-1/2 text-white text-4xl hover:text-[#2EC4C6] transition-colors" onclick="nextImage()">&rsaquo;</button>
+            `
+                    : ""
+            }
+            <img id="lightbox-img" src="${images[currentImageIndex]}" class="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl" />
+            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 text-white text-sm">${currentImageIndex + 1} / ${images.length}</div>
+        `;
+        document.body.appendChild(lightbox);
+        document.body.style.overflow = "hidden";
+    }
+
+    window.closeLightbox = function () {
+        const lightbox = document.getElementById("lightbox");
+        if (lightbox) {
+            lightbox.remove();
+            document.body.style.overflow = "";
+        }
+    };
+
+    window.nextImage = function () {
+        currentImageIndex = (currentImageIndex + 1) % images.length;
+        document.getElementById("lightbox-img").src = images[currentImageIndex];
+        document.querySelector("#lightbox .bottom-4").textContent =
+            `${currentImageIndex + 1} / ${images.length}`;
+    };
+
+    window.prevImage = function () {
+        currentImageIndex =
+            (currentImageIndex - 1 + images.length) % images.length;
+        document.getElementById("lightbox-img").src = images[currentImageIndex];
+        document.querySelector("#lightbox .bottom-4").textContent =
+            `${currentImageIndex + 1} / ${images.length}`;
+    };
+
+    document.addEventListener("keydown", (e) => {
+        if (document.getElementById("lightbox")) {
+            if (e.key === "Escape") closeLightbox();
+            if (e.key === "ArrowRight") nextImage();
+            if (e.key === "ArrowLeft") prevImage();
+        }
+    });
 </script>
+
+<style>
+    /* Gallery Grid Layouts - Old styles removed */
+    
+    /* New Gallery Column Layout */
+    .gallery-main-container {
+        display: flex;
+        gap: 12px;
+        width: 100%;
+        height: 550px;
+    }
+
+    .gallery-column {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        height: 100%;
+    }
+
+    .gallery-col-1 { flex: 1.6; }
+    .gallery-col-2 { flex: 3.2; }
+    .gallery-col-3 { flex: 2.3; }
+    .gallery-col-4 { flex: 2.9; }
+
+    .gallery-item {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+        cursor: pointer;
+        border-radius: 1rem;
+    }
+
+    .gallery-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.3s ease;
+    }
+
+    .gallery-item:hover img {
+        transform: scale(1.05);
+    }
+
+    @media (max-width: 1024px) {
+        .gallery-main-container {
+            flex-direction: column;
+            height: auto;
+            gap: 12px;
+        }
+
+        .gallery-column {
+            flex-direction: row;
+            height: 250px;
+        }
+
+        .gallery-item {
+            flex: 1;
+        }
+    }
+
+    @media (max-width: 640px) {
+        .gallery-main-container {
+            gap: 8px;
+        }
+
+        .gallery-column {
+            height: 150px;
+            gap: 8px;
+        }
+
+        .gallery-item {
+            border-radius: 0.75rem;
+        }
+    }
+</style>

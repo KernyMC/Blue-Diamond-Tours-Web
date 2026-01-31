@@ -1,0 +1,150 @@
+---
+import { Icon } from "astro-icon/components";
+
+const { packages } = Astro.props;
+---
+
+<div class="relative w-full">
+    <!-- Carousel Container -->
+    <div class="relative overflow-hidden rounded-[2.5rem]">
+        <div
+            id="carousel"
+            class="flex transition-transform duration-500 ease-out"
+        >
+            {
+                packages.map((pkg, index) => (
+                    <div
+                        key={index}
+                        class="min-w-full flex-shrink-0"
+                        data-slide={index}
+                    >
+                        <div class="relative w-full">
+                            <img
+                                src={pkg.image}
+                                alt={pkg.title}
+                                class="w-full h-[500px] object-cover"
+                            />
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#0B3C6D] via-transparent to-transparent opacity-90"></div>
+                            <div class="absolute bottom-0 left-0 p-8 md:p-12 w-full text-center">
+
+                                <h3 class="text-3xl md:text-5xl font-bold text-white font-serif mb-4">
+                                    {pkg.title}
+                                </h3>
+                                <p class="text-white/80 mb-6 line-clamp-2 max-w-lg mx-auto text-sm md:text-base">
+                                    {pkg.overview}
+                                </p>
+                                <a
+                                    href={`/paquete/${pkg.slug || pkg._id}`}
+                                    class="inline-block bg-[#2EC4C6] text-white px-8 py-3 rounded-full font-bold text-sm shadow-lg hover:bg-[#1F5F99] transition-colors no-underline"
+                                >
+                                    Ver Paquete
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                ))
+            }
+        </div>
+
+        <!-- Navigation Arrows -->
+        {
+            packages.length > 1 && (
+                <>
+                    <button
+                        id="prevBtn"
+                        class="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white/80 hover:bg-white text-[#0B3C6D] w-12 h-12 rounded-full flex items-center justify-center transition-all shadow-lg"
+                        aria-label="Previous slide"
+                    >
+                        <Icon name="ant-design:left-outlined" size={20} />
+                    </button>
+                    <button
+                        id="nextBtn"
+                        class="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white/80 hover:bg-white text-[#0B3C6D] w-12 h-12 rounded-full flex items-center justify-center transition-all shadow-lg"
+                        aria-label="Next slide"
+                    >
+                        <Icon name="ant-design:right-outlined" size={20} />
+                    </button>
+
+                    <!-- Dots Indicators -->
+                    <div class="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+                        {packages.map((_, index) => (
+                            <button
+                                class="dot w-2.5 h-2.5 rounded-full transition-all"
+                                class:list={{
+                                    "bg-white": index === 0,
+                                    "bg-white/50": index !== 0,
+                                }}
+                                data-dot={index}
+                                aria-label={`Go to slide ${index + 1}`}
+                            />
+                        ))}
+                    </div>
+                </>
+            )
+        }
+    </div>
+</div>
+
+<script>
+    const carousel = document.getElementById("carousel");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const dots = document.querySelectorAll(".dot");
+
+    let currentSlide = 0;
+    const slides = document.querySelectorAll("[data-slide]");
+    const totalSlides = slides.length;
+
+    if (totalSlides <= 1) {
+        // Hide navigation if only one slide
+        prevBtn?.remove();
+        nextBtn?.remove();
+        document.querySelector("[data-dot]")?.remove();
+    }
+
+    function goToSlide(index: number) {
+        if (index >= totalSlides) currentSlide = 0;
+        if (index < 0) currentSlide = totalSlides - 1;
+
+        if (carousel) {
+            carousel.style.transform = `translateX(-${
+                currentSlide * 100
+            }%)`;
+        }
+
+        // Update dots
+        dots.forEach((dot, i) => {
+            if (i === currentSlide) {
+                dot.classList.remove("bg-white/50");
+                dot.classList.add("bg-white");
+            } else {
+                dot.classList.remove("bg-white");
+                dot.classList.add("bg-white/50");
+            }
+        });
+    }
+
+    prevBtn?.addEventListener("click", () => {
+        currentSlide--;
+        goToSlide(currentSlide);
+    });
+
+    nextBtn?.addEventListener("click", () => {
+        currentSlide++;
+        goToSlide(currentSlide);
+    });
+
+    dots.forEach((dot) => {
+        dot.addEventListener("click", (e) => {
+            const index = parseInt((e.target as HTMLElement).getAttribute("data-dot") || "0");
+            currentSlide = index;
+            goToSlide(currentSlide);
+        });
+    });
+
+    // Auto-advance carousel every 8 seconds
+    setInterval(() => {
+        currentSlide++;
+        goToSlide(currentSlide);
+    }, 8000);
+</script>
