@@ -3,7 +3,21 @@ import Layout from "../layouts/Layout.astro";
 import SectionTitle from "../components/common/SectionTitle.astro";
 import Button from "../components/common/Button.astro";
 import { Icon } from "astro-icon/components";
-import { SCHEDULES_DATA } from "../data/tours";
+import { sanityClient } from "../lib/sanityClient";
+
+// Fetch ferry schedules from Sanity
+const ferries = await sanityClient.fetch(`
+    *[_type == "ferry" && activo == true] | order(orden asc, _createdAt asc) {
+        _id,
+        numeroRuta,
+        rutaPrincipal,
+        checkInMuelle,
+        lugarSalida,
+        horaSalida,
+        lugarLlegada,
+        horaLlegada
+    }
+`);
 ---
 
 <Layout title="Ferries | Galápagos Bluediamond">
@@ -15,7 +29,7 @@ import { SCHEDULES_DATA } from "../data/tours";
             />
 
             <div
-                class="max-w-4xl mx-auto bg-white rounded-[2rem] shadow-xl overflow-hidden border border-gray-100"
+                class="max-w-7xl mx-auto bg-white rounded-[2rem] shadow-xl overflow-hidden border border-gray-100"
             >
                 <div
                     class="bg-[#0B3C6D] p-8 text-white flex items-center gap-6"
@@ -27,54 +41,65 @@ import { SCHEDULES_DATA } from "../data/tours";
                     />
                     <div>
                         <h3 class="font-bold text-2xl font-serif">
-                            Información Importante
+                            Horarios de Ferry Inter-islas
                         </h3>
                         <p class="text-blue-100 text-sm mt-1">
-                            El tiempo de viaje promedio es de 2 a 2.5 horas. Se
-                            recomienda estar en el muelle 30 minutos antes.
+                            Selecciona tu ruta y reserva tu ticket
                         </p>
                     </div>
                 </div>
+                
+                {/* Ferry Routes Table */}
                 <div class="overflow-x-auto">
                     <table class="w-full text-left">
                         <thead class="bg-gray-50 border-b border-gray-200">
                             <tr>
-                                <th
-                                    class="p-6 font-bold text-[#0B3C6D] text-sm uppercase tracking-wider"
-                                    >Ruta</th
-                                >
-                                <th
-                                    class="p-6 font-bold text-[#0B3C6D] text-sm uppercase tracking-wider"
-                                    >Hora Salida</th
-                                >
-                                <th
-                                    class="p-6 font-bold text-[#0B3C6D] text-sm uppercase tracking-wider"
-                                    >Precio Aprox.</th
-                                >
-                                <th
-                                    class="p-6 font-bold text-[#0B3C6D] text-sm uppercase tracking-wider"
-                                    >Notas</th
-                                >
+                                <th class="p-6 font-bold text-[#0B3C6D] text-sm uppercase tracking-wider">Ruta</th>
+                                <th class="p-6 font-bold text-[#0B3C6D] text-sm uppercase tracking-wider">Horario</th>
+                                <th class="p-6 font-bold text-[#0B3C6D] text-sm uppercase tracking-wider">Reservar</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-100">
                             {
-                                SCHEDULES_DATA.map((row, idx) => (
+                                ferries.map((ferry, idx) => (
                                     <tr
                                         key={idx}
-                                        class="hover:bg-blue-50 transition-colors"
+                                        class:list={{
+                                            "hover:bg-blue-50 transition-colors": true,
+                                            "bg-white": idx % 2 === 0,
+                                            "bg-[#F7FAFC]": idx % 2 === 1,
+                                        }}
                                     >
                                         <td class="p-6 font-bold text-gray-800">
-                                            {row.route}
+                                            <div class="flex items-center gap-3">
+                                                <span class="bg-[#0B3C6D] text-white px-3 py-1 rounded-full text-xs font-bold uppercase">
+                                                    {ferry.numeroRuta}
+                                                </span>
+                                                <span>{ferry.rutaPrincipal}</span>
+                                            </div>
                                         </td>
-                                        <td class="p-6 text-gray-600 font-mono font-medium">
-                                            {row.time}
+                                        <td class="p-6 text-sm text-gray-700">
+                                            <div class="space-y-2">
+                                                <div>
+                                                    <span class="text-gray-500">Check-in en muelle:</span>{" "}
+                                                    <span class="font-bold text-[#0B3C6D]">{ferry.checkInMuelle}</span>
+                                                </div>
+                                                <div>
+                                                    <span class="text-gray-500">Salida de {ferry.lugarSalida}:</span>{" "}
+                                                    <span class="font-bold text-[#2EC4C6]">{ferry.horaSalida}</span>
+                                                </div>
+                                                <div>
+                                                    <span class="text-gray-500">Llegada a {ferry.lugarLlegada}:</span>{" "}
+                                                    <span class="font-bold text-gray-800">{ferry.horaLlegada}</span>
+                                                </div>
+                                            </div>
                                         </td>
-                                        <td class="p-6 text-[#2EC4C6] font-bold">
-                                            {row.price}
-                                        </td>
-                                        <td class="p-6 text-sm text-gray-500 italic">
-                                            {row.note}
+                                        <td class="p-6">
+                                            <a href="/contacto" class="no-underline">
+                                                <button class="w-full bg-[#2EC4C6] hover:bg-[#1F5F99] text-white font-bold py-2 px-4 rounded-xl transition-colors">
+                                                    Reservar
+                                                </button>
+                                            </a>
                                         </td>
                                     </tr>
                                 ))
@@ -82,16 +107,33 @@ import { SCHEDULES_DATA } from "../data/tours";
                         </tbody>
                     </table>
                 </div>
-                <div
-                    class="p-8 bg-gray-50 text-center border-t border-gray-200"
-                >
-                    <a href="/contacto" class="no-underline">
-                        <Button
-                            variant="primary"
-                            className="rounded-full shadow-lg"
-                            >Reservar Tickets de Ferry</Button
-                        >
-                    </a>
+
+                {/* Important Information */}
+                <div class="bg-[#F2F6FA] p-6 md:p-8 border-t-2 border-gray-200">
+                    <h4 class="text-[#0B3C6D] font-bold text-xl mb-4 flex items-center gap-2">
+                        <Icon name="ant-design:info-circle-outlined" size={24} class="text-[#2EC4C6]" />
+                        Información Importante
+                    </h4>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <p class="text-gray-700 flex items-start gap-2">
+                                <span class="text-[#2EC4C6] font-bold">•</span>
+                                <span>Se debe pagar <strong>$1</strong> desde el muelle al ferry a las lanchas taxis.</span>
+                            </p>
+                            <p class="text-gray-700 flex items-start gap-2">
+                                <span class="text-[#2EC4C6] font-bold">•</span>
+                                <span>Duración del viaje: <strong>2 horas aproximadamente</strong></span>
+                            </p>
+                        </div>
+                        <div class="bg-white rounded-xl p-4 border-2 border-[#2EC4C6]">
+                            <h5 class="font-bold text-[#0B3C6D] mb-2">Al ingresar a Isabela debe pagar:</h5>
+                            <ul class="space-y-1 text-sm text-gray-700">
+                                <li>• <strong>$1,50</strong> desde el ferry al puerto</li>
+                                <li>• <strong>$10</strong> ingreso (Extranjero)</li>
+                                <li>• <strong>$6</strong> ingreso (Ecuatoriano)</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

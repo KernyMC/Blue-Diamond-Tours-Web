@@ -24,6 +24,10 @@ const { title = "Galápagos Bluediamond | Tours & Travel" } = Astro.props;
             href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Dancing+Script:wght@700&display=swap"
             rel="stylesheet"
         />
+        <link
+            href="https://fonts.googleapis.com/css?family=Poppins"
+            rel="stylesheet"
+        />
     </head>
     <body class="font-sans text-[#2E2E2E] bg-white">
         <!-- client:load is not needed for Astro components -->
@@ -32,6 +36,7 @@ const { title = "Galápagos Bluediamond | Tours & Travel" } = Astro.props;
             <slot />
         </main>
         <Footer />
+        <script src="https://cdn.wetravel.com/widgets/embed_checkout.js" defer></script>
     </body>
 </html>
 

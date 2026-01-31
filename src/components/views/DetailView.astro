@@ -4,6 +4,7 @@ import AnchorIcon from "../common/AnchorIcon.astro";
 import Button from "../common/Button.astro";
 
 const { item } = Astro.props;
+const bookingHref = item?.bookingHref || (item?.bookingUuid ? `https://www.wetravel.com/checkout_embed?uuid=${item.bookingUuid}` : "");
 ---
 
 <div class="min-h-screen bg-[#F2F6FA]">
@@ -262,13 +263,15 @@ const { item } = Astro.props;
                                             <p class="text-gray-600 text-sm leading-relaxed mb-4">
                                                 {day.description}
                                             </p>
-                                            <div class="flex items-center gap-2 text-xs font-bold text-[#2EC4C6] bg-white px-3 py-1 rounded-full w-fit shadow-sm border border-gray-100">
-                                                <Icon
-                                                    name="ant-design:coffee-outlined"
-                                                    size={14}
-                                                />{" "}
-                                                {day.meals}
-                                            </div>
+                                            {day.meals && day.meals.trim() && (
+                                                <div class="flex items-center gap-2 text-xs font-bold text-[#2EC4C6] bg-white px-3 py-1 rounded-full w-fit shadow-sm border border-gray-100">
+                                                    <Icon
+                                                        name="ant-design:coffee-outlined"
+                                                        size={14}
+                                                    />{" "}
+                                                    {day.meals}
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
@@ -492,13 +495,27 @@ const { item } = Astro.props;
                 </div>
 
                 <div class="mb-4">
-                    <a href="/contacto" class="no-underline block">
+                    {item.bookingEnabled && (item.bookingUuid || bookingHref) ? (
                         <Button
                             variant="primary"
-                            className="w-full py-4 text-lg shadow-lg"
-                            >Reservar Ahora</Button
+                            className="w-full py-4 text-lg shadow-lg wtrvl-checkout_button"
+                            data-env="https://www.wetravel.com"
+                            data-version="v0.4"
+                            data-uid={item.bookingUid || "1067324"}
+                            data-uuid={item.bookingUuid}
+                            href={bookingHref}
                         >
-                    </a>
+                            Reservar Ahora
+                        </Button>
+                    ) : (
+                        <a href="/contacto" class="no-underline block">
+                            <Button
+                                variant="primary"
+                                className="w-full py-4 text-lg shadow-lg"
+                                >Reservar Ahora</Button
+                            >
+                        </a>
+                    )}
                 </div>
 
                 <div class="text-center">

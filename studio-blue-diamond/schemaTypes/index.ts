@@ -4,5 +4,14 @@ import itineraryItem from './itineraryItem'
 import prepInfo from './prepInfo'
 import accommodation from './accommodation'
 import category from './category'
+import ferry from './ferry'
 
-export const schemaTypes = [category, itineraryItem, prepInfo, accommodation, tour, packageSchema]
+export const schemaTypes = [
+  category,
+  itineraryItem,
+  prepInfo,
+  accommodation,
+  tour,
+  packageSchema,
+  ferry,
+]
