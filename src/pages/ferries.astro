@@ -1,0 +1,99 @@
+---
+import Layout from "../layouts/Layout.astro";
+import SectionTitle from "../components/common/SectionTitle.astro";
+import Button from "../components/common/Button.astro";
+import { Icon } from "astro-icon/components";
+import { SCHEDULES_DATA } from "../data/tours";
+---
+
+<Layout title="Ferries | Galápagos Bluediamond">
+    <div class="pt-32 pb-20 bg-[#F2F6FA] min-h-screen">
+        <div class="container mx-auto px-6">
+            <SectionTitle
+                title="Horarios de Ferry"
+                subtitle="Conexiones Inter-islas"
+            />
+
+            <div
+                class="max-w-4xl mx-auto bg-white rounded-[2rem] shadow-xl overflow-hidden border border-gray-100"
+            >
+                <div
+                    class="bg-[#0B3C6D] p-8 text-white flex items-center gap-6"
+                >
+                    <Icon
+                        name="ant-design:rocket-outlined"
+                        size={40}
+                        class="text-[#2EC4C6]"
+                    />
+                    <div>
+                        <h3 class="font-bold text-2xl font-serif">
+                            Información Importante
+                        </h3>
+                        <p class="text-blue-100 text-sm mt-1">
+                            El tiempo de viaje promedio es de 2 a 2.5 horas. Se
+                            recomienda estar en el muelle 30 minutos antes.
+                        </p>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead class="bg-gray-50 border-b border-gray-200">
+                            <tr>
+                                <th
+                                    class="p-6 font-bold text-[#0B3C6D] text-sm uppercase tracking-wider"
+                                    >Ruta</th
+                                >
+                                <th
+                                    class="p-6 font-bold text-[#0B3C6D] text-sm uppercase tracking-wider"
+                                    >Hora Salida</th
+                                >
+                                <th
+                                    class="p-6 font-bold text-[#0B3C6D] text-sm uppercase tracking-wider"
+                                    >Precio Aprox.</th
+                                >
+                                <th
+                                    class="p-6 font-bold text-[#0B3C6D] text-sm uppercase tracking-wider"
+                                    >Notas</th
+                                >
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            {
+                                SCHEDULES_DATA.map((row, idx) => (
+                                    <tr
+                                        key={idx}
+                                        class="hover:bg-blue-50 transition-colors"
+                                    >
+                                        <td class="p-6 font-bold text-gray-800">
+                                            {row.route}
+                                        </td>
+                                        <td class="p-6 text-gray-600 font-mono font-medium">
+                                            {row.time}
+                                        </td>
+                                        <td class="p-6 text-[#2EC4C6] font-bold">
+                                            {row.price}
+                                        </td>
+                                        <td class="p-6 text-sm text-gray-500 italic">
+                                            {row.note}
+                                        </td>
+                                    </tr>
+                                ))
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div
+                    class="p-8 bg-gray-50 text-center border-t border-gray-200"
+                >
+                    <a href="/contacto" class="no-underline">
+                        <Button
+                            variant="primary"
+                            className="rounded-full shadow-lg"
+                            >Reservar Tickets de Ferry</Button
+                        >
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</Layout>

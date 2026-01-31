@@ -1,0 +1,441 @@
+---
+import { Icon } from "astro-icon/components";
+import AnchorIcon from "../common/AnchorIcon.astro";
+import Button from "../common/Button.astro";
+
+const { item } = Astro.props;
+---
+
+<div class="min-h-screen bg-[#F2F6FA] pt-20">
+    {/* Top Info Bar */}
+    <div class="bg-white shadow-sm py-4 border-b border-gray-200">
+        <div
+            class="container mx-auto px-4 flex flex-wrap justify-center md:justify-between items-center gap-4 text-sm text-gray-500"
+        >
+            <div class="flex items-center gap-6">
+                <span class="flex items-center gap-2"
+                    ><Icon
+                        name="ant-design:clock-circle-outlined"
+                        size={16}
+                        class="text-[#2EC4C6]"
+                    />
+                    {item.duration}</span
+                >
+                <span class="flex items-center gap-2"
+                    ><Icon
+                        name="ant-design:team-outlined"
+                        size={16}
+                        class="text-[#2EC4C6]"
+                    /> Max 16 personas</span
+                >
+                <span class="flex items-center gap-2"
+                    ><Icon
+                        name="ant-design:calendar-outlined"
+                        size={16}
+                        class="text-[#2EC4C6]"
+                    /> Salidas Diarias</span
+                >
+            </div>
+            <div class="flex items-center gap-2 font-medium text-[#0B3C6D]">
+                <Icon
+                    name="ant-design:environment-outlined"
+                    size={16}
+                    class="text-[#2EC4C6]"
+                />
+                {item.location}
+            </div>
+        </div>
+    </div>
+
+    <div
+        class="container mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8"
+    >
+        {/* Main Content */}
+        <div class="lg:col-span-2 space-y-8">
+            {/* Header */}
+            <div>
+                <h1
+                    class="text-4xl md:text-5xl font-bold text-[#0B3C6D] font-serif mb-4 leading-tight"
+                >
+                    {item.title}
+                </h1>
+                <div
+                    class="relative h-[400px] md:h-[500px] rounded-[2.5rem] overflow-hidden shadow-2xl group"
+                >
+                    <img
+                        src={item.image}
+                        alt={item.title}
+                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    />
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-[#0B3C6D]/60 via-transparent to-transparent"
+                    >
+                    </div>
+                </div>
+            </div>
+
+            {/* Tabs Navigation */}
+            <div
+                class="flex border-b border-gray-200 mb-8 overflow-x-auto no-scrollbar gap-8"
+            >
+                <button
+                    class="tab-btn active pb-4 text-lg font-bold text-[#0B3C6D] border-b-4 border-[#2EC4C6] transition-colors whitespace-nowrap"
+                    data-tab="overview"
+                >
+                    Resumen
+                </button>
+                <button
+                    class="tab-btn pb-4 text-lg font-bold text-gray-400 border-b-4 border-transparent hover:text-[#0B3C6D] transition-colors whitespace-nowrap"
+                    data-tab="itinerary"
+                >
+                    Itinerario
+                </button>
+                <button
+                    class="tab-btn pb-4 text-lg font-bold text-gray-400 border-b-4 border-transparent hover:text-[#0B3C6D] transition-colors whitespace-nowrap"
+                    data-tab="preparation"
+                >
+                    Preparación
+                </button>
+                <button
+                    class="tab-btn pb-4 text-lg font-bold text-gray-400 border-b-4 border-transparent hover:text-[#0B3C6D] transition-colors whitespace-nowrap"
+                    data-tab="accommodation"
+                >
+                    Alojamiento
+                </button>
+            </div>
+
+            {/* Tab Content */}
+            <div
+                class="bg-white p-6 md:p-10 rounded-[2rem] shadow-lg border border-gray-100 min-h-[400px]"
+            >
+                {/* Overview Tab */}
+                <div id="overview" class="tab-content block animate-fade-in">
+                    <h3
+                        class="text-2xl font-bold text-[#0B3C6D] mb-4 font-serif"
+                    >
+                        Descripción General
+                    </h3>
+                    <p class="text-gray-600 leading-relaxed text-lg mb-8">
+                        {item.overview}
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div
+                            class="bg-blue-50/50 p-6 rounded-2xl border border-blue-100"
+                        >
+                            <h4
+                                class="font-bold text-[#0B3C6D] mb-4 flex items-center gap-2"
+                            >
+                                <Icon
+                                    name="ant-design:check-circle-outlined"
+                                    size={20}
+                                    class="text-green-500"
+                                /> Incluye
+                            </h4>
+                            <ul class="space-y-3">
+                                {
+                                    item.includes.map((inc) => (
+                                        <li class="flex items-start gap-3 text-gray-600 text-sm">
+                                            <span class="text-green-500 mt-0.5">
+                                                ✓
+                                            </span>
+                                            {inc}
+                                        </li>
+                                    ))
+                                }
+                            </ul>
+                        </div>
+                        <div
+                            class="bg-red-50/50 p-6 rounded-2xl border border-red-100"
+                        >
+                            <h4
+                                class="font-bold text-[#0B3C6D] mb-4 flex items-center gap-2"
+                            >
+                                <Icon
+                                    name="ant-design:close-circle-outlined"
+                                    size={20}
+                                    class="text-red-500"
+                                /> No Incluye
+                            </h4>
+                            <ul class="space-y-3">
+                                {
+                                    item.notIncludes.map((exc) => (
+                                        <li class="flex items-start gap-3 text-gray-600 text-sm">
+                                            <span class="text-red-500 mt-0.5">
+                                                ✕
+                                            </span>
+                                            {exc}
+                                        </li>
+                                    ))
+                                }
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="mt-8">
+                        <h4
+                            class="font-bold text-[#0B3C6D] mb-4 flex items-center gap-2"
+                        >
+                            <Icon
+                                name="ant-design:sun-outlined"
+                                size={20}
+                                class="text-yellow-500"
+                            /> Destacados
+                        </h4>
+                        <div class="flex flex-wrap gap-2">
+                            {
+                                item.highlights.map((h) => (
+                                    <span class="bg-yellow-50 text-yellow-700 px-3 py-1 rounded-full text-sm font-medium border border-yellow-100">
+                                        {h}
+                                    </span>
+                                ))
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                {/* Itinerary Tab */}
+                <div id="itinerary" class="tab-content hidden animate-fade-in">
+                    <h3
+                        class="text-2xl font-bold text-[#0B3C6D] mb-6 font-serif"
+                    >
+                        Itinerario Detallado
+                    </h3>
+                    <div
+                        class="space-y-8 relative before:absolute before:left-4 before:top-4 before:bottom-4 before:w-0.5 before:bg-gray-200"
+                    >
+                        {
+                            item.itinerary.map((day) => (
+                                <div class="relative pl-12 group">
+                                    <div class="absolute left-0 top-0 w-8 h-8 bg-[#2EC4C6] rounded-full text-white flex items-center justify-center font-bold text-sm shadow-md group-hover:scale-110 transition-transform z-10">
+                                        {day.day}
+                                    </div>
+                                    <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100 hover:shadow-md transition-shadow">
+                                        <h4 class="font-bold text-[#0B3C6D] text-lg mb-2">
+                                            {day.title}
+                                        </h4>
+                                        <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                                            {day.description}
+                                        </p>
+                                        <div class="flex items-center gap-2 text-xs font-bold text-[#2EC4C6] bg-white px-3 py-1 rounded-full w-fit shadow-sm border border-gray-100">
+                                            <Icon
+                                                name="ant-design:coffee-outlined"
+                                                size={14}
+                                            />{" "}
+                                            {day.meals}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))
+                        }
+                    </div>
+                </div>
+
+                {/* Preparation Tab */}
+                <div
+                    id="preparation"
+                    class="tab-content hidden animate-fade-in"
+                >
+                    <h3
+                        class="text-2xl font-bold text-[#0B3C6D] mb-6 font-serif"
+                    >
+                        Información Importante
+                    </h3>
+                    <div class="space-y-6">
+                        <div class="flex gap-4 items-start">
+                            <div
+                                class="bg-blue-100 p-3 rounded-full text-[#0B3C6D]"
+                            >
+                                <Icon
+                                    name="ant-design:info-circle-outlined"
+                                    size={24}
+                                />
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-[#0B3C6D] mb-2">
+                                    Tips de Viaje
+                                </h4>
+                                <p class="text-gray-600 leading-relaxed">
+                                    {item.prep.tips}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4 items-start">
+                            <div
+                                class="bg-yellow-100 p-3 rounded-full text-yellow-700"
+                            >
+                                <Icon
+                                    name="ant-design:sun-outlined"
+                                    size={24}
+                                />
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-[#0B3C6D] mb-2">
+                                    Clima y Ropa
+                                </h4>
+                                <p class="text-gray-600 leading-relaxed">
+                                    {item.prep.weather}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4 items-start">
+                            <div
+                                class="bg-green-100 p-3 rounded-full text-green-700"
+                            >
+                                <AnchorIcon size={24} />
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-[#0B3C6D] mb-2">
+                                    Nivel Físico
+                                </h4>
+                                <p class="text-gray-600 leading-relaxed">
+                                    {item.prep.fitness}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Accommodation Tab */}
+                <div
+                    id="accommodation"
+                    class="tab-content hidden animate-fade-in"
+                >
+                    <h3
+                        class="text-2xl font-bold text-[#0B3C6D] mb-6 font-serif"
+                    >
+                        Tu Alojamiento
+                    </h3>
+                    <div
+                        class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center"
+                    >
+                        <div>
+                            <img
+                                src={item.accommodation.image ||
+                                    "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=600"}
+                                class="rounded-2xl shadow-lg w-full h-64 object-cover"
+                                alt="Hotel"
+                            />
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-bold text-[#0B3C6D] mb-3">
+                                {item.accommodation.name}
+                            </h4>
+                            <p class="text-gray-600 leading-relaxed mb-6">
+                                {item.accommodation.desc}
+                            </p>
+                            <div class="flex flex-wrap gap-2">
+                                {
+                                    item.accommodation.amenities
+                                        .filter((a) => a)
+                                        .map((am) => (
+                                            <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-xs font-medium">
+                                                {am}
+                                            </span>
+                                        ))
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {/* Sidebar Sticky */}
+        <div class="lg:col-span-1">
+            <div
+                class="sticky top-28 bg-white p-8 rounded-[2rem] shadow-xl border border-gray-100"
+            >
+                <div class="text-center mb-8 pb-8 border-b border-gray-100">
+                    <p
+                        class="text-gray-400 text-sm uppercase tracking-wider mb-2"
+                    >
+                        Precio por persona
+                    </p>
+                    <div class="text-5xl font-bold text-[#0B3C6D] font-serif">
+                        ${item.price}
+                    </div>
+                    <p class="text-[#2EC4C6] text-sm font-bold mt-2">
+                        Mejor precio garantizado
+                    </p>
+                </div>
+
+                <div class="space-y-4 mb-8">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-500">Próxima Salida:</span>
+                        <span class="font-bold text-[#0B3C6D]"
+                            >Mañana, 8:00 AM</span
+                        >
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-500">Disponibilidad:</span>
+                        <span class="font-bold text-green-500">4 cupos</span>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <a href="/contacto" class="no-underline block">
+                        <Button
+                            variant="primary"
+                            className="w-full py-4 text-lg shadow-lg"
+                            >Reservar Ahora</Button
+                        >
+                    </a>
+                    <a href="#" class="no-underline block">
+                        <Button variant="outline" className="w-full py-4"
+                            >Descargar PDF</Button
+                        >
+                    </a>
+                </div>
+
+                <div class="mt-8 text-center">
+                    <p class="text-xs text-gray-400">
+                        ¿Tienes dudas? <a
+                            href="/contacto"
+                            class="text-[#2EC4C6] font-bold hover:underline"
+                            >Contáctanos</a
+                        >
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Tab Switching Logic
+    const tabBtns = document.querySelectorAll(".tab-btn");
+    const tabContents = document.querySelectorAll(".tab-content");
+
+    tabBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            // Remove active class from all buttons
+            tabBtns.forEach((b) => {
+                b.classList.remove(
+                    "active",
+                    "text-[#0B3C6D]",
+                    "border-[#2EC4C6]",
+                );
+                b.classList.add("text-gray-400", "border-transparent");
+            });
+
+            // Add active class to clicked button
+            btn.classList.add("active", "text-[#0B3C6D]", "border-[#2EC4C6]");
+            btn.classList.remove("text-gray-400", "border-transparent");
+
+            // Hide all contents
+            tabContents.forEach((content) => {
+                content.classList.add("hidden");
+                content.classList.remove("block");
+            });
+
+            // Show target content
+            const targetId = btn.getAttribute("data-tab");
+            const targetContent = document.getElementById(targetId);
+            if (targetContent) {
+                targetContent.classList.remove("hidden");
+                targetContent.classList.add("block");
+            }
+        });
+    });
+</script>

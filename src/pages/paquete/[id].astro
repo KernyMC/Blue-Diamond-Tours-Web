@@ -1,0 +1,19 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import DetailView from "../../components/views/DetailView.astro";
+import { PACKAGES_DATA } from "../../data/tours";
+
+export async function getStaticPaths() {
+    return PACKAGES_DATA.map((pkg) => ({
+        params: { id: pkg.id.toString() },
+        props: { pkg },
+    }));
+}
+
+const { pkg } = Astro.props;
+---
+
+<Layout title={`${pkg.title} | Galápagos Bluediamond`}>
+    {/* client:only="react" was previous, now we use native Astro */}
+    <DetailView item={pkg} />
+</Layout>

@@ -1,0 +1,19 @@
+---
+const { variant = "primary", className = "", ...props } = Astro.props;
+
+const variants = {
+    primary: "bg-[#0B3C6D] text-white hover:bg-[#2EC4C6] hover:scale-105",
+    secondary: "bg-[#2EC4C6] text-white hover:bg-[#1F5F99] hover:scale-105",
+    outline:
+        "bg-transparent border-2 border-[#0B3C6D] text-[#0B3C6D] hover:bg-[#0B3C6D] hover:text-white",
+    accent: "bg-[#2EC4C6] text-white hover:bg-white hover:text-[#0B3C6D] hover:shadow-xl",
+    white: "bg-white text-[#0B3C6D] hover:bg-gray-100",
+};
+
+const baseStyles =
+    "relative overflow-hidden transition-all duration-300 font-bold tracking-wide transform active:scale-95 flex items-center justify-center gap-2";
+---
+
+<button class={`${baseStyles} ${variants[variant]} ${className}`} {...props}>
+    <slot />
+</button>

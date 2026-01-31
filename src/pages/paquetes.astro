@@ -1,0 +1,50 @@
+---
+import Layout from "../layouts/Layout.astro";
+import SectionTitle from "../components/common/SectionTitle.astro";
+import Card from "../components/cards/Card.astro";
+import { PACKAGES_DATA } from "../data/tours";
+---
+
+<Layout title="Paquetes | Galápagos Bluediamond">
+    <div class="pt-32 pb-20 bg-[#F2F6FA] min-h-screen">
+        <div class="container mx-auto px-6">
+            <SectionTitle
+                title="Paquetes Vacacionales"
+                subtitle="Experiencias de varios días"
+            />
+
+            {/* Filters */}
+            <div class="flex flex-wrap gap-4 mb-12 justify-center">
+                <button
+                    class="px-6 py-2 bg-[#0B3C6D] text-white rounded-full text-sm font-bold shadow-md cursor-pointer"
+                    >Todos</button
+                >
+                <button
+                    class="px-6 py-2 bg-white text-gray-600 border border-gray-100 rounded-full text-sm font-bold hover:border-[#0B3C6D] hover:text-[#0B3C6D] shadow-sm transition-all cursor-pointer"
+                    >5 Días</button
+                >
+                <button
+                    class="px-6 py-2 bg-white text-gray-600 border border-gray-100 rounded-full text-sm font-bold hover:border-[#0B3C6D] hover:text-[#0B3C6D] shadow-sm transition-all cursor-pointer"
+                    >8 Días</button
+                >
+            </div>
+
+            <div
+                class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10"
+            >
+                {
+                    PACKAGES_DATA.map((pkg) => (
+                        <div class="h-full">
+                            <a
+                                href={`/paquete/${pkg.id}`}
+                                class="no-underline block h-full"
+                            >
+                                <Card item={pkg} type="package" />
+                            </a>
+                        </div>
+                    ))
+                }
+            </div>
+        </div>
+    </div>
+</Layout>

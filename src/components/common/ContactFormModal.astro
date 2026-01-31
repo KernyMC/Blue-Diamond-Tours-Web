@@ -1,0 +1,357 @@
+---
+// Contact Form Modal Component
+---
+
+<div
+    id="contactModal"
+    class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] hidden items-center justify-center p-4"
+>
+    <div
+        class="bg-white rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative"
+    >
+        <!-- Close Button -->
+        <button
+            id="closeModal"
+            class="absolute top-6 right-6 w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors z-10"
+        >
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+                <path d="M18 6 6 18"></path>
+                <path d="m6 6 12 12"></path>
+            </svg>
+        </button>
+
+        <!-- Modal Content -->
+        <div class="p-8 md:p-12">
+            <h2
+                class="text-3xl md:text-4xl font-bold text-[#0B3C6D] mb-2 font-serif"
+            >
+                Contáctanos
+            </h2>
+            <p class="text-gray-600 mb-8">
+                Completa el formulario y nos pondremos en contacto contigo lo
+                antes posible.
+            </p>
+
+            <form id="contactForm" class="space-y-6">
+                <!-- Name Fields -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label
+                            for="firstName"
+                            class="block text-sm font-bold text-[#0B3C6D] mb-2"
+                        >
+                            Nombre <span class="text-red-500">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            id="firstName"
+                            name="firstName"
+                            required
+                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[#2EC4C6] focus:ring-2 focus:ring-[#2EC4C6]/20 outline-none transition-all"
+                        />
+                    </div>
+                    <div>
+                        <label
+                            for="lastName"
+                            class="block text-sm font-bold text-[#0B3C6D] mb-2"
+                        >
+                            Apellido <span class="text-red-500">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            id="lastName"
+                            name="lastName"
+                            required
+                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[#2EC4C6] focus:ring-2 focus:ring-[#2EC4C6]/20 outline-none transition-all"
+                        />
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div>
+                    <label
+                        for="email"
+                        class="block text-sm font-bold text-[#0B3C6D] mb-2"
+                    >
+                        Correo Electrónico <span class="text-red-500">*</span>
+                    </label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="tu@correo.com"
+                        required
+                        class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[#2EC4C6] focus:ring-2 focus:ring-[#2EC4C6]/20 outline-none transition-all"
+                    />
+                </div>
+
+                <!-- Phone -->
+                <div>
+                    <label
+                        for="phone"
+                        class="block text-sm font-bold text-[#0B3C6D] mb-2"
+                    >
+                        Teléfono
+                    </label>
+                    <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        placeholder="+593 999 999 999"
+                        class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[#2EC4C6] focus:ring-2 focus:ring-[#2EC4C6]/20 outline-none transition-all"
+                    />
+                </div>
+
+                <!-- Travel Dates -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label
+                            for="dateFrom"
+                            class="block text-sm font-bold text-[#0B3C6D] mb-2"
+                        >
+                            Fecha de Llegada
+                        </label>
+                        <input
+                            type="date"
+                            id="dateFrom"
+                            name="dateFrom"
+                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[#2EC4C6] focus:ring-2 focus:ring-[#2EC4C6]/20 outline-none transition-all"
+                        />
+                    </div>
+                    <div>
+                        <label
+                            for="dateTo"
+                            class="block text-sm font-bold text-[#0B3C6D] mb-2"
+                        >
+                            Fecha de Salida
+                        </label>
+                        <input
+                            type="date"
+                            id="dateTo"
+                            name="dateTo"
+                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[#2EC4C6] focus:ring-2 focus:ring-[#2EC4C6]/20 outline-none transition-all"
+                        />
+                    </div>
+                </div>
+
+                <!-- Passengers -->
+                <div>
+                    <label
+                        for="passengers"
+                        class="block text-sm font-bold text-[#0B3C6D] mb-2"
+                    >
+                        Número de Pasajeros
+                    </label>
+                    <input
+                        type="number"
+                        id="passengers"
+                        name="passengers"
+                        min="1"
+                        placeholder="Número de personas"
+                        class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[#2EC4C6] focus:ring-2 focus:ring-[#2EC4C6]/20 outline-none transition-all"
+                    />
+                </div>
+
+                <!-- Activities of Interest -->
+                <div>
+                    <label class="block text-sm font-bold text-[#0B3C6D] mb-3">
+                        Actividades de Interés
+                    </label>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input
+                                type="checkbox"
+                                name="activities"
+                                value="Snorkeling"
+                                class="w-4 h-4 text-[#2EC4C6] border-gray-300 rounded focus:ring-[#2EC4C6]"
+                            />
+                            <span class="text-gray-700">Snorkeling</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input
+                                type="checkbox"
+                                name="activities"
+                                value="Observación de Fauna"
+                                class="w-4 h-4 text-[#2EC4C6] border-gray-300 rounded focus:ring-[#2EC4C6]"
+                            />
+                            <span class="text-gray-700"
+                                >Observación de Fauna</span
+                            >
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input
+                                type="checkbox"
+                                name="activities"
+                                value="Senderismo"
+                                class="w-4 h-4 text-[#2EC4C6] border-gray-300 rounded focus:ring-[#2EC4C6]"
+                            />
+                            <span class="text-gray-700">Senderismo</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input
+                                type="checkbox"
+                                name="activities"
+                                value="Kayak"
+                                class="w-4 h-4 text-[#2EC4C6] border-gray-300 rounded focus:ring-[#2EC4C6]"
+                            />
+                            <span class="text-gray-700">Kayak</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input
+                                type="checkbox"
+                                name="activities"
+                                value="Buceo"
+                                class="w-4 h-4 text-[#2EC4C6] border-gray-300 rounded focus:ring-[#2EC4C6]"
+                            />
+                            <span class="text-gray-700">Buceo</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input
+                                type="checkbox"
+                                name="activities"
+                                value="Fotografía"
+                                class="w-4 h-4 text-[#2EC4C6] border-gray-300 rounded focus:ring-[#2EC4C6]"
+                            />
+                            <span class="text-gray-700">Fotografía</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Message -->
+                <div>
+                    <label
+                        for="message"
+                        class="block text-sm font-bold text-[#0B3C6D] mb-2"
+                    >
+                        Mensaje
+                    </label>
+                    <textarea
+                        id="message"
+                        name="message"
+                        rows="4"
+                        placeholder="Cuéntanos sobre tus planes de viaje..."
+                        class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-[#2EC4C6] focus:ring-2 focus:ring-[#2EC4C6]/20 outline-none transition-all resize-none"
+                    ></textarea>
+                </div>
+
+                <!-- Privacy Agreement -->
+                <div class="bg-gray-50 p-4 rounded-xl">
+                    <label class="flex items-start gap-3 cursor-pointer">
+                        <input
+                            type="checkbox"
+                            name="privacyAgreement"
+                            required
+                            class="w-4 h-4 text-[#2EC4C6] border-gray-300 rounded focus:ring-[#2EC4C6] mt-1"
+                        />
+                        <span class="text-xs text-gray-600 leading-relaxed">
+                            Al hacer clic aquí, acepta recibir mensajes de
+                            comunicación relacionados con atención al cliente de
+                            Blue Diamond Tours. La frecuencia de los mensajes
+                            puede variar. Pueden aplicarse tarifas estándar de
+                            mensajes y datos. Responda STOP para darse de baja.
+                            Responda HELP para obtener ayuda. <a
+                                href="/privacy"
+                                class="text-[#2EC4C6] hover:underline"
+                                >Ver nuestra política de privacidad</a
+                            >
+                        </span>
+                    </label>
+                </div>
+
+                <!-- Submit Button -->
+                <button
+                    type="submit"
+                    class="w-full bg-[#2EC4C6] text-white py-4 rounded-xl font-bold text-lg hover:bg-[#1F5F99] transition-colors shadow-lg hover:shadow-xl"
+                >
+                    Enviar Mensaje
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Modal functionality
+    const modal = document.getElementById("contactModal");
+    const closeBtn = document.getElementById("closeModal");
+    const form = document.getElementById("contactForm");
+    const emailInput = document.getElementById("email") as HTMLInputElement;
+
+    // Function to open modal
+    function openContactModal(prefillEmail = "") {
+        if (modal) {
+            modal.classList.remove("hidden");
+            modal.classList.add("flex");
+            document.body.style.overflow = "hidden";
+
+            if (prefillEmail && emailInput) {
+                emailInput.value = prefillEmail;
+            }
+        }
+    }
+
+    // Function to close modal
+    function closeContactModal() {
+        if (modal) {
+            modal.classList.add("hidden");
+            modal.classList.remove("flex");
+            document.body.style.overflow = "";
+        }
+    }
+
+    // Close button click
+    closeBtn?.addEventListener("click", closeContactModal);
+
+    // Close on backdrop click
+    modal?.addEventListener("click", (e) => {
+        if (e.target === modal) {
+            closeContactModal();
+        }
+    });
+
+    // Close on Escape key
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && modal?.classList.contains("flex")) {
+            closeContactModal();
+        }
+    });
+
+    // Form submission
+    form?.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        // Get form data
+        const formData = new FormData(form as HTMLFormElement);
+        const data = Object.fromEntries(formData.entries());
+
+        // Get checkboxes separately
+        const activities = Array.from(
+            document.querySelectorAll('input[name="activities"]:checked'),
+        ).map((cb: any) => cb.value);
+
+        data.activities = activities.join(", ");
+
+        console.log("Datos del formulario:", data);
+
+        // Here you would typically send the data to your backend
+        // For now, we'll just show a success message
+        alert(
+            "¡Gracias por tu mensaje! Nos pondremos en contacto contigo pronto.",
+        );
+        closeContactModal();
+        (form as HTMLFormElement).reset();
+    });
+
+    // Make function globally available
+    (window as any).openContactModal = openContactModal;
+</script>

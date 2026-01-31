@@ -1,0 +1,109 @@
+---
+import { Icon } from "astro-icon/components";
+
+const { item, type } = Astro.props; // type: 'tour' | 'package'
+---
+
+<div
+    class="group bg-white rounded-[2rem] shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-50 overflow-hidden flex flex-col h-full transform hover:-translate-y-1"
+>
+    <div class="relative h-72 overflow-hidden">
+        <img
+            src={item.image}
+            alt={item.title}
+            class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+        />
+        <div
+            class="absolute top-4 right-4 bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg z-10"
+        >
+            <p class="text-[#0B3C6D] font-bold text-sm">Desde ${item.price}</p>
+        </div>
+        {
+            type === "package" && (
+                <div class="absolute top-4 left-4 bg-[#2EC4C6] text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-md">
+                    Best Seller
+                </div>
+            )
+        }
+        <div
+            class="absolute bottom-4 right-4 flex items-center gap-1 bg-black/60 backdrop-blur-sm px-3 py-1 rounded-full text-white text-xs"
+        >
+            <Icon
+                name="ant-design:star-filled"
+                size={14}
+                class="text-yellow-400"
+            />
+            <span class="font-bold">{item.rating}</span>
+        </div>
+    </div>
+
+    <div class="p-8 flex flex-col flex-grow relative">
+        <div
+            class="absolute -top-8 left-8 bg-[#0B3C6D] text-white p-3 rounded-2xl shadow-lg group-hover:bg-[#2EC4C6] transition-colors duration-300"
+        >
+            <Icon name="ant-design:environment-outlined" size={20} />
+        </div>
+
+        <div class="mt-4 mb-2">
+            <span
+                class="text-[#2EC4C6] uppercase tracking-wider text-xs font-bold flex items-center gap-1"
+            >
+                <Icon name="ant-design:environment-outlined" size={12} />
+                {item.location}
+            </span>
+        </div>
+
+        <h3
+            class="text-xl font-bold text-[#0B3C6D] mb-4 font-serif leading-tight group-hover:text-[#2EC4C6] transition-colors"
+        >
+            {item.title}
+        </h3>
+
+        <div
+            class="flex items-center gap-4 text-gray-400 text-sm mb-6 border-b border-gray-100 pb-4"
+        >
+            <div class="flex items-center gap-1.5" title="Duración">
+                <Icon
+                    name="ant-design:clock-circle-outlined"
+                    size={16}
+                    class="text-[#2EC4C6]"
+                />
+                <span>{item.duration}</span>
+            </div>
+            <div class="flex items-center gap-1.5" title="Dificultad">
+                <Icon
+                    name="ant-design:dashboard-outlined"
+                    size={16}
+                    class="text-[#2EC4C6]"
+                />
+                <span>{item.difficulty}</span>
+            </div>
+        </div>
+
+        <div class="bg-gray-50 rounded-xl p-4 mb-6 flex-grow">
+            <ul class="space-y-2">
+                {
+                    item.includes.slice(0, 3).map((feat) => (
+                        <li class="flex items-start gap-2 text-xs text-gray-500">
+                            <span class="text-[#2EC4C6] mt-0.5">✓</span>
+                            {feat}
+                        </li>
+                    ))
+                }
+            </ul>
+        </div>
+
+        <div class="flex gap-3 mt-auto">
+            <button
+                class="flex-1 bg-transparent border border-[#0B3C6D] text-[#0B3C6D] hover:bg-[#0B3C6D] hover:text-white font-bold py-3 rounded-xl transition-colors text-sm cursor-pointer"
+            >
+                Detalles
+            </button>
+            <button
+                class="flex-1 bg-[#2EC4C6] text-white hover:bg-[#1F5F99] font-bold py-3 rounded-xl transition-colors shadow-md text-sm cursor-pointer"
+            >
+                Reservar
+            </button>
+        </div>
+    </div>
+</div>

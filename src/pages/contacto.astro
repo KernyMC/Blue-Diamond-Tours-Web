@@ -1,0 +1,182 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Button from "../components/common/Button.astro";
+import { Icon } from "astro-icon/components";
+---
+
+<Layout title="Contacto | Galápagos Bluediamond">
+    <div class="pt-32 pb-20 bg-[#F2F6FA] min-h-screen flex items-center">
+        <div class="container mx-auto px-6">
+            <div
+                class="grid grid-cols-1 lg:grid-cols-2 gap-0 bg-white rounded-[2.5rem] shadow-2xl overflow-hidden max-w-6xl mx-auto"
+            >
+                <div
+                    class="p-12 bg-[#0B3C6D] text-white flex flex-col justify-between relative overflow-hidden"
+                >
+                    {/* Decoration */}
+                    <div
+                        class="absolute -bottom-20 -left-20 w-64 h-64 bg-[#2EC4C6] rounded-full blur-3xl opacity-20"
+                    >
+                    </div>
+
+                    <div class="relative z-10">
+                        <h2 class="text-4xl font-bold font-serif mb-6">
+                            Contáctanos
+                        </h2>
+                        <p class="text-blue-100 mb-10 leading-relaxed text-lg">
+                            Estamos aquí para ayudarte a organizar el viaje de
+                            tus sueños. Escríbenos y te responderemos en menos
+                            de 24 horas.
+                        </p>
+                        <div class="space-y-8">
+                            <div class="flex items-start gap-5">
+                                <div
+                                    class="w-10 h-10 rounded-full bg-[#1F5F99] flex items-center justify-center flex-shrink-0"
+                                >
+                                    <Icon
+                                        name="ant-design:environment-outlined"
+                                        class="text-[#2EC4C6]"
+                                        size={20}
+                                    />
+                                </div>
+                                <div>
+                                    <h5 class="font-bold text-lg">
+                                        Oficina Principal
+                                    </h5>
+                                    <p class="text-sm text-gray-300 mt-1">
+                                        Av. Charles Darwin, Puerto Ayora,
+                                        Galápagos
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-5">
+                                <div
+                                    class="w-10 h-10 rounded-full bg-[#1F5F99] flex items-center justify-center flex-shrink-0"
+                                >
+                                    <Icon
+                                        name="ant-design:mail-outlined"
+                                        class="text-[#2EC4C6]"
+                                        size={20}
+                                    />
+                                </div>
+                                <div>
+                                    <h5 class="font-bold text-lg">Email</h5>
+                                    <p class="text-sm text-gray-300 mt-1">
+                                        reservas@galapagosbluediamond.com
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-5">
+                                <div
+                                    class="w-10 h-10 rounded-full bg-[#1F5F99] flex items-center justify-center flex-shrink-0"
+                                >
+                                    <Icon
+                                        name="ant-design:phone-outlined"
+                                        class="text-[#2EC4C6]"
+                                        size={20}
+                                    />
+                                </div>
+                                <div>
+                                    <h5 class="font-bold text-lg">
+                                        Teléfono / WhatsApp
+                                    </h5>
+                                    <p class="text-sm text-gray-300 mt-1">
+                                        +593 99 999 9999
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-16 relative z-10">
+                        <p
+                            class="text-sm text-blue-200 mb-4 font-bold uppercase tracking-wide"
+                        >
+                            Síguenos
+                        </p>
+                        <div class="flex gap-4">
+                            <div class="cursor-pointer hover:text-[#2EC4C6]">
+                                <Icon name="ant-design:instagram-outlined" />
+                            </div>
+                            <div class="cursor-pointer hover:text-[#2EC4C6]">
+                                <Icon name="ant-design:facebook-outlined" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-12 bg-white">
+                    <form
+                        class="space-y-6"
+                        action="#"
+                        onsubmit="event.preventDefault(); alert('Mensaje enviado (demo).');"
+                    >
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label
+                                    class="block text-sm font-bold text-[#0B3C6D] mb-2 uppercase tracking-wide"
+                                    >Nombre</label
+                                >
+                                <input
+                                    type="text"
+                                    class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-100 focus:border-[#2EC4C6] focus:ring-1 focus:ring-[#2EC4C6] outline-none transition-all font-medium"
+                                    placeholder="Tu nombre"
+                                />
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-sm font-bold text-[#0B3C6D] mb-2 uppercase tracking-wide"
+                                    >Apellido</label
+                                >
+                                <input
+                                    type="text"
+                                    class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-100 focus:border-[#2EC4C6] focus:ring-1 focus:ring-[#2EC4C6] outline-none transition-all font-medium"
+                                    placeholder="Tu apellido"
+                                />
+                            </div>
+                        </div>
+                        <div>
+                            <label
+                                class="block text-sm font-bold text-[#0B3C6D] mb-2 uppercase tracking-wide"
+                                >Correo Electrónico</label
+                            >
+                            <input
+                                type="email"
+                                class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-100 focus:border-[#2EC4C6] focus:ring-1 focus:ring-[#2EC4C6] outline-none transition-all font-medium"
+                                placeholder="tu@email.com"
+                            />
+                        </div>
+                        <div>
+                            <label
+                                class="block text-sm font-bold text-[#0B3C6D] mb-2 uppercase tracking-wide"
+                                >Tipo de Viaje</label
+                            >
+                            <select
+                                class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-100 focus:border-[#2EC4C6] focus:ring-1 focus:ring-[#2EC4C6] outline-none transition-all font-medium text-gray-600 cursor-pointer"
+                            >
+                                <option>Tour Diario</option>
+                                <option>Paquete Completo</option>
+                                <option>Ferry</option>
+                                <option>Otro</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label
+                                class="block text-sm font-bold text-[#0B3C6D] mb-2 uppercase tracking-wide"
+                                >Mensaje</label
+                            >
+                            <textarea
+                                class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-100 focus:border-[#2EC4C6] focus:ring-1 focus:ring-[#2EC4C6] outline-none transition-all h-32 font-medium resize-none"
+                                placeholder="Cuéntanos tus planes..."
+                            ></textarea>
+                        </div>
+                        <Button
+                            variant="primary"
+                            className="w-full shadow-xl rounded-xl py-4 text-base"
+                            >Enviar Mensaje</Button
+                        >
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</Layout>

@@ -1,0 +1,149 @@
+---
+import { Icon } from "astro-icon/components";
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="bg-[#0B3C6D] text-white pt-20 pb-10 relative overflow-hidden">
+    <div class="absolute inset-0 opacity-5 pointer-events-none">
+        <Icon
+            name="ant-design:bg-colors-outlined"
+            size={800}
+            class="text-white absolute -bottom-40 -right-40"
+        />
+    </div>
+    <div class="container mx-auto px-6 relative z-10">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+            <div>
+                <h4 class="font-serif text-3xl font-bold mb-6">
+                    Galápagos Bluediamond
+                </h4>
+                <p
+                    class="text-blue-100 text-sm leading-relaxed mb-8 opacity-80"
+                >
+                    Somos especialistas en crear experiencias inolvidables en
+                    las Islas Encantadas. Turismo responsable y personalizado
+                    con la mejor calidad.
+                </p>
+                <div class="flex gap-4">
+                    <div
+                        class="w-10 h-10 bg-[#1F5F99] rounded-full flex items-center justify-center hover:bg-[#2EC4C6] transition-colors cursor-pointer text-white"
+                    >
+                        <Icon name="ant-design:instagram-outlined" size={18} />
+                    </div>
+                    <div
+                        class="w-10 h-10 bg-[#1F5F99] rounded-full flex items-center justify-center hover:bg-[#2EC4C6] transition-colors cursor-pointer text-white"
+                    >
+                        <Icon name="ant-design:facebook-outlined" size={18} />
+                    </div>
+                    <div
+                        class="w-10 h-10 bg-[#1F5F99] rounded-full flex items-center justify-center hover:bg-[#2EC4C6] transition-colors cursor-pointer text-white"
+                    >
+                        <Icon name="ant-design:message-outlined" size={18} />
+                    </div>
+                </div>
+            </div>
+            <div>
+                <h5
+                    class="font-bold text-[#2EC4C6] mb-6 uppercase tracking-wider text-xs"
+                >
+                    Explora
+                </h5>
+                <ul class="space-y-4 text-sm text-gray-200">
+                    <li>
+                        <a
+                            href="/tours"
+                            class="hover:text-[#2EC4C6] transition-colors"
+                            >Tours Diarios</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                            href="/paquetes"
+                            class="hover:text-[#2EC4C6] transition-colors"
+                            >Paquetes Completos</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                            href="/ferries"
+                            class="hover:text-[#2EC4C6] transition-colors"
+                            >Horarios de Ferry</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                            href="#"
+                            class="hover:text-[#2EC4C6] transition-colors"
+                            >Blog de Viajes</a
+                        >
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h5
+                    class="font-bold text-[#2EC4C6] mb-6 uppercase tracking-wider text-xs"
+                >
+                    Legal
+                </h5>
+                <ul class="space-y-4 text-sm text-gray-200">
+                    <li>
+                        <a
+                            href="#"
+                            class="hover:text-[#2EC4C6] transition-colors"
+                            >Términos y Condiciones</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                            href="#"
+                            class="hover:text-[#2EC4C6] transition-colors"
+                            >Políticas de Cancelación</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                            href="#"
+                            class="hover:text-[#2EC4C6] transition-colors"
+                            >Privacidad</a
+                        >
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h5
+                    class="font-bold text-[#2EC4C6] mb-6 uppercase tracking-wider text-xs"
+                >
+                    Contacto
+                </h5>
+                <ul class="space-y-4 text-sm text-gray-200">
+                    <li class="flex items-center gap-3">
+                        <Icon
+                            name="ant-design:environment-outlined"
+                            size={18}
+                            class="text-[#2EC4C6]"
+                        /> Puerto Ayora, Santa Cruz
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <Icon
+                            name="ant-design:phone-outlined"
+                            size={18}
+                            class="text-[#2EC4C6]"
+                        /> +593 99 999 9999
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <Icon
+                            name="ant-design:mail-outlined"
+                            size={18}
+                            class="text-[#2EC4C6]"
+                        /> info@galapagosbluediamond.com
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div
+            class="border-t border-[#1F5F99] pt-8 text-center text-xs text-gray-400 font-medium"
+        >
+            &copy; {currentYear} Galápagos Bluediamond Tours. Todos los derechos reservados.
+        </div>
+    </div>
+</footer>

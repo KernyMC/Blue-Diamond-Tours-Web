@@ -1,0 +1,39 @@
+---
+import { Icon } from "astro-icon/components";
+const { item } = Astro.props;
+---
+
+<div class="group cursor-pointer relative">
+    <div
+        class="relative w-40 h-52 md:w-48 md:h-64 rounded-[2rem] overflow-hidden shadow-xl transition-all duration-500 group-hover:-translate-y-3"
+    >
+        <img
+            src={item.image}
+            alt={item.title}
+            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+        />
+        <div
+            class="absolute inset-0 bg-gradient-to-b from-transparent via-[#0B3C6D]/20 to-[#0B3C6D]/90 group-hover:opacity-90 transition-opacity"
+        >
+        </div>
+        <div
+            class="absolute bottom-0 left-0 w-full p-4 md:p-6 text-center transform transition-transform duration-300"
+        >
+            <div
+                class="bg-white/10 backdrop-blur-md w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center mx-auto mb-3 text-white border border-white/20 group-hover:bg-[#2EC4C6] group-hover:scale-110 transition-all"
+            >
+                <Icon name={item.icon} size={24} />
+            </div>
+            <h3
+                class="text-white font-bold text-sm md:text-lg mb-1 group-hover:text-[#2EC4C6] transition-colors"
+            >
+                {item.name}
+            </h3>
+            <p
+                class="text-white/60 text-xs hidden group-hover:block animate-fade-in"
+            >
+                Explorar
+            </p>
+        </div>
+    </div>
+</div>

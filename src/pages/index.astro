@@ -1,17 +1,423 @@
 ---
+import Layout from "../layouts/Layout.astro";
+import Button from "../components/common/Button.astro";
+import SectionTitle from "../components/common/SectionTitle.astro";
+import Card from "../components/cards/Card.astro";
+import CategoryCard from "../components/cards/CategoryCard.astro";
+import { Icon } from "astro-icon/components";
+import AnchorIcon from "../components/common/AnchorIcon.astro";
+import ContactFormModal from "../components/common/ContactFormModal.astro";
+import { CATEGORIES, TOURS_DATA, PACKAGES_DATA } from "../data/tours";
 
+// Select only first 3 tours and 1st package for consistency with original design
+const featuredTours = TOURS_DATA.slice(0, 3);
+const mainPackage = PACKAGES_DATA[0];
+const secondaryPackage = PACKAGES_DATA[1];
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="Galápagos Bluediamond | Inicio">
+	{/* HERO SECTION */}
+	<section
+		class="relative h-screen min-h-[700px] flex items-center justify-center overflow-visible mb-20"
+	>
+		{/* Background Image */}
+		<div class="absolute inset-0">
+			<div
+				class="w-full h-full rounded-b-[3rem] overflow-hidden relative"
+			>
+				<img
+					src="https://images.unsplash.com/photo-1505832018823-50331d70d237?auto=format&fit=crop&q=80&w=1920"
+					alt="Galapagos Landscape"
+					class="w-full h-full object-cover"
+				/>
+				<div
+					class="absolute inset-0 bg-gradient-to-b from-[#0B3C6D]/70 via-transparent to-[#0B3C6D]/40"
+				>
+				</div>
+			</div>
+		</div>
+
+		<div class="relative z-10 text-center px-4 max-w-5xl mx-auto pb-20">
+			<h3
+				class="text-[#2EC4C6] font-bold tracking-[0.3em] uppercase mb-4 animate-fade-in-up text-sm md:text-base"
+			>
+				Explora el Paraíso
+			</h3>
+			<h1
+				class="text-5xl md:text-7xl lg:text-8xl font-bold text-white font-serif mb-8 leading-tight drop-shadow-lg animate-fade-in-up delay-100"
+			>
+				Maravilla Natural <br /> del Mundo
+			</h1>
+			<div class="flex justify-center gap-4 animate-fade-in-up delay-200">
+				<a href="/paquetes" class="no-underline">
+					<Button
+						variant="accent"
+						className="rounded-full px-8 py-4 text-base shadow-2xl hover:scale-105"
+					>
+						Explorar Paquetes
+					</Button>
+				</a>
+				<div
+					class="hidden md:flex items-center justify-center w-12 h-12 rounded-full border-2 border-white text-white cursor-pointer hover:bg-white hover:text-[#0B3C6D] transition-colors"
+				>
+					<Icon name="ant-design:down-outlined" size={24} />
+				</div>
+			</div>
+		</div>
+	</section>
+
+	{/* CATEGORY SECTION */}
+	<section class="py-10 md:py-20 bg-white">
+		<div class="container mx-auto px-6">
+			<div class="text-center mb-12">
+				<h3 class="text-[#2EC4C6] font-script text-2xl mb-2">
+					Maravillosos Tours para ti
+				</h3>
+				<h2 class="text-[#0B3C6D] text-4xl font-bold font-serif">
+					Categorías de Aventura
+				</h2>
+			</div>
+			<div class="flex flex-wrap justify-center gap-8 md:gap-12">
+				{CATEGORIES.map((cat, idx) => <CategoryCard item={cat} />)}
+			</div>
+		</div>
+	</section>
+
+	{/* INTRO / WHY CHOOSE US */}
+	<section class="py-20 bg-[#F2F6FA] overflow-hidden">
+		<div class="container mx-auto px-6">
+			<div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+				{/* Left: Image Collage */}
+				<div class="relative">
+					<div class="grid grid-cols-2 gap-4">
+						<img
+							src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=80&w=400"
+							class="rounded-t-[10rem] rounded-b-[2rem] w-full h-80 object-cover shadow-xl transform translate-y-8"
+							alt="Galapagos 1"
+						/>
+						<img
+							src="https://images.unsplash.com/photo-1544551763-46a8723ba3f9?auto=format&fit=crop&q=80&w=400"
+							class="rounded-t-[2rem] rounded-b-[10rem] w-full h-80 object-cover shadow-xl"
+							alt="Galapagos 2"
+						/>
+					</div>
+					{/* Decorative Elements */}
+					<div
+						class="absolute -z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-blue-100/50 rounded-full blur-3xl"
+					>
+					</div>
+				</div>
+
+				{/* Right: Content */}
+				<div>
+					<h3
+						class="text-[#2EC4C6] font-bold uppercase tracking-wider text-sm mb-3"
+					>
+						Únete a la aventura
+					</h3>
+					<h2
+						class="text-[#0B3C6D] text-4xl md:text-5xl font-bold font-serif mb-6 leading-tight"
+					>
+						Planifica tu viaje <br /> con nosotros
+					</h2>
+					<p class="text-gray-500 mb-10 text-lg leading-relaxed">
+						En Galápagos Bluediamond, diseñamos experiencias
+						inmersivas que respetan la naturaleza. Descubre por qué
+						somos tu mejor opción.
+					</p>
+
+					<div class="space-y-8">
+						<div class="flex gap-5 items-start">
+							<div
+								class="w-14 h-14 rounded-full bg-white shadow-md flex items-center justify-center text-[#2EC4C6] flex-shrink-0"
+							>
+								<AnchorIcon size={24} />
+							</div>
+							<div>
+								<h4
+									class="text-[#0B3C6D] font-bold text-xl mb-2"
+								>
+									Experiencia Local
+								</h4>
+								<p
+									class="text-gray-500 text-sm leading-relaxed"
+								>
+									Guías nacidos en las islas con conocimiento
+									profundo.
+								</p>
+							</div>
+						</div>
+						<div class="flex gap-5 items-start">
+							<div
+								class="w-14 h-14 rounded-full bg-white shadow-md flex items-center justify-center text-[#2EC4C6] flex-shrink-0"
+							>
+								<Icon
+									name="ant-design:heart-outlined"
+									size={24}
+								/>
+							</div>
+							<div>
+								<h4
+									class="text-[#0B3C6D] font-bold text-xl mb-2"
+								>
+									Turismo Responsable
+								</h4>
+								<p
+									class="text-gray-500 text-sm leading-relaxed"
+								>
+									Comprometidos con la conservación y el
+									respeto animal.
+								</p>
+							</div>
+						</div>
+						<div class="flex gap-5 items-start">
+							<div
+								class="w-14 h-14 rounded-full bg-white shadow-md flex items-center justify-center text-[#2EC4C6] flex-shrink-0"
+							>
+								<Icon
+									name="ant-design:compass-outlined"
+									size={24}
+								/>
+							</div>
+							<div>
+								<h4
+									class="text-[#0B3C6D] font-bold text-xl mb-2"
+								>
+									Viajes Personalizados
+								</h4>
+								<p
+									class="text-gray-500 text-sm leading-relaxed"
+								>
+									Itinerarios adaptados a tu ritmo y
+									preferencias.
+								</p>
+							</div>
+						</div>
+					</div>
+
+					<div class="mt-10">
+						<a href="/contacto" class="no-underline">
+							<Button variant="primary" className="shadow-xl">
+								Empezar a Planificar
+							</Button>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	{/* FEATURED TOURS */}
+	<section class="py-20 bg-white">
+		<div class="container mx-auto px-6">
+			<div class="text-center mb-16">
+				<h3 class="text-[#2EC4C6] font-script text-2xl mb-2">
+					Los mejores lugares para ti
+				</h3>
+				<h2 class="text-[#0B3C6D] text-4xl font-bold font-serif">
+					Tours Más Populares
+				</h2>
+			</div>
+			<div
+				class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10"
+			>
+				{
+					featuredTours.map((tour) => (
+						<div class="h-full">
+							<a
+								href={`/tour/${tour.id}`}
+								class="no-underline block h-full"
+							>
+								<Card item={tour} type="tour" />
+							</a>
+						</div>
+					))
+				}
+			</div>
+			<div class="text-center mt-16">
+				<a href="/tours" class="no-underline inline-block">
+					<Button variant="outline" className="rounded-full px-10"
+						>Ver Todos los Tours</Button
+					>
+				</a>
+			</div>
+		</div>
+	</section>
+
+	{/* FEATURED PACKAGES */}
+	<section class="py-20 bg-[#F2F6FA]">
+		<div class="container mx-auto px-6">
+			<SectionTitle
+				title="Paquetes Destacados"
+				subtitle="Top Destinations"
+				centered={true}
+			/>
+
+			{/* Custom Layout for Packages */}
+			<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+				{/* Left Small Card */}
+				<div
+					class="hidden lg:block lg:col-span-3 transform translate-y-12 opacity-80 hover:opacity-100 transition-opacity"
+				>
+					<div class="bg-white rounded-[2rem] p-4 shadow-lg">
+						<img
+							src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=400"
+							class="w-full h-48 object-cover rounded-2xl mb-4"
+							alt="Small"
+						/>
+						<h4 class="text-[#0B3C6D] font-bold text-center">
+							Relax Total
+						</h4>
+					</div>
+				</div>
+
+				{/* Center Main Card (Featured Package) */}
+				<div class="col-span-1 lg:col-span-6 z-10">
+					<a
+						href={`/paquete/${mainPackage.id}`}
+						class="no-underline block group"
+					>
+						<div
+							class="bg-white rounded-[2.5rem] shadow-2xl overflow-hidden relative group cursor-pointer"
+						>
+							<div class="h-[500px] relative">
+								<img
+									src={mainPackage.image}
+									class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+									alt="Main"
+								/>
+								<div
+									class="absolute inset-0 bg-gradient-to-t from-[#0B3C6D] via-transparent to-transparent opacity-90"
+								>
+								</div>
+								<div
+									class="absolute bottom-0 left-0 p-8 md:p-12 w-full text-center"
+								>
+									<span
+										class="bg-[#2EC4C6] text-white px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-4 inline-block"
+										>Best Seller</span
+									>
+									<h3
+										class="text-3xl md:text-5xl font-bold text-white font-serif mb-4"
+									>
+										{mainPackage.title}
+									</h3>
+									<p
+										class="text-white/80 mb-6 line-clamp-2 max-w-lg mx-auto"
+									>
+										{mainPackage.overview}
+									</p>
+									<div class="inline-block">
+										<span
+											class="bg-[#2EC4C6] text-white px-8 py-3 rounded-full font-bold text-sm shadow-lg hover:bg-[#1F5F99] transition-colors"
+											>Ver Paquete</span
+										>
+									</div>
+								</div>
+							</div>
+						</div>
+					</a>
+				</div>
+
+				{/* Right Small Card */}
+				<div
+					class="hidden lg:block lg:col-span-3 transform translate-y-12 opacity-80 hover:opacity-100 transition-opacity"
+				>
+					<div class="bg-white rounded-[2rem] p-4 shadow-lg">
+						<img
+							src="https://images.unsplash.com/photo-1506461883276-594a12b11cf3?auto=format&fit=crop&q=80&w=400"
+							class="w-full h-48 object-cover rounded-2xl mb-4"
+							alt="Small"
+						/>
+						<h4 class="text-[#0B3C6D] font-bold text-center">
+							Aventura Pura
+						</h4>
+					</div>
+				</div>
+			</div>
+
+			{/* Mobile view for extra packages */}
+			<div class="mt-8 lg:hidden">
+				<a
+					href={`/paquete/${secondaryPackage.id}`}
+					class="no-underline block"
+				>
+					<Card item={secondaryPackage} type="package" />
+				</a>
+			</div>
+		</div>
+	</section>
+
+	{/* QUICK CONTACT */}
+	<section class="py-24 bg-white relative">
+		<div class="container mx-auto px-6">
+			<div
+				class="bg-[#0B3C6D] rounded-[3rem] p-8 md:p-16 relative overflow-hidden text-center shadow-2xl"
+			>
+				{/* Background decoration */}
+				<div class="absolute top-0 left-0 w-full h-full opacity-10">
+					<div
+						class="absolute -top-24 -left-24 w-64 h-64 rounded-full border-[20px] border-white"
+					>
+					</div>
+					<div
+						class="absolute -bottom-24 -right-24 w-80 h-80 rounded-full bg-[#2EC4C6]"
+					>
+					</div>
+				</div>
+
+				<div class="relative z-10 max-w-2xl mx-auto">
+					<h2
+						class="text-3xl md:text-5xl font-bold text-white mb-6 font-serif"
+					>
+						¿Listo para viajar?
+					</h2>
+					<p class="text-blue-100 mb-10 text-lg">
+						Recibe asesoría personalizada gratuita. Déjanos tu
+						correo y un experto se pondrá en contacto contigo.
+					</p>
+
+					<form
+						id="emailQuickForm"
+						class="bg-white p-2 rounded-full flex flex-col md:flex-row gap-2 max-w-lg mx-auto shadow-lg"
+					>
+						<input
+							id="quickEmail"
+							type="email"
+							placeholder="Ingresa tu correo electrónico"
+							required
+							class="flex-grow px-6 py-3 rounded-full outline-none text-gray-700 bg-transparent"
+						/>
+						<button
+							type="submit"
+							class="bg-[#2EC4C6] text-white px-8 py-3 rounded-full font-bold hover:bg-[#1F5F99] transition-colors shadow-md cursor-pointer"
+						>
+							Contactar
+						</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Contact Form Modal -->
+	<ContactFormModal />
+</Layout>
+
+<script>
+	// Handle quick email form submission
+	const emailQuickForm = document.getElementById("emailQuickForm");
+	const quickEmailInput = document.getElementById(
+		"quickEmail",
+	) as HTMLInputElement;
+
+	emailQuickForm?.addEventListener("submit", (e) => {
+		e.preventDefault();
+		const email = quickEmailInput?.value || "";
+
+		// Open modal with prefilled email
+		if ((window as any).openContactModal) {
+			(window as any).openContactModal(email);
+		}
+	});
+</script>

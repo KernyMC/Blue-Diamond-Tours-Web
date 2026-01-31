@@ -1,0 +1,19 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import DetailView from "../../components/views/DetailView.astro";
+import { TOURS_DATA } from "../../data/tours";
+
+export async function getStaticPaths() {
+    return TOURS_DATA.map((tour) => ({
+        params: { id: tour.id.toString() },
+        props: { tour },
+    }));
+}
+
+const { tour } = Astro.props;
+---
+
+<Layout title={`${tour.title} | Galápagos Bluediamond`}>
+    {/* client:only="react" was previous, now we use native Astro */}
+    <DetailView item={tour} />
+</Layout>
