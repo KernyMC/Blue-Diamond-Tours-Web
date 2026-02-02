@@ -1,39 +1,39 @@
 ---
-import { Icon } from "astro-icon/components";
-const { item } = Astro.props;
+const { item, index } = Astro.props;
+
+// Clases para el efecto de arco según la posición
+const arcClasses: Record<number, string> = {
+    0: "translate-y-10 -rotate-[8deg]",
+    1: "translate-y-4 -rotate-[4deg]",
+    2: "translate-y-0 rotate-0",
+    3: "translate-y-4 rotate-[4deg]",
+    4: "translate-y-10 rotate-[8deg]",
+};
+
+const arcClass = arcClasses[index] || "translate-y-0 rotate-0";
 ---
 
-<div class="group cursor-pointer relative">
-    <div
-        class="relative w-40 h-52 md:w-48 md:h-64 rounded-[2rem] overflow-hidden shadow-xl transition-all duration-500 group-hover:-translate-y-3"
-    >
+<div class={`tour-card text-center transition-transform duration-300 hover:-translate-y-2 ${arcClass}`}>
+    <a href={item.href || "#"} class="block no-underline group">
         <img
             src={item.image}
-            alt={item.title}
-            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+            alt={item.name}
+            class="w-full aspect-[4/5] object-cover rounded-[2rem] shadow-lg mb-5 transition-transform duration-500 group-hover:scale-[1.02]"
         />
-        <div
-            class="absolute inset-0 bg-gradient-to-b from-transparent via-[#0B3C6D]/20 to-[#0B3C6D]/90 group-hover:opacity-90 transition-opacity"
-        >
-        </div>
-        <div
-            class="absolute bottom-0 left-0 w-full p-4 md:p-6 text-center transform transition-transform duration-300"
-        >
-            <div
-                class="bg-white/10 backdrop-blur-md w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center mx-auto mb-3 text-white border border-white/20 group-hover:bg-[#2EC4C6] group-hover:scale-110 transition-all"
-            >
-                <Icon name={item.icon} size={24} />
-            </div>
-            <h3
-                class="text-white font-bold text-sm md:text-lg mb-1 group-hover:text-[#2EC4C6] transition-colors"
-            >
-                {item.name}
-            </h3>
-            <p
-                class="text-white/60 text-xs hidden group-hover:block animate-fade-in"
-            >
-                Explorar
-            </p>
-        </div>
-    </div>
+        <h4 class="font-bold text-xl text-gray-800 mb-1 group-hover:text-[#0B3C6D] transition-colors">
+            {item.name}
+        </h4>
+        <span class="text-xs uppercase tracking-widest text-gray-500 group-hover:text-[#2EC4C6] transition-colors">
+            Ver más
+        </span>
+    </a>
 </div>
+
+<style>
+    /* Responsivo: quitar el arco en pantallas pequeñas */
+    @media (max-width: 1024px) {
+        .tour-card {
+            transform: none !important;
+        }
+    }
+</style>

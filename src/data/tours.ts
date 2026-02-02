@@ -1,11 +1,11 @@
 
 
 export const CATEGORIES = [
-    { name: "Snorkeling", icon: "ant-design:experiment-outlined", image: "https://images.unsplash.com/photo-1544551763-46a8723ba3f9?auto=format&fit=crop&q=80&w=400" },
-    { name: "Hiking", icon: "ant-design:compass-outlined", image: "https://images.unsplash.com/photo-1506461883276-594a12b11cf3?auto=format&fit=crop&q=80&w=400" },
-    { name: "Island Hopping", icon: "ant-design:rocket-outlined", image: "https://images.unsplash.com/photo-1590001155093-a3c66ab0c3ff?auto=format&fit=crop&q=80&w=400" },
-    { name: "Wildlife", icon: "ant-design:eye-outlined", image: "https://images.unsplash.com/photo-1454537756086-538446215286?auto=format&fit=crop&q=80&w=400" },
-    { name: "Relax", icon: "ant-design:coffee-outlined", image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=80&w=400" },
+    { name: "Snorkeling", icon: "ant-design:experiment-outlined", image: "https://images.unsplash.com/photo-1548574505-5e239809ee19?q=80&w=600&auto=format&fit=crop", href: "/tours" },
+    { name: "Hiking", icon: "ant-design:compass-outlined", image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=600&auto=format&fit=crop", href: "/tours" },
+    { name: "Island Hopping", icon: "ant-design:rocket-outlined", image: "https://images.unsplash.com/photo-1506929562872-bb421503ef21?q=80&w=600&auto=format&fit=crop", href: "/tours" },
+    { name: "Wildlife", icon: "ant-design:eye-outlined", image: "https://images.unsplash.com/photo-1546182990-dffeafbe841d?q=80&w=600&auto=format&fit=crop", href: "/tours" },
+    { name: "Relax", icon: "ant-design:coffee-outlined", image: "https://images.unsplash.com/photo-1551632811-561732d1e306?q=80&w=600&auto=format&fit=crop", href: "/tours" },
 ];
 
 export const TOURS_DATA = [
