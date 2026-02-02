@@ -16,11 +16,11 @@ const { item, type } = Astro.props; // type: 'tour' | 'package'
         <div
             class="absolute top-4 right-4 bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg z-10"
         >
-            <p class="text-[#0B3C6D] font-bold text-sm">Desde ${item.price}</p>
+            <p class="text-navy font-bold text-sm">Desde ${item.price}</p>
         </div>
         {
             type === "package" && (
-                <div class="absolute top-4 left-4 bg-[#2EC4C6] text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-md">
+                <div class="absolute top-4 left-4 bg-turquoise text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-md">
                     Best Seller
                 </div>
             )
@@ -39,14 +39,14 @@ const { item, type } = Astro.props; // type: 'tour' | 'package'
 
     <div class="p-8 flex flex-col flex-grow relative">
         <div
-            class="absolute -top-8 left-8 bg-[#0B3C6D] text-white p-3 rounded-2xl shadow-lg group-hover:bg-[#2EC4C6] transition-colors duration-300"
+            class="absolute -top-8 left-8 bg-navy text-white p-3 rounded-2xl shadow-lg group-hover:bg-turquoise transition-colors duration-300"
         >
             <Icon name="ant-design:environment-outlined" size={20} />
         </div>
 
         <div class="mt-4 mb-2">
             <span
-                class="text-[#2EC4C6] uppercase tracking-wider text-xs font-bold flex items-center gap-1"
+                class="text-turquoise uppercase tracking-wider text-xs font-bold flex items-center gap-1"
             >
                 <Icon name="ant-design:environment-outlined" size={12} />
                 {item.location}
@@ -54,7 +54,7 @@ const { item, type } = Astro.props; // type: 'tour' | 'package'
         </div>
 
         <h3
-            class="text-xl font-bold text-[#0B3C6D] mb-4 font-serif leading-tight group-hover:text-[#2EC4C6] transition-colors"
+            class="text-xl font-bold text-navy mb-4 font-serif leading-tight group-hover:text-turquoise transition-colors"
         >
             {item.title}
         </h3>
@@ -66,7 +66,7 @@ const { item, type } = Astro.props; // type: 'tour' | 'package'
                 <Icon
                     name="ant-design:clock-circle-outlined"
                     size={16}
-                    class="text-[#2EC4C6]"
+                    class="text-turquoise"
                 />
                 <span>{item.duration}</span>
             </div>
@@ -74,7 +74,7 @@ const { item, type } = Astro.props; // type: 'tour' | 'package'
                 <Icon
                     name="ant-design:dashboard-outlined"
                     size={16}
-                    class="text-[#2EC4C6]"
+                    class="text-turquoise"
                 />
                 <span>{item.difficulty}</span>
             </div>
@@ -86,7 +86,7 @@ const { item, type } = Astro.props; // type: 'tour' | 'package'
                     item.includes && Array.isArray(item.includes) 
                         ? item.includes.slice(0, 3).map((feat) => (
                         <li class="flex items-start gap-2 text-xs text-gray-500">
-                            <span class="text-[#2EC4C6] mt-0.5">✓</span>
+                            <span class="text-turquoise mt-0.5">✓</span>
                             {feat}
                         </li>
                     ))
@@ -97,12 +97,12 @@ const { item, type } = Astro.props; // type: 'tour' | 'package'
 
         <div class="flex gap-3 mt-auto">
             <button
-                class="flex-1 bg-transparent border border-[#0B3C6D] text-[#0B3C6D] hover:bg-[#0B3C6D] hover:text-white font-bold py-3 rounded-xl transition-colors text-sm cursor-pointer"
+                class="flex-1 bg-transparent border border-navy text-navy hover:bg-navy hover:text-white font-bold py-3 rounded-xl transition-colors text-sm cursor-pointer"
             >
                 Detalles
             </button>
             <button
-                class="flex-1 bg-[#2EC4C6] text-white hover:bg-[#1F5F99] font-bold py-3 rounded-xl transition-colors shadow-md text-sm cursor-pointer"
+                class="flex-1 bg-turquoise text-white hover:bg-[#1F5F99] font-bold py-3 rounded-xl transition-colors shadow-md text-sm cursor-pointer"
             >
                 Reservar
             </button>
