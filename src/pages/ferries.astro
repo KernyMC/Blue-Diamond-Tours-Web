@@ -5,8 +5,19 @@ import Button from "../components/common/Button.astro";
 import { Icon } from "astro-icon/components";
 import { sanityClient } from "../lib/sanityClient";
 
+interface Ferry {
+    _id: string;
+    numeroRuta: string;
+    rutaPrincipal: string;
+    checkInMuelle: string;
+    lugarSalida: string;
+    horaSalida: string;
+    lugarLlegada: string;
+    horaLlegada: string;
+}
+
 // Fetch ferry schedules from Sanity
-const ferries = await sanityClient.fetch(`
+const ferries: Ferry[] = await sanityClient.fetch(`
     *[_type == "ferry" && activo == true] | order(orden asc, _createdAt asc) {
         _id,
         numeroRuta,
@@ -32,12 +43,12 @@ const ferries = await sanityClient.fetch(`
                 class="max-w-7xl mx-auto bg-white rounded-[2rem] shadow-xl overflow-hidden border border-gray-100"
             >
                 <div
-                    class="bg-[#0B3C6D] p-8 text-white flex items-center gap-6"
+                    class="bg-navy p-8 text-white flex items-center gap-6"
                 >
                     <Icon
                         name="ant-design:rocket-outlined"
                         size={40}
-                        class="text-[#2EC4C6]"
+                        class="text-turquoise"
                     />
                     <div>
                         <h3 class="font-bold text-2xl font-serif">
@@ -54,16 +65,15 @@ const ferries = await sanityClient.fetch(`
                     <table class="w-full text-left">
                         <thead class="bg-gray-50 border-b border-gray-200">
                             <tr>
-                                <th class="p-6 font-bold text-[#0B3C6D] text-sm uppercase tracking-wider">Ruta</th>
-                                <th class="p-6 font-bold text-[#0B3C6D] text-sm uppercase tracking-wider">Horario</th>
-                                <th class="p-6 font-bold text-[#0B3C6D] text-sm uppercase tracking-wider">Reservar</th>
+                                <th class="p-6 font-bold text-navy text-sm uppercase tracking-wider">Ruta</th>
+                                <th class="p-6 font-bold text-navy text-sm uppercase tracking-wider">Horario</th>
+                                <th class="p-6 font-bold text-navy text-sm uppercase tracking-wider">Reservar</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-100">
                             {
                                 ferries.map((ferry, idx) => (
                                     <tr
-                                        key={idx}
                                         class:list={{
                                             "hover:bg-blue-50 transition-colors": true,
                                             "bg-white": idx % 2 === 0,
@@ -72,7 +82,7 @@ const ferries = await sanityClient.fetch(`
                                     >
                                         <td class="p-6 font-bold text-gray-800">
                                             <div class="flex items-center gap-3">
-                                                <span class="bg-[#0B3C6D] text-white px-3 py-1 rounded-full text-xs font-bold uppercase">
+                                                <span class="bg-navy text-white px-3 py-1 rounded-full text-xs font-bold uppercase">
                                                     {ferry.numeroRuta}
                                                 </span>
                                                 <span>{ferry.rutaPrincipal}</span>
@@ -82,11 +92,11 @@ const ferries = await sanityClient.fetch(`
                                             <div class="space-y-2">
                                                 <div>
                                                     <span class="text-gray-500">Check-in en muelle:</span>{" "}
-                                                    <span class="font-bold text-[#0B3C6D]">{ferry.checkInMuelle}</span>
+                                                    <span class="font-bold text-navy">{ferry.checkInMuelle}</span>
                                                 </div>
                                                 <div>
                                                     <span class="text-gray-500">Salida de {ferry.lugarSalida}:</span>{" "}
-                                                    <span class="font-bold text-[#2EC4C6]">{ferry.horaSalida}</span>
+                                                    <span class="font-bold text-turquoise">{ferry.horaSalida}</span>
                                                 </div>
                                                 <div>
                                                     <span class="text-gray-500">Llegada a {ferry.lugarLlegada}:</span>{" "}
@@ -96,7 +106,7 @@ const ferries = await sanityClient.fetch(`
                                         </td>
                                         <td class="p-6">
                                             <a href="/contacto" class="no-underline">
-                                                <button class="w-full bg-[#2EC4C6] hover:bg-[#1F5F99] text-white font-bold py-2 px-4 rounded-xl transition-colors">
+                                                <button class="w-full bg-turquoise hover:bg-[#1F5F99] text-white font-bold py-2 px-4 rounded-xl transition-colors">
                                                     Reservar
                                                 </button>
                                             </a>
@@ -110,23 +120,23 @@ const ferries = await sanityClient.fetch(`
 
                 {/* Important Information */}
                 <div class="bg-[#F2F6FA] p-6 md:p-8 border-t-2 border-gray-200">
-                    <h4 class="text-[#0B3C6D] font-bold text-xl mb-4 flex items-center gap-2">
-                        <Icon name="ant-design:info-circle-outlined" size={24} class="text-[#2EC4C6]" />
+                    <h4 class="text-navy font-bold text-xl mb-4 flex items-center gap-2">
+                        <Icon name="ant-design:info-circle-outlined" size={24} class="text-turquoise" />
                         Información Importante
                     </h4>
                     <div class="grid md:grid-cols-2 gap-6">
                         <div class="space-y-2">
                             <p class="text-gray-700 flex items-start gap-2">
-                                <span class="text-[#2EC4C6] font-bold">•</span>
+                                <span class="text-turquoise font-bold">•</span>
                                 <span>Se debe pagar <strong>$1</strong> desde el muelle al ferry a las lanchas taxis.</span>
                             </p>
                             <p class="text-gray-700 flex items-start gap-2">
-                                <span class="text-[#2EC4C6] font-bold">•</span>
+                                <span class="text-turquoise font-bold">•</span>
                                 <span>Duración del viaje: <strong>2 horas aproximadamente</strong></span>
                             </p>
                         </div>
-                        <div class="bg-white rounded-xl p-4 border-2 border-[#2EC4C6]">
-                            <h5 class="font-bold text-[#0B3C6D] mb-2">Al ingresar a Isabela debe pagar:</h5>
+                        <div class="bg-white rounded-xl p-4 border-2 border-turquoise">
+                            <h5 class="font-bold text-navy mb-2">Al ingresar a Isabela debe pagar:</h5>
                             <ul class="space-y-1 text-sm text-gray-700">
                                 <li>• <strong>$1,50</strong> desde el ferry al puerto</li>
                                 <li>• <strong>$10</strong> ingreso (Extranjero)</li>

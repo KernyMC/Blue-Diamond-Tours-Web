@@ -2,12 +2,12 @@
 const { variant = "primary", className = "", ...props } = Astro.props;
 
 const variants = {
-    primary: "bg-[#0B3C6D] text-white hover:bg-[#2EC4C6] hover:scale-105",
-    secondary: "bg-[#2EC4C6] text-white hover:bg-[#1F5F99] hover:scale-105",
+    primary: "bg-navy text-white hover:bg-turquoise hover:scale-105",
+    secondary: "bg-turquoise text-white hover:bg-[#1F5F99] hover:scale-105",
     outline:
-        "bg-transparent border-2 border-[#0B3C6D] text-[#0B3C6D] hover:bg-[#0B3C6D] hover:text-white",
-    accent: "bg-[#2EC4C6] text-white hover:bg-white hover:text-[#0B3C6D] hover:shadow-xl",
-    white: "bg-white text-[#0B3C6D] hover:bg-gray-100",
+        "bg-transparent border-2 border-navy text-navy hover:bg-navy hover:text-white",
+    accent: "bg-turquoise text-white hover:bg-white hover:text-navy hover:shadow-xl",
+    white: "bg-white text-navy hover:bg-gray-100",
 };
 
 const baseStyles =

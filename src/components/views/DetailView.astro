@@ -40,7 +40,7 @@ const bookingHref = item?.bookingHref || (item?.bookingUuid ? `https://www.wetra
                             ><Icon
                                 name="ant-design:clock-circle-outlined"
                                 size={18}
-                                class="text-[#2EC4C6]"
+                                class="text-turquoise"
                             />
                             {item.duration}</span
                         >
@@ -48,14 +48,14 @@ const bookingHref = item?.bookingHref || (item?.bookingUuid ? `https://www.wetra
                             ><Icon
                                 name="ant-design:team-outlined"
                                 size={18}
-                                class="text-[#2EC4C6]"
+                                class="text-turquoise"
                             /> Max 16 personas</span
                         >
                         <span class="flex items-center gap-2 text-white"
                             ><Icon
                                 name="ant-design:calendar-outlined"
                                 size={18}
-                                class="text-[#2EC4C6]"
+                                class="text-turquoise"
                             /> Salidas Diarias</span
                         >
                     </div>
@@ -63,7 +63,7 @@ const bookingHref = item?.bookingHref || (item?.bookingUuid ? `https://www.wetra
                         <Icon
                             name="ant-design:environment-outlined"
                             size={18}
-                            class="text-[#2EC4C6]"
+                            class="text-turquoise"
                         />
                         {item.location}
                     </div>
@@ -73,12 +73,12 @@ const bookingHref = item?.bookingHref || (item?.bookingUuid ? `https://www.wetra
     </div>
 
     {/* Breadcrumb Navigation */}
-    <div class="bg-[#0B3C6D]">
+    <div class="bg-navy">
         <div class="container mx-auto px-4 py-3">
             <nav class="flex items-center gap-2 text-sm">
                 <a
                     href="/"
-                    class="text-white hover:text-[#2EC4C6] transition-colors"
+                    class="text-white hover:text-turquoise transition-colors"
                 >
                     Home
                 </a>
@@ -89,7 +89,7 @@ const bookingHref = item?.bookingHref || (item?.bookingUuid ? `https://www.wetra
                 />
                 <a
                     href="/paquetes"
-                    class="text-white hover:text-[#2EC4C6] transition-colors"
+                    class="text-white hover:text-turquoise transition-colors"
                 >
                     Paquetes
                 </a>
@@ -115,19 +115,19 @@ const bookingHref = item?.bookingHref || (item?.bookingUuid ? `https://www.wetra
                 class="flex border-b border-gray-200 mb-8 overflow-x-auto no-scrollbar gap-8"
             >
                 <button
-                    class="tab-btn active pb-4 text-lg font-bold text-[#0B3C6D] border-b-4 border-[#2EC4C6] transition-colors whitespace-nowrap"
+                    class="tab-btn active pb-4 text-lg font-bold text-navy border-b-4 border-turquoise transition-colors whitespace-nowrap"
                     data-tab="overview"
                 >
                     Resumen
                 </button>
                 <button
-                    class="tab-btn pb-4 text-lg font-bold text-gray-400 border-b-4 border-transparent hover:text-[#0B3C6D] transition-colors whitespace-nowrap"
+                    class="tab-btn pb-4 text-lg font-bold text-gray-400 border-b-4 border-transparent hover:text-navy transition-colors whitespace-nowrap"
                     data-tab="itinerary"
                 >
                     Itinerario
                 </button>
                 <button
-                    class="tab-btn pb-4 text-lg font-bold text-gray-400 border-b-4 border-transparent hover:text-[#0B3C6D] transition-colors whitespace-nowrap"
+                    class="tab-btn pb-4 text-lg font-bold text-gray-400 border-b-4 border-transparent hover:text-navy transition-colors whitespace-nowrap"
                     data-tab="preparation"
                 >
                     Preparación
@@ -135,7 +135,7 @@ const bookingHref = item?.bookingHref || (item?.bookingUuid ? `https://www.wetra
                 {
                     item.gallery && item.gallery.length > 0 && (
                         <button
-                            class="tab-btn pb-4 text-lg font-bold text-gray-400 border-b-4 border-transparent hover:text-[#0B3C6D] transition-colors whitespace-nowrap"
+                            class="tab-btn pb-4 text-lg font-bold text-gray-400 border-b-4 border-transparent hover:text-navy transition-colors whitespace-nowrap"
                             data-tab="gallery"
                         >
                             Galería
@@ -151,7 +151,7 @@ const bookingHref = item?.bookingHref || (item?.bookingUuid ? `https://www.wetra
                 {/* Overview Tab */}
                 <div id="overview" class="tab-content block animate-fade-in">
                     <h3
-                        class="text-2xl font-bold text-[#0B3C6D] mb-4 font-serif"
+                        class="text-2xl font-bold text-navy mb-4 font-serif"
                     >
                         Descripción General
                     </h3>
@@ -164,7 +164,7 @@ const bookingHref = item?.bookingHref || (item?.bookingUuid ? `https://www.wetra
                             class="bg-blue-50/50 p-6 rounded-2xl border border-blue-100"
                         >
                             <h4
-                                class="font-bold text-[#0B3C6D] mb-4 flex items-center gap-2"
+                                class="font-bold text-navy mb-4 flex items-center gap-2"
                             >
                                 <Icon
                                     name="ant-design:check-circle-outlined"
@@ -189,7 +189,7 @@ const bookingHref = item?.bookingHref || (item?.bookingUuid ? `https://www.wetra
                             class="bg-red-50/50 p-6 rounded-2xl border border-red-100"
                         >
                             <h4
-                                class="font-bold text-[#0B3C6D] mb-4 flex items-center gap-2"
+                                class="font-bold text-navy mb-4 flex items-center gap-2"
                             >
                                 <Icon
                                     name="ant-design:close-circle-outlined"
@@ -214,7 +214,7 @@ const bookingHref = item?.bookingHref || (item?.bookingUuid ? `https://www.wetra
 
                     <div class="mt-8">
                         <h4
-                            class="font-bold text-[#0B3C6D] mb-4 flex items-center gap-2"
+                            class="font-bold text-navy mb-4 flex items-center gap-2"
                         >
                             <Icon
                                 name="ant-design:sun-outlined"
@@ -237,7 +237,7 @@ const bookingHref = item?.bookingHref || (item?.bookingUuid ? `https://www.wetra
                 {/* Itinerary Tab */}
                 <div id="itinerary" class="tab-content hidden animate-fade-in">
                     <h3
-                        class="text-2xl font-bold text-[#0B3C6D] mb-6 font-serif"
+                        class="text-2xl font-bold text-navy mb-6 font-serif"
                     >
                         Itinerario Detallado
                     </h3>
@@ -250,13 +250,13 @@ const bookingHref = item?.bookingHref || (item?.bookingUuid ? `https://www.wetra
                                             class="accordion-btn w-full text-left p-6 flex items-center justify-between gap-4 hover:bg-gray-100 transition-colors"
                                             data-index={index}
                                         >
-                                            <h4 class="font-bold text-[#0B3C6D] text-lg flex-1">
+                                            <h4 class="font-bold text-navy text-lg flex-1">
                                                 Día {day.day}: {day.title}
                                             </h4>
                                             <Icon
                                                 name="ant-design:down-outlined"
                                                 size={16}
-                                                class="accordion-icon text-[#0B3C6D] transition-transform"
+                                                class="accordion-icon text-navy transition-transform"
                                             />
                                         </button>
                                         <div class="accordion-content hidden px-6 pb-6">
@@ -264,7 +264,7 @@ const bookingHref = item?.bookingHref || (item?.bookingUuid ? `https://www.wetra
                                                 {day.description}
                                             </p>
                                             {day.meals && day.meals.trim() && (
-                                                <div class="flex items-center gap-2 text-xs font-bold text-[#2EC4C6] bg-white px-3 py-1 rounded-full w-fit shadow-sm border border-gray-100">
+                                                <div class="flex items-center gap-2 text-xs font-bold text-turquoise bg-white px-3 py-1 rounded-full w-fit shadow-sm border border-gray-100">
                                                     <Icon
                                                         name="ant-design:coffee-outlined"
                                                         size={14}
@@ -286,14 +286,14 @@ const bookingHref = item?.bookingHref || (item?.bookingUuid ? `https://www.wetra
                     class="tab-content hidden animate-fade-in"
                 >
                     <h3
-                        class="text-2xl font-bold text-[#0B3C6D] mb-6 font-serif"
+                        class="text-2xl font-bold text-navy mb-6 font-serif"
                     >
                         Información Importante
                     </h3>
                     <div class="space-y-6">
                         <div class="flex gap-4 items-start">
                             <div
-                                class="bg-blue-100 p-3 rounded-full text-[#0B3C6D]"
+                                class="bg-blue-100 p-3 rounded-full text-navy"
                             >
                                 <Icon
                                     name="ant-design:info-circle-outlined"
@@ -301,7 +301,7 @@ const bookingHref = item?.bookingHref || (item?.bookingUuid ? `https://www.wetra
                                 />
                             </div>
                             <div>
-                                <h4 class="font-bold text-[#0B3C6D] mb-2">
+                                <h4 class="font-bold text-navy mb-2">
                                     Tips de Viaje
                                 </h4>
                                 <p class="text-gray-600 leading-relaxed">
@@ -319,7 +319,7 @@ const bookingHref = item?.bookingHref || (item?.bookingUuid ? `https://www.wetra
                                 />
                             </div>
                             <div>
-                                <h4 class="font-bold text-[#0B3C6D] mb-2">
+                                <h4 class="font-bold text-navy mb-2">
                                     Clima y Ropa
                                 </h4>
                                 <p class="text-gray-600 leading-relaxed">
@@ -337,7 +337,7 @@ const bookingHref = item?.bookingHref || (item?.bookingUuid ? `https://www.wetra
                             id="gallery"
                             class="tab-content hidden animate-fade-in"
                         >
-                            <h3 class="text-2xl font-bold text-[#0B3C6D] mb-8 font-serif">
+                            <h3 class="text-2xl font-bold text-navy mb-8 font-serif">
                                 Galería de Fotos
                             </h3>
                             <div class="gallery-main-container">
@@ -486,10 +486,10 @@ const bookingHref = item?.bookingHref || (item?.bookingUuid ? `https://www.wetra
                     >
                         Desde
                     </p>
-                    <div class="text-5xl font-bold text-[#0B3C6D] font-serif">
+                    <div class="text-5xl font-bold text-navy font-serif">
                         ${item.price}
                     </div>
-                    <p class="text-[#2EC4C6] text-sm font-bold mt-2">
+                    <p class="text-turquoise text-sm font-bold mt-2">
                         Mejor precio garantizado
                     </p>
                 </div>
@@ -522,7 +522,7 @@ const bookingHref = item?.bookingHref || (item?.bookingUuid ? `https://www.wetra
                     <p class="text-xs text-gray-400">
                         ¿Tienes dudas? <a
                             href="/contacto"
-                            class="text-[#2EC4C6] font-bold hover:underline"
+                            class="text-turquoise font-bold hover:underline"
                             >Contáctanos</a
                         >
                     </p>
@@ -545,14 +545,14 @@ const bookingHref = item?.bookingHref || (item?.bookingUuid ? `https://www.wetra
             tabBtns.forEach((b) => {
                 b.classList.remove(
                     "active",
-                    "text-[#0B3C6D]",
-                    "border-[#2EC4C6]",
+                    "text-navy",
+                    "border-turquoise",
                 );
                 b.classList.add("text-gray-400", "border-transparent");
             });
 
             // Add active class to clicked button
-            btn.classList.add("active", "text-[#0B3C6D]", "border-[#2EC4C6]");
+            btn.classList.add("active", "text-navy", "border-turquoise");
             btn.classList.remove("text-gray-400", "border-transparent");
 
             // Hide all contents
@@ -610,12 +610,12 @@ const bookingHref = item?.bookingHref || (item?.bookingUuid ? `https://www.wetra
         lightbox.className =
             "fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4";
         lightbox.innerHTML = `
-            <button class="absolute top-4 right-4 text-white text-4xl hover:text-[#2EC4C6] transition-colors" onclick="closeLightbox()">&times;</button>
+            <button class="absolute top-4 right-4 text-white text-4xl hover:text-turquoise transition-colors" onclick="closeLightbox()">&times;</button>
             ${
                 images.length > 1
                     ? `
-                <button class="absolute left-4 top-1/2 -translate-y-1/2 text-white text-4xl hover:text-[#2EC4C6] transition-colors" onclick="prevImage()">&lsaquo;</button>
-                <button class="absolute right-4 top-1/2 -translate-y-1/2 text-white text-4xl hover:text-[#2EC4C6] transition-colors" onclick="nextImage()">&rsaquo;</button>
+                <button class="absolute left-4 top-1/2 -translate-y-1/2 text-white text-4xl hover:text-turquoise transition-colors" onclick="prevImage()">&lsaquo;</button>
+                <button class="absolute right-4 top-1/2 -translate-y-1/2 text-white text-4xl hover:text-turquoise transition-colors" onclick="nextImage()">&rsaquo;</button>
             `
                     : ""
             }

@@ -24,7 +24,7 @@ const { packages } = Astro.props;
                                 alt={pkg.title}
                                 class="w-full h-[500px] object-cover"
                             />
-                            <div class="absolute inset-0 bg-gradient-to-t from-[#0B3C6D] via-transparent to-transparent opacity-90"></div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-transparent opacity-90"></div>
                             <div class="absolute bottom-0 left-0 p-8 md:p-12 w-full text-center">
 
                                 <h3 class="text-3xl md:text-5xl font-bold text-white font-serif mb-4">
@@ -35,7 +35,7 @@ const { packages } = Astro.props;
                                 </p>
                                 <a
                                     href={`/paquete/${pkg.slug || pkg._id}`}
-                                    class="inline-block bg-[#2EC4C6] text-white px-8 py-3 rounded-full font-bold text-sm shadow-lg hover:bg-[#1F5F99] transition-colors no-underline"
+                                    class="inline-block bg-turquoise text-white px-8 py-3 rounded-full font-bold text-sm shadow-lg hover:bg-[#1F5F99] transition-colors no-underline"
                                 >
                                     Ver Paquete
                                 </a>
@@ -52,14 +52,14 @@ const { packages } = Astro.props;
                 <>
                     <button
                         id="prevBtn"
-                        class="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white/80 hover:bg-white text-[#0B3C6D] w-12 h-12 rounded-full flex items-center justify-center transition-all shadow-lg"
+                        class="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white/80 hover:bg-white text-navy w-12 h-12 rounded-full flex items-center justify-center transition-all shadow-lg"
                         aria-label="Previous slide"
                     >
                         <Icon name="ant-design:left-outlined" size={20} />
                     </button>
                     <button
                         id="nextBtn"
-                        class="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white/80 hover:bg-white text-[#0B3C6D] w-12 h-12 rounded-full flex items-center justify-center transition-all shadow-lg"
+                        class="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white/80 hover:bg-white text-navy w-12 h-12 rounded-full flex items-center justify-center transition-all shadow-lg"
                         aria-label="Next slide"
                     >
                         <Icon name="ant-design:right-outlined" size={20} />
