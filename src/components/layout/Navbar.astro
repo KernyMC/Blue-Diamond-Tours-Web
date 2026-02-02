@@ -73,49 +73,6 @@ const isActive = (path: string): boolean =>
             ))
         }
 
-        {/* Language Selector */}
-        <div class="relative language-selector">
-            <button
-                id="language-btn"
-                class="flex items-center gap-2 text-navy hover:text-turquoise transition-all duration-300 cursor-pointer bg-transparent border-none text-sm font-bold"
-            >
-                <Icon name="ant-design:alipay-outlined" class="w-5 h-5" />
-                <span id="current-lang">ES</span>
-                <Icon
-                    name="ant-design:down-outlined"
-                    class="w-4 h-4 transition-transform duration-300"
-                    id="lang-chevron"
-                />
-            </button>
-
-            <div
-                id="language-dropdown"
-                class="absolute top-full right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-gray-100/50 overflow-hidden opacity-0 invisible transition-all duration-300 min-w-[140px]"
-            >
-                <button
-                    onclick="changeLanguage('es', 'ES')"
-                    class="w-full px-4 py-3 text-left text-sm font-bold text-navy hover:bg-turquoise/10 hover:text-turquoise transition-all cursor-pointer bg-transparent border-none flex items-center gap-2"
-                >
-                    <span class="text-lg">🇪🇸</span>
-                    Español
-                </button>
-                <button
-                    onclick="changeLanguage('en', 'EN')"
-                    class="w-full px-4 py-3 text-left text-sm font-bold text-navy hover:bg-turquoise/10 hover:text-turquoise transition-all cursor-pointer bg-transparent border-none flex items-center gap-2"
-                >
-                    <span class="text-lg">🇬🇧</span>
-                    English
-                </button>
-                <button
-                    onclick="changeLanguage('fr', 'FR')"
-                    class="w-full px-4 py-3 text-left text-sm font-bold text-navy hover:bg-turquoise/10 hover:text-turquoise transition-all cursor-pointer bg-transparent border-none flex items-center gap-2"
-                >
-                    <span class="text-lg">🇫🇷</span>
-                    Français
-                </button>
-            </div>
-        </div>
-
         <button
             onclick="openContactModal()"
             class="bg-turquoise text-white py-2.5 px-6 rounded-full text-sm font-bold shadow-lg hover:shadow-turquoise/30 hover:bg-[#1F5F99] transition-all cursor-pointer border-none"
@@ -151,28 +108,6 @@ const isActive = (path: string): boolean =>
         ))
     }
 
-    {/* Mobile Language Selector */}
-    <div class="flex gap-4 mt-4">
-        <button
-            onclick="changeLanguage('es', 'ES')"
-            class="px-6 py-3 rounded-full border-2 border-navy text-navy font-bold hover:bg-navy hover:text-white transition-all cursor-pointer bg-transparent text-base"
-        >
-            🇪🇸 ES
-        </button>
-        <button
-            onclick="changeLanguage('en', 'EN')"
-            class="px-6 py-3 rounded-full border-2 border-navy text-navy font-bold hover:bg-navy hover:text-white transition-all cursor-pointer bg-transparent text-base"
-        >
-            🇬🇧 EN
-        </button>
-        <button
-            onclick="changeLanguage('fr', 'FR')"
-            class="px-6 py-3 rounded-full border-2 border-navy text-navy font-bold hover:bg-navy hover:text-white transition-all cursor-pointer bg-transparent text-base"
-        >
-            🇫🇷 FR
-        </button>
-    </div>
-
     <a href="/contacto" class="no-underline mt-4">
         <Button
             variant="primary"
@@ -183,96 +118,7 @@ const isActive = (path: string): boolean =>
     </a>
 </div>
 
-<script type="text/javascript" is:inline>
-    function googleTranslateElementInit() {
-        new google.translate.TranslateElement(
-            {
-                pageLanguage: "es",
-                includedLanguages: "es,en,fr",
-                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-            },
-            "google_translate_element",
-        );
-    }
-</script>
-
-<script
-    type="text/javascript"
-    src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
-    is:inline></script>
-
-<script is:inline>
-    // Change language function
-    window.changeLanguage = function (langCode, langDisplay) {
-        const currentLangEl = document.getElementById("current-lang");
-        if (currentLangEl) {
-            currentLangEl.textContent = langDisplay;
-        }
-
-        // Close dropdown
-        const dropdown = document.getElementById("language-dropdown");
-        if (dropdown) {
-            dropdown.classList.remove("opacity-100", "visible");
-            dropdown.classList.add("opacity-0", "invisible");
-        }
-
-        // Function to trigger translation
-        function triggerTranslation() {
-            const selectElement = document.querySelector(".goog-te-combo");
-            if (selectElement) {
-                selectElement.value = langCode;
-                selectElement.dispatchEvent(new Event("change"));
-                return true;
-            }
-            return false;
-        }
-
-        // Try to trigger translation immediately
-        if (!triggerTranslation()) {
-            // If not ready, wait and retry
-            let attempts = 0;
-            const maxAttempts = 30;
-            const checkInterval = setInterval(() => {
-                attempts++;
-                if (triggerTranslation() || attempts >= maxAttempts) {
-                    clearInterval(checkInterval);
-                }
-            }, 100);
-        }
-    };
-</script>
-
 <script>
-    // Language dropdown toggle
-    const languageBtn = document.getElementById("language-btn");
-    const languageDropdown = document.getElementById("language-dropdown");
-    const langChevron = document.getElementById("lang-chevron");
-
-    if (languageBtn && languageDropdown) {
-        languageBtn.addEventListener("click", (e) => {
-            e.stopPropagation();
-            const isVisible =
-                languageDropdown.classList.contains("opacity-100");
-
-            if (isVisible) {
-                languageDropdown.classList.remove("opacity-100", "visible");
-                languageDropdown.classList.add("opacity-0", "invisible");
-                langChevron?.classList.remove("rotate-180");
-            } else {
-                languageDropdown.classList.remove("opacity-0", "invisible");
-                languageDropdown.classList.add("opacity-100", "visible");
-                langChevron?.classList.add("rotate-180");
-            }
-        });
-
-        // Close dropdown when clicking outside
-        document.addEventListener("click", () => {
-            languageDropdown.classList.remove("opacity-100", "visible");
-            languageDropdown.classList.add("opacity-0", "invisible");
-            langChevron?.classList.remove("rotate-180");
-        });
-    }
-
     // Navbar Scroll Effect (solo en móvil)
     const nav = document.getElementById("main-nav");
 
@@ -330,30 +176,5 @@ const isActive = (path: string): boolean =>
     });
 </script>
 
-<!-- Hidden Google Translate Element -->
-<div id="google_translate_element" style="display: none;"></div>
-
 <!-- Contact Form Modal -->
 <ContactFormModal />
-
-<style is:global>
-    /* Hide Google Translate default UI */
-    .goog-te-banner-frame,
-    .goog-te-balloon-frame,
-    .skiptranslate iframe {
-        display: none !important;
-    }
-
-    body {
-        top: 0 !important;
-    }
-
-    .goog-te-gadget {
-        display: none !important;
-    }
-
-    /* Prevent Google Translate from adding top margin */
-    body.translated-ltr {
-        margin-top: 0 !important;
-    }
-</style>

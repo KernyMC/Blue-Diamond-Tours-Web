@@ -1,19 +1,42 @@
 ---
 const { item, index } = Astro.props;
 
-// Clases para el efecto de arco según la posición
+// Clases para el efecto de arco según la posición (solo en desktop)
 const arcClasses: Record<number, string> = {
-    0: "translate-y-10 -rotate-[8deg]",
-    1: "translate-y-4 -rotate-[4deg]",
-    2: "translate-y-0 rotate-0",
-    3: "translate-y-4 rotate-[4deg]",
-    4: "translate-y-10 rotate-[8deg]",
+    0: "lg:translate-y-10 lg:-rotate-[8deg]",
+    1: "lg:translate-y-4 lg:-rotate-[4deg]",
+    2: "lg:translate-y-0 lg:rotate-0",
+    3: "lg:translate-y-4 lg:rotate-[4deg]",
+    4: "lg:translate-y-10 lg:rotate-[8deg]",
 };
 
-const arcClass = arcClasses[index] || "translate-y-0 rotate-0";
+const arcClass = arcClasses[index] || "lg:translate-y-0 lg:rotate-0";
 ---
 
-<div class={`tour-card text-center transition-transform duration-300 hover:-translate-y-2 ${arcClass}`}>
+<!-- Mobile: Card horizontal grande -->
+<div class={`tour-card lg:hidden w-full`}>
+    <a href={item.href || "#"} class="block no-underline group relative overflow-hidden rounded-2xl shadow-lg">
+        <img
+            src={item.image}
+            alt={item.name}
+            class="w-full h-48 sm:h-56 object-cover transition-transform duration-500 group-hover:scale-105"
+        />
+        <!-- Overlay con gradiente -->
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+        <!-- Contenido sobre la imagen -->
+        <div class="absolute bottom-0 left-0 right-0 p-5 text-left">
+            <h4 class="font-bold text-xl text-white mb-1 drop-shadow-lg">
+                {item.name}
+            </h4>
+            <span class="text-sm text-turquoise font-medium uppercase tracking-wider">
+                Ver más →
+            </span>
+        </div>
+    </a>
+</div>
+
+<!-- Desktop: Card vertical con efecto arco -->
+<div class={`tour-card hidden lg:block text-center transition-transform duration-300 hover:-translate-y-2 ${arcClass}`}>
     <a href={item.href || "#"} class="block no-underline group">
         <img
             src={item.image}
@@ -28,12 +51,3 @@ const arcClass = arcClasses[index] || "translate-y-0 rotate-0";
         </span>
     </a>
 </div>
-
-<style>
-    /* Responsivo: quitar el arco en pantallas pequeñas */
-    @media (max-width: 1024px) {
-        .tour-card {
-            transform: none !important;
-        }
-    }
-</style>
