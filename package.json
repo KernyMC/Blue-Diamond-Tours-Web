@@ -21,10 +21,14 @@
     "@types/react-is": "^19.2.0",
     "astro": "^5.17.1",
     "astro-icon": "^1.1.5",
+    "nodemailer": "^7.0.13",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-is": "^19.2.4",
     "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "@types/nodemailer": "^7.0.9"
   }
 }
