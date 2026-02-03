@@ -1,7 +1,6 @@
 # Etapa 1: Build
 FROM node:20-alpine AS builder
 
-# Establecer directorio de trabajo
 WORKDIR /app
 
 # Copiar archivos de dependencias
@@ -16,17 +15,22 @@ COPY . .
 # Build del proyecto Astro
 RUN npm run build
 
-# Etapa 2: Producción con Nginx
-FROM nginx:alpine AS production
+# Etapa 2: Producción con Node.js
+FROM node:20-alpine AS production
 
-# Copiar configuración personalizada de Nginx
-COPY nginx.conf /etc/nginx/nginx.conf
+WORKDIR /app
 
-# Copiar los archivos estáticos generados por Astro
-COPY --from=builder /app/dist /usr/share/nginx/html
+# Copiar los archivos necesarios desde el builder
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./package.json
 
-# Exponer puerto 4321
+# Variables de entorno
+ENV HOST=0.0.0.0
+ENV PORT=4321
+
+# Exponer puerto
 EXPOSE 4321
 
-# Comando para iniciar Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Iniciar el servidor
+CMD ["node", "./dist/server/entry.mjs"]
