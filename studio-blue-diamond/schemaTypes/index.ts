@@ -4,11 +4,13 @@ import itineraryItem from './itineraryItem'
 import prepInfo from './prepInfo'
 import category from './category'
 import ferry from './ferry'
+import accommodation from './accommodation'
 
 export const schemaTypes = [
   category,
   itineraryItem,
   prepInfo,
+  accommodation,
   tour,
   packageSchema,
   ferry,

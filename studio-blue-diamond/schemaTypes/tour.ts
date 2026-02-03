@@ -119,5 +119,4 @@ export default defineType({
       description: 'Ej: https://www.wetravel.com/checkout_embed?uuid=18869763',
     }),
   ],
-  
 })
