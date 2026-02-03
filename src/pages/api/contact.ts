@@ -36,6 +36,7 @@ export const POST: APIRoute = async ({ request }) => {
     );
 
     // Configuración del correo (Gmail ejemplo)
+    /*
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -43,13 +44,26 @@ export const POST: APIRoute = async ({ request }) => {
         pass: import.meta.env.NODEMAILER_APP_PASSWORD,
       },
     });
+    */
+
+    const transporter = nodemailer.createTransport({
+      host: "smtp.hostinger.com",
+      port: 465,
+      secure: true, // true para 465, false para 587
+      auth: {
+        user: import.meta.env.NODEMAILER_EMAIL_2,
+        pass: import.meta.env.NODEMAILER_APP_PASSWORD_2,
+      },
+    });
+    console.log(transporter);
 
     console.log("📤 [API] Enviando correo...");
 
     await transporter.sendMail({
-      from: import.meta.env.NODEMAILER_EMAIL,
+      from: import.meta.env.NODEMAILER_EMAIL_2,
       replyTo: email as string,
-      to: import.meta.env.NODEMAILER_EMAIL,
+      to: import.meta.env.NODEMAILER_EMAIL_2,
+      cc: import.meta.env.NODEMAILER_EMAIL,
       subject: `Pedido | Nuevo mensaje de ${name}`,
       html: `
         <h2>Nuevo mensaje desde la web</h2>
