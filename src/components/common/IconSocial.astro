@@ -1,0 +1,33 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Props {
+    link: string;
+    texto?: string;
+    redSocial: "facebook" | "instagram" | "x" | "linkedin" | "youtube" | "tiktok";
+}
+
+const { link, texto, redSocial } = Astro.props;
+
+const iconMap = {
+    facebook: "ant-design:facebook-outlined",
+    instagram: "ant-design:instagram-outlined",
+    x: "ant-design:x-outlined",
+    linkedin: "ant-design:linkedin-outlined",
+    youtube: "ant-design:youtube-outlined",
+    tiktok: "simple-icons:tiktok",
+    pinterest: "ant-design:pinterest-outlined",
+};
+
+const iconName = iconMap[redSocial];
+---
+
+<a
+    href={link}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="w-10 h-10 bg-[#1F5F99] rounded-full flex items-center justify-center hover:bg-turquoise transition-colors cursor-pointer text-white"
+    aria-label={texto || redSocial}
+>
+    <Icon name={iconName} class="w-6 h-6" />
+</a>

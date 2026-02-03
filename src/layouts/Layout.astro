@@ -2,6 +2,7 @@
 import Navbar from "../components/layout/Navbar.astro";
 import Footer from "../components/layout/Footer.astro";
 import "../styles/global.css";
+import WhatsAppBtn from "../components/common/WhatsAppBtn.astro";
 
 const { title = "Galápagos Bluediamond | Tours & Travel" } = Astro.props;
 ---
@@ -35,6 +36,7 @@ const { title = "Galápagos Bluediamond | Tours & Travel" } = Astro.props;
         <main>
             <slot />
         </main>
+        <WhatsAppBtn numero="+593 99 123 4567" size="medium" />
         <Footer />
         <script src="https://cdn.wetravel.com/widgets/embed_checkout.js" defer></script>
     </body>

@@ -311,7 +311,7 @@ import Loader from "./Loader.astro";
                     id="errorMessage"
                     class="hidden bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl"
                 >
-                    Se produjo un error, intentelo mas tarde
+                    Se produjo un error, inténtelo más tarde
                 </div>
             </form>
         </div>
@@ -419,7 +419,7 @@ import Loader from "./Loader.astro";
         // Show loader
         showLoader();
 
-        console.log("🚀 Formulario enviado");
+         
 
         // Get form data
         const formData = new FormData(form as HTMLFormElement);
@@ -432,7 +432,7 @@ import Loader from "./Loader.astro";
 
         data.activities = activities.join(", ");
 
-        console.log("📦 Datos del formulario:", data);
+        
 
         try {
             // Preparar datos para el endpoint
@@ -452,7 +452,7 @@ ${data.message || "Sin mensaje adicional"}
                 `.trim(),
             };
 
-            console.log("📤 Enviando a /api/contact...", requestBody);
+          
 
             const response = await fetch("/api/contact", {
                 method: "POST",
@@ -462,10 +462,10 @@ ${data.message || "Sin mensaje adicional"}
                 body: JSON.stringify(requestBody),
             });
 
-            console.log("📥 Respuesta recibida:", response.status, response.statusText);
+            
 
             const result = await response.json();
-            console.log("✅ Resultado:", result);
+            
 
             // Hide loader
             hideLoader();

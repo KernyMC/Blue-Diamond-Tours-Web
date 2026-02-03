@@ -1,6 +1,18 @@
 ---
 import { Icon } from "astro-icon/components";
+import IconSocial from "../common/IconSocial.astro";
+import { sanityClient } from "../../lib/sanityClient";
+
 const currentYear = new Date().getFullYear();
+
+// Obtener social links desde Sanity
+const socialLinks = await sanityClient.fetch(`
+  *[_type == "socialLink"] | order(_createdAt asc) {
+    texto,
+    link,
+    redSocial
+  }
+`);
 ---
 
 <footer class="bg-navy text-white pt-20 pb-10 relative overflow-hidden">
@@ -35,33 +47,13 @@ const currentYear = new Date().getFullYear();
                         personalizado con la mejor calidad.
                     </p>
                     <div class="flex gap-4 justify-center lg:justify-start">
-                        <a
-                            href="#"
-                            class="w-10 h-10 bg-[#1F5F99] rounded-full flex items-center justify-center hover:bg-turquoise transition-colors cursor-pointer text-white"
-                        >
-                            <Icon
-                                name="ant-design:instagram-outlined"
-                                size={18}
+                        {socialLinks.map((social: any) => (
+                            <IconSocial
+                                link={social.link}
+                                texto={social.texto}
+                                redSocial={social.redSocial}
                             />
-                        </a>
-                        <a
-                            href="#"
-                            class="w-10 h-10 bg-[#1F5F99] rounded-full flex items-center justify-center hover:bg-turquoise transition-colors cursor-pointer text-white"
-                        >
-                            <Icon
-                                name="ant-design:facebook-outlined"
-                                size={18}
-                            />
-                        </a>
-                        <a
-                            href="#"
-                            class="w-10 h-10 bg-[#1F5F99] rounded-full flex items-center justify-center hover:bg-turquoise transition-colors cursor-pointer text-white"
-                        >
-                            <Icon
-                                name="ant-design:message-outlined"
-                                size={18}
-                            />
-                        </a>
+                        ))}
                     </div>
                 </div>
 

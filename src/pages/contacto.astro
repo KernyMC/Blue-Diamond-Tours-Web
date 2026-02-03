@@ -2,9 +2,39 @@
 import Layout from "../layouts/Layout.astro";
 import Button from "../components/common/Button.astro";
 import { Icon } from "astro-icon/components";
+import Loader from "../components/common/Loader.astro";
 ---
 
 <Layout title="Contacto | Galápagos Bluediamond">
+
+    <div id="modalLoader" class="hidden">
+        <Loader />
+    </div>
+
+    <!-- Toast Notification -->
+<div
+    id="successToast"
+    class="fixed top-4 right-4 bg-turquoise text-white px-6 py-4 rounded-xl shadow-2xl z-[110] hidden transform transition-all duration-300 translate-x-full"
+>
+    <div class="flex items-center gap-3">
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+        >
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+        </svg>
+        <span class="font-semibold">¡Mensaje enviado correctamente!</span>
+    </div>
+</div>
+
     <div class="pt-32 pb-20 bg-[#F2F6FA] min-h-screen flex items-center">
         <div class="container mx-auto px-6">
             <div
@@ -107,8 +137,7 @@ import { Icon } from "astro-icon/components";
                 <div class="p-12 bg-white">
                     <form
                         class="space-y-6"
-                        action="#"
-                        onsubmit="event.preventDefault(); alert('Mensaje enviado (demo).');"
+                        id="contactFormContact"
                     >
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
@@ -120,6 +149,9 @@ import { Icon } from "astro-icon/components";
                                     type="text"
                                     class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-100 focus:border-turquoise focus:ring-1 focus:ring-turquoise outline-none transition-all font-medium"
                                     placeholder="Tu nombre"
+                                    name="nombre"
+                                    id="nombre"
+                                    required
                                 />
                             </div>
                             <div>
@@ -131,6 +163,8 @@ import { Icon } from "astro-icon/components";
                                     type="text"
                                     class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-100 focus:border-turquoise focus:ring-1 focus:ring-turquoise outline-none transition-all font-medium"
                                     placeholder="Tu apellido"
+                                    name="apellido"
+                                    id="apellido"
                                 />
                             </div>
                         </div>
@@ -143,6 +177,9 @@ import { Icon } from "astro-icon/components";
                                 type="email"
                                 class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-100 focus:border-turquoise focus:ring-1 focus:ring-turquoise outline-none transition-all font-medium"
                                 placeholder="tu@email.com"
+                                name="correo"
+                                id="correo"
+                                required
                             />
                         </div>
                         <div>
@@ -152,11 +189,11 @@ import { Icon } from "astro-icon/components";
                             >
                             <select
                                 class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-100 focus:border-turquoise focus:ring-1 focus:ring-turquoise outline-none transition-all font-medium text-gray-600 cursor-pointer"
-                            >
-                                <option>Tour Diario</option>
-                                <option>Paquete Completo</option>
-                                <option>Ferry</option>
-                                <option>Otro</option>
+                                name="tipoViaje">
+                                <option value="tour-diario">Tour Diario</option>
+                                <option value="paquete-completo">Paquete Completo</option>
+                                <option value="ferry">Ferry</option>
+                                <option value="otro">Otro</option>
                             </select>
                         </div>
                         <div>
@@ -167,9 +204,20 @@ import { Icon } from "astro-icon/components";
                             <textarea
                                 class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-100 focus:border-turquoise focus:ring-1 focus:ring-turquoise outline-none transition-all h-32 font-medium resize-none"
                                 placeholder="Cuéntanos tus planes..."
+                                name="mensaje"
+                                id="mensaje"
+                                required
                             ></textarea>
                         </div>
+                         <!-- Error Message -->
+                        <div
+                            id="errorMensaje"
+                            class="hidden bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl"
+                        >
+                            Se produjo un error, inténtelo más tarde
+                        </div>
                         <Button
+                            type="submit"
                             variant="primary"
                             className="w-full shadow-xl rounded-xl py-4 text-base"
                             >Enviar Mensaje</Button
@@ -180,3 +228,129 @@ import { Icon } from "astro-icon/components";
         </div>
     </div>
 </Layout>
+
+<script>
+    // obtener url donde se encuentra la pagina
+    const currentUrl = window.location.href;
+
+    const form = document.getElementById("contactFormContact");
+    const emailInput = document.getElementById("email") as HTMLInputElement;
+    const modalLoader = document.getElementById("modalLoader");
+    const successToast = document.getElementById("successToast");
+    const errorMessage = document.getElementById("errorMensaje");
+
+
+    // Function to show loader
+    function showLoader() {
+        modalLoader?.classList.remove("hidden");
+    }
+
+    // Function to hide loader
+    function hideLoader() {
+        modalLoader?.classList.add("hidden");
+    }
+
+    // Function to show success toast
+    function showSuccessToast() {
+        if (successToast) {
+            successToast.classList.remove("hidden");
+            // Trigger animation
+            setTimeout(() => {
+                successToast.classList.remove("translate-x-full");
+            }, 10);
+
+            // Hide after 4 seconds
+            setTimeout(() => {
+                successToast.classList.add("translate-x-full");
+                setTimeout(() => {
+                    successToast.classList.add("hidden");
+                }, 300);
+            }, 4000);
+        }
+    }
+
+    // Function to show error message
+    function showError() {
+        errorMessage?.classList.remove("hidden");
+    }
+
+    // Function to hide error message
+    function hideError() {
+        errorMessage?.classList.add("hidden");
+    }
+
+    // Form submission
+    form?.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        console.log("📨 Enviando formulario de contacto...");
+
+        // Hide any previous error
+        hideError();
+
+        // Show loader
+        showLoader();
+
+         
+
+        // Get form data
+        const formData = new FormData(form as HTMLFormElement);
+        const data = Object.fromEntries(formData.entries());
+        console.log("📦 Datos del formulario:", data);
+        
+        // Get checkboxes separately
+        const activities = Array.from(
+            document.querySelectorAll('input[name="activities"]:checked'),
+        ).map((cb: any) => cb.value);
+
+        data.activities = activities.join(", ");
+
+        
+
+        try {
+            // Preparar datos para el endpoint
+            const requestBody = {
+                name: `${data.nombre} ${data.apellido}`,
+                email: data.correo as string,
+                message: `
+URL de la página: ${currentUrl}
+Tipo de viaje: ${data.tipoViaje || "No especificado"}
+Mensaje:
+${data.mensaje || "Sin mensaje adicional"}
+                `.trim(),
+            };
+
+          
+
+            const response = await fetch("/api/contact", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(requestBody),
+            });
+
+            
+
+            const result = await response.json();
+            
+
+            // Hide loader
+            hideLoader();
+
+            if (response.ok) {
+                // Show success toast
+                showSuccessToast();
+                (form as HTMLFormElement).reset();
+            } else {
+                throw new Error("Error en el servidor");
+            }
+        } catch (error) {
+            console.error("❌ Error al enviar el formulario:", error);
+            // Hide loader
+            hideLoader();
+            // Show error message
+            showError();
+        }
+    });
+
+</script>
