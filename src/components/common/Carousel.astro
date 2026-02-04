@@ -1,0 +1,110 @@
+---
+interface Props {
+  // Clase para el alto (ej: 'h-[500px]')
+  heightClass?: string;
+  // CUANTOS items quieres ver a la vez (2, 3, 4, 5...)
+  visibleItems?: number;
+}
+
+const { heightClass = "h-[500px]", visibleItems = 4 } = Astro.props;
+---
+
+<div class={`relative w-full ${heightClass} group`}>
+  
+  <button 
+    id="btn-prev"
+    class="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-black/20 hover:bg-black/60 text-white p-3 rounded-full transition-colors backdrop-blur-[2px]"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+    </svg>
+  </button>
+
+  <div 
+    id="carousel-track" 
+    class="flex w-full h-full overflow-x-auto snap-x snap-mandatory scrollbar-hide"
+    style={`--items-count: ${visibleItems};`}
+  >
+    <slot />
+  </div>
+
+  <button 
+    id="btn-next"
+    class="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-black/20 hover:bg-black/60 text-white p-3 rounded-full transition-colors backdrop-blur-[2px]"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+    </svg>
+  </button>
+
+  <div class="absolute bottom-[-2rem] left-1/2 -translate-x-1/2 z-20">
+    <span id="counter" class="bg-black/50 text-white px-4 py-1 rounded-full text-sm font-bold border border-white/30 backdrop-blur-md">
+      1 / --
+    </span>
+  </div>
+
+</div>
+
+<style>
+  /* Ocultar scrollbar */
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+  /* LÓGICA DE LOS ITEMS:
+    Seleccionamos todos los hijos directos del track (tus cards).
+    
+    1. Móvil (pantallas pequeñas): Forzamos 1 item (100% ancho) para que se vea bien.
+    2. Escritorio (md en adelante): Usamos TU PROP 'visibleItems'.
+       La fórmula calc(100% / número) hace que encajen exactos.
+  */
+  :global(#carousel-track > *) {
+    flex-shrink: 0;
+    height: 100%;
+    scroll-snap-align: start;
+    width: 100%; /* Por defecto en móvil se ve 1 */
+  }
+
+  @media (min-width: 768px) {
+    :global(#carousel-track > *) {
+      width: calc(100% / var(--items-count));
+    }
+  }
+</style>
+
+<script>
+  // Script simple para botones y contador
+  const track = document.getElementById('carousel-track');
+  const btnPrev = document.getElementById('btn-prev');
+  const btnNext = document.getElementById('btn-next');
+  const counter = document.getElementById('counter');
+  
+  if (track && btnPrev && btnNext && counter) {
+    const items = track.children;
+    const total = items.length;
+
+    // Actualizar contador inicial
+    updateCounter();
+
+    // Eventos Click
+    btnNext.addEventListener('click', () => {
+      const itemWidth = items[0].clientWidth;
+      track.scrollBy({ left: itemWidth, behavior: 'smooth' });
+    });
+
+    btnPrev.addEventListener('click', () => {
+      const itemWidth = items[0].clientWidth;
+      track.scrollBy({ left: -itemWidth, behavior: 'smooth' });
+    });
+
+    // Evento Scroll (para actualizar contador)
+    track.addEventListener('scroll', updateCounter);
+
+    function updateCounter() {
+      const itemWidth = items[0].clientWidth;
+      const scrollPos = track.scrollLeft;
+      // Calculamos índice actual basado en el scroll
+      const current = Math.round(scrollPos / itemWidth) + 1;
+      counter.innerText = `${Math.min(current, total)} / ${total}`;
+    }
+  }
+</script>

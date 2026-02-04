@@ -10,6 +10,8 @@ import AnchorIcon from "../components/common/AnchorIcon.astro";
 import ContactFormModal from "../components/common/ContactFormModal.astro";
 import { CATEGORIES, TOURS_DATA } from "../data/tours";
 import { sanityClient } from "../lib/sanityClient";
+import Carousel from "../components/common/Carousel.astro";
+import TourCard from "../components/cards/TourCard.astro";
 
 // Fetch featured packages from Sanity
 const packages = await sanityClient.fetch(`
@@ -35,346 +37,367 @@ const packages = await sanityClient.fetch(`
 `);
 
 // Select only first 3 tours for consistency with original design
-const featuredTours = TOURS_DATA && Array.isArray(TOURS_DATA) ? TOURS_DATA.slice(0, 3) : [];
+const featuredTours = [TOURS_DATA,TOURS_DATA].flat();
+  //TOURS_DATA && Array.isArray(TOURS_DATA) ? TOURS_DATA.slice(0, 3) : [];
 ---
 
 <Layout title="Galápagos Bluediamond | Inicio">
-	{/* HERO SECTION */}
-	<section
-		class="relative h-screen min-h-[700px] flex items-center justify-center overflow-visible mb-20"
-	>
-		{/* Background Video */}
-		<div class="absolute inset-0">
-			<div
-				class="w-full h-full rounded-b-[3rem] overflow-hidden relative"
-			>
-				<video
-					autoplay
-					muted
-					loop
-					playsinline
-					class="w-full h-full object-cover"
-				>
-					<source
-						src="https://res.cloudinary.com/di40d5qvz/video/upload/v1769900874/lobos_sxnh66.mp4"
-						type="video/mp4"
-					/>
-				</video>
-				<div
-					class="absolute inset-0 bg-black/65"
-				>
-				</div>
-			</div>
+  {/* HERO SECTION */}
+  <section
+    class="relative h-screen min-h-[700px] flex items-center justify-center overflow-visible mb-20"
+  >
+    {/* Background Video */}
+    <div class="absolute inset-0">
+      <div class="w-full h-full rounded-b-[3rem] overflow-hidden relative">
+        <video
+          autoplay
+          muted
+          loop
+          playsinline
+          class="w-full h-full object-cover"
+        >
+          <source
+            src="https://res.cloudinary.com/di40d5qvz/video/upload/v1769900874/lobos_sxnh66.mp4"
+            type="video/mp4"
+          />
+        </video>
+        <div class="absolute inset-0 bg-black/65"></div>
+      </div>
+    </div>
+
+    <div class="relative z-10 text-center px-4 max-w-5xl mx-auto pb-20">
+      <h3
+        class="text-turquoise font-bold tracking-[0.3em] uppercase mb-4 animate-fade-in-up text-sm md:text-base"
+      >
+        Explora el Paraíso
+      </h3>
+      <h1
+        class="text-5xl md:text-7xl lg:text-8xl font-bold text-white font-serif mb-8 leading-tight drop-shadow-lg animate-fade-in-up delay-100"
+      >
+        Maravilla Natural <br /> del Mundo
+      </h1>
+      <div class="flex justify-center gap-4 animate-fade-in-up delay-200">
+        <a href="/paquetes" class="no-underline">
+          <Button
+            variant="accent"
+            className="rounded-full px-8 py-4 text-base shadow-2xl hover:scale-105"
+          >
+            Explorar Paquetes
+          </Button>
+        </a>
+        <div
+          class="hidden md:flex items-center justify-center w-12 h-12 rounded-full border-2 border-white text-white cursor-pointer hover:bg-white hover:text-navy transition-colors"
+        >
+          <Icon name="ant-design:down-outlined" size={24} />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* CATEGORY SECTION */}
+  <section class="py-10 md:py-20 bg-white">
+    <div class="container mx-auto px-6">
+      <div class="text-center mb-8 md:mb-16">
+        <h3 class="text-turquoise font-script text-2xl md:text-3xl mb-2">
+          Explora Galápagos
+        </h3>
+        <h2
+          class="text-navy text-4xl md:text-5xl font-bold font-serif tracking-tight"
+        >
+          Encuentra tu Aventura Perfecta
+        </h2>
+      </div>
+      <!-- Mobile: Grid vertical de cards grandes -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:hidden">
+        {CATEGORIES.map((cat, idx) => <CategoryCard item={cat} index={idx} />)}
+      </div>
+      <!-- Desktop: Efecto arco/abanico -->
+      <div
+        class="hidden lg:flex flex-nowrap justify-center items-end gap-6 px-4"
+      >
+        {CATEGORIES.map((cat, idx) => <CategoryCard item={cat} index={idx} />)}
+      </div>
+    </div>
+  </section>
+
+  {/* INTRO / WHY CHOOSE US */}
+  <section class="py-20 bg-[#F2F6FA] overflow-hidden">
+    <div class="container mx-auto px-6">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        {/* Left: Image Collage */}
+        <div class="relative">
+          <div class="grid grid-cols-2 gap-4">
+            <img
+              src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=80&w=400"
+              class="rounded-t-[10rem] rounded-b-[2rem] w-full h-80 object-cover shadow-xl transform translate-y-8"
+              alt="Galapagos 1"
+            />
+            <img
+              src="https://images.unsplash.com/photo-1544551763-46a8723ba3f9?auto=format&fit=crop&q=80&w=400"
+              class="rounded-t-[2rem] rounded-b-[10rem] w-full h-80 object-cover shadow-xl"
+              alt="Galapagos 2"
+            />
+          </div>
+          {/* Decorative Elements */}
+          <div
+            class="absolute -z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-blue-100/50 rounded-full blur-3xl"
+          >
+          </div>
+        </div>
+
+        {/* Right: Content */}
+        <div>
+          <h3
+            class="text-turquoise font-bold uppercase tracking-wider text-sm mb-3"
+          >
+            Únete a la aventura
+          </h3>
+          <h2
+            class="text-navy text-4xl md:text-5xl font-bold font-serif mb-6 leading-tight"
+          >
+            Planifica tu viaje <br /> con nosotros
+          </h2>
+          <p class="text-gray-500 mb-10 text-lg leading-relaxed">
+            En Galápagos Bluediamond, diseñamos experiencias inmersivas que
+            respetan la naturaleza. Descubre por qué somos tu mejor opción.
+          </p>
+
+          <div class="space-y-8">
+            <div class="flex gap-5 items-start">
+              <div
+                class="w-14 h-14 rounded-full bg-white shadow-md flex items-center justify-center text-turquoise flex-shrink-0"
+              >
+                <AnchorIcon size={24} />
+              </div>
+              <div>
+                <h4 class="text-navy font-bold text-xl mb-2">
+                  Experiencia Local
+                </h4>
+                <p class="text-gray-500 text-sm leading-relaxed">
+                  Guías nacidos en las islas con conocimiento profundo.
+                </p>
+              </div>
+            </div>
+            <div class="flex gap-5 items-start">
+              <div
+                class="w-14 h-14 rounded-full bg-white shadow-md flex items-center justify-center text-turquoise flex-shrink-0"
+              >
+                <Icon name="ant-design:heart-outlined" size={24} />
+              </div>
+              <div>
+                <h4 class="text-navy font-bold text-xl mb-2">
+                  Turismo Responsable
+                </h4>
+                <p class="text-gray-500 text-sm leading-relaxed">
+                  Comprometidos con la conservación y el respeto animal.
+                </p>
+              </div>
+            </div>
+            <div class="flex gap-5 items-start">
+              <div
+                class="w-14 h-14 rounded-full bg-white shadow-md flex items-center justify-center text-turquoise flex-shrink-0"
+              >
+                <Icon name="ant-design:compass-outlined" size={24} />
+              </div>
+              <div>
+                <h4 class="text-navy font-bold text-xl mb-2">
+                  Viajes Personalizados
+                </h4>
+                <p class="text-gray-500 text-sm leading-relaxed">
+                  Itinerarios adaptados a tu ritmo y preferencias.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-10">
+            <a href="/contacto" class="no-underline">
+              <Button
+                variant="primary"
+                className="shadow-xl px-8 py-4 rounded-full"
+              >
+                Empezar a Planificar
+              </Button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* FEATURED TOURS */}
+  <section
+    class="py-20 bg-white relative overflow-hidden"
+    style="background-image: url('https://cdn.sanity.io/images/f6sa56jz/production/c3e37595e20c4e096a15d872f6e6eabe1535ed00-1510x1064.svg'); background-size: cover; background-position: center; background-repeat: no-repeat;"
+  >
+    {/* Background overlay to control opacity */}
+    <div class="absolute inset-0 bg-white/70"></div>
+    <div class="container mx-auto px-6 relative z-10">
+      <div class="text-center mb-16">
+        <h3 class="text-turquoise font-script text-2xl mb-2">
+          Los mejores lugares para ti
+        </h3>
+        <h2 class="text-navy text-4xl font-bold font-serif">
+          Tours Más Populares
+        </h2>
+		<div class="mt-4 flex justify-center">
+			<figure class="w-50">
+				<img src="images/turtle2.png" class="move-turtle"/>
+			</figure>
+			<figure class="w-50">
+				<img src="images/turtle1.png" class="move-turtle"/>
+			</figure>
 		</div>
+      </div>
+	  <!-- 
+      <div
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10"
+      >
+        {
+          featuredTours.map((tour) => (
+            <div class="h-full">
+              <a href={`/tour/${tour.id}`} class="no-underline block h-full">
+                <Card item={tour} type="tour" />
+              </a>
+            </div>
+          ))
+        }
+      </div>
+	-->
+      <div>
 
-		<div class="relative z-10 text-center px-4 max-w-5xl mx-auto pb-20">
-			<h3
-				class="text-turquoise font-bold tracking-[0.3em] uppercase mb-4 animate-fade-in-up text-sm md:text-base"
-			>
-				Explora el Paraíso
-			</h3>
-			<h1
-				class="text-5xl md:text-7xl lg:text-8xl font-bold text-white font-serif mb-8 leading-tight drop-shadow-lg animate-fade-in-up delay-100"
-			>
-				Maravilla Natural <br /> del Mundo
-			</h1>
-			<div class="flex justify-center gap-4 animate-fade-in-up delay-200">
-				<a href="/paquetes" class="no-underline">
-					<Button
-						variant="accent"
-						className="rounded-full px-8 py-4 text-base shadow-2xl hover:scale-105"
-					>
-						Explorar Paquetes
-					</Button>
-				</a>
-				<div
-					class="hidden md:flex items-center justify-center w-12 h-12 rounded-full border-2 border-white text-white cursor-pointer hover:bg-white hover:text-navy transition-colors"
-				>
-					<Icon name="ant-design:down-outlined" size={24} />
-				</div>
-			</div>
-		</div>
-	</section>
+        <Carousel heightClass="h-[500px]" visibleItems={5}>
+          {
+          featuredTours.map((tour) => (
+            <div class="h-full">
+              <a href={`/tour/${tour.id}`} class="no-underline block h-full">
+                <TourCard img={tour.image} title={tour.title} price={tour.price} />
+              </a>
+            </div>
+          ))
+        }
+        </Carousel>
+      </div>
+      <div class="text-center mt-16">
+        <a href="/tours" class="no-underline inline-block">
+          <Button variant="outline" className="rounded-full px-10 py-4">
+            Ver Todos los Tours
+          </Button>
+        </a>
+      </div>
+    </div>
+  </section>
 
-	{/* CATEGORY SECTION */}
-	<section class="py-10 md:py-20 bg-white">
-		<div class="container mx-auto px-6">
-			<div class="text-center mb-8 md:mb-16">
-				<h3 class="text-turquoise font-script text-2xl md:text-3xl mb-2">
-					Explora Galápagos
-				</h3>
-				<h2 class="text-navy text-4xl md:text-5xl font-bold font-serif tracking-tight">
-					Encuentra tu Aventura Perfecta
-				</h2>
-			</div>
-			<!-- Mobile: Grid vertical de cards grandes -->
-			<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:hidden">
-				{CATEGORIES.map((cat, idx) => <CategoryCard item={cat} index={idx} />)}
-			</div>
-			<!-- Desktop: Efecto arco/abanico -->
-			<div class="hidden lg:flex flex-nowrap justify-center items-end gap-6 px-4">
-				{CATEGORIES.map((cat, idx) => <CategoryCard item={cat} index={idx} />)}
-			</div>
-		</div>
-	</section>
+  {/* FEATURED PACKAGES */}
+  <section class="py-20 bg-[#F2F6FA]">
+    <div class="container mx-auto px-6">
+      <SectionTitle
+        title="Paquetes Destacados"
+        subtitle="Top Destinations"
+        centered={true}
+      />
 
-	{/* INTRO / WHY CHOOSE US */}
-	<section class="py-20 bg-[#F2F6FA] overflow-hidden">
-		<div class="container mx-auto px-6">
-			<div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-				{/* Left: Image Collage */}
-				<div class="relative">
-					<div class="grid grid-cols-2 gap-4">
-						<img
-							src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=80&w=400"
-							class="rounded-t-[10rem] rounded-b-[2rem] w-full h-80 object-cover shadow-xl transform translate-y-8"
-							alt="Galapagos 1"
-						/>
-						<img
-							src="https://images.unsplash.com/photo-1544551763-46a8723ba3f9?auto=format&fit=crop&q=80&w=400"
-							class="rounded-t-[2rem] rounded-b-[10rem] w-full h-80 object-cover shadow-xl"
-							alt="Galapagos 2"
-						/>
-					</div>
-					{/* Decorative Elements */}
-					<div
-						class="absolute -z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-blue-100/50 rounded-full blur-3xl"
-					>
-					</div>
-				</div>
+      {
+        packages && packages.length > 0 ? (
+          <PackageCarousel packages={packages} />
+        ) : (
+          <div class="bg-gray-200 rounded-[2.5rem] h-[500px] flex items-center justify-center text-gray-500">
+            No hay paquetes destacados disponibles
+          </div>
+        )
+      }
+    </div>
+  </section>
 
-				{/* Right: Content */}
-				<div>
-					<h3
-						class="text-turquoise font-bold uppercase tracking-wider text-sm mb-3"
-					>
-						Únete a la aventura
-					</h3>
-					<h2
-						class="text-navy text-4xl md:text-5xl font-bold font-serif mb-6 leading-tight"
-					>
-						Planifica tu viaje <br /> con nosotros
-					</h2>
-					<p class="text-gray-500 mb-10 text-lg leading-relaxed">
-						En Galápagos Bluediamond, diseñamos experiencias
-						inmersivas que respetan la naturaleza. Descubre por qué
-						somos tu mejor opción.
-					</p>
+  {/* QUICK CONTACT */}
+  <section class="py-24 bg-white relative">
+    <div class="container mx-auto px-6">
+      <div
+        class="bg-navy rounded-[3rem] p-8 md:p-16 relative overflow-hidden text-center shadow-2xl"
+      >
+        {/* Background decoration */}
+        <div class="absolute top-0 left-0 w-full h-full opacity-10">
+          <div
+            class="absolute -top-24 -left-24 w-64 h-64 rounded-full border-[20px] border-white"
+          >
+          </div>
+          <div
+            class="absolute -bottom-24 -right-24 w-80 h-80 rounded-full bg-turquoise"
+          >
+          </div>
+        </div>
 
-					<div class="space-y-8">
-						<div class="flex gap-5 items-start">
-							<div
-								class="w-14 h-14 rounded-full bg-white shadow-md flex items-center justify-center text-turquoise flex-shrink-0"
-							>
-								<AnchorIcon size={24} />
-							</div>
-							<div>
-								<h4
-									class="text-navy font-bold text-xl mb-2"
-								>
-									Experiencia Local
-								</h4>
-								<p
-									class="text-gray-500 text-sm leading-relaxed"
-								>
-									Guías nacidos en las islas con conocimiento
-									profundo.
-								</p>
-							</div>
-						</div>
-						<div class="flex gap-5 items-start">
-							<div
-								class="w-14 h-14 rounded-full bg-white shadow-md flex items-center justify-center text-turquoise flex-shrink-0"
-							>
-								<Icon
-									name="ant-design:heart-outlined"
-									size={24}
-								/>
-							</div>
-							<div>
-								<h4
-									class="text-navy font-bold text-xl mb-2"
-								>
-									Turismo Responsable
-								</h4>
-								<p
-									class="text-gray-500 text-sm leading-relaxed"
-								>
-									Comprometidos con la conservación y el
-									respeto animal.
-								</p>
-							</div>
-						</div>
-						<div class="flex gap-5 items-start">
-							<div
-								class="w-14 h-14 rounded-full bg-white shadow-md flex items-center justify-center text-turquoise flex-shrink-0"
-							>
-								<Icon
-									name="ant-design:compass-outlined"
-									size={24}
-								/>
-							</div>
-							<div>
-								<h4
-									class="text-navy font-bold text-xl mb-2"
-								>
-									Viajes Personalizados
-								</h4>
-								<p
-									class="text-gray-500 text-sm leading-relaxed"
-								>
-									Itinerarios adaptados a tu ritmo y
-									preferencias.
-								</p>
-							</div>
-						</div>
-					</div>
+        <div class="relative z-10 max-w-2xl mx-auto px-4">
+          <h2
+            class="text-2xl sm:text-3xl md:text-5xl font-bold text-white mb-4 md:mb-6 font-serif"
+          >
+            ¿Listo para viajar?
+          </h2>
+          <p
+            class="text-blue-100 mb-6 md:mb-10 text-base md:text-lg leading-relaxed"
+          >
+            Recibe asesoría personalizada gratuita. Déjanos tu correo y un
+            experto se pondrá en contacto contigo.
+          </p>
 
-					<div class="mt-10">
-						<a href="/contacto" class="no-underline">
-							<Button variant="primary" className="shadow-xl px-8 py-4 rounded-full">
-								Empezar a Planificar
-							</Button>
-						</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
+          <form id="emailQuickForm" class="max-w-lg mx-auto">
+            <div class="flex flex-col sm:flex-row gap-3">
+              <input
+                id="quickEmail"
+                type="email"
+                placeholder="Ingresa tu correo electrónico"
+                required
+                class="flex-grow px-6 py-4 rounded-full outline-none text-gray-700 bg-white text-sm md:text-base shadow-lg focus:ring-2 focus:ring-turquoise"
+              />
+              <button
+                type="submit"
+                class="bg-turquoise text-white px-8 py-4 rounded-full font-bold hover:bg-[#1F5F99] transition-colors shadow-lg cursor-pointer text-sm md:text-base whitespace-nowrap"
+              >
+                Contactar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
 
-	{/* FEATURED TOURS */}
-	<section 
-		class="py-20 bg-white relative overflow-hidden"
-		style="background-image: url('https://cdn.sanity.io/images/f6sa56jz/production/c3e37595e20c4e096a15d872f6e6eabe1535ed00-1510x1064.svg'); background-size: cover; background-position: center; background-repeat: no-repeat;"
-	>
-		{/* Background overlay to control opacity */}
-		<div class="absolute inset-0 bg-white/70"></div>
-		<div class="container mx-auto px-6 relative z-10">
-			<div class="text-center mb-16">
-				<h3 class="text-turquoise font-script text-2xl mb-2">
-					Los mejores lugares para ti
-				</h3>
-				<h2 class="text-navy text-4xl font-bold font-serif">
-					Tours Más Populares
-				</h2>
-			</div>
-			<div
-				class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10"
-			>
-				{
-					featuredTours.map((tour) => (
-						<div class="h-full">
-							<a
-								href={`/tour/${tour.id}`}
-								class="no-underline block h-full"
-							>
-								<Card item={tour} type="tour" />
-							</a>
-						</div>
-					))
-				}
-			</div>
-			<div class="text-center mt-16">
-				<a href="/tours" class="no-underline inline-block">
-					<Button variant="outline" className="rounded-full px-10 py-4">
-						Ver Todos los Tours
-					</Button>
-				</a>
-			</div>
-		</div>
-	</section>
-
-	{/* FEATURED PACKAGES */}
-	<section class="py-20 bg-[#F2F6FA]">
-		<div class="container mx-auto px-6">
-			<SectionTitle
-				title="Paquetes Destacados"
-				subtitle="Top Destinations"
-				centered={true}
-			/>
-
-			{packages && packages.length > 0 ? (
-				<PackageCarousel packages={packages} />
-			) : (
-				<div class="bg-gray-200 rounded-[2.5rem] h-[500px] flex items-center justify-center text-gray-500">
-					No hay paquetes destacados disponibles
-				</div>
-			)}
-		</div>
-	</section>
-
-	{/* QUICK CONTACT */}
-	<section class="py-24 bg-white relative">
-		<div class="container mx-auto px-6">
-			<div
-				class="bg-navy rounded-[3rem] p-8 md:p-16 relative overflow-hidden text-center shadow-2xl"
-			>
-				{/* Background decoration */}
-				<div class="absolute top-0 left-0 w-full h-full opacity-10">
-					<div
-						class="absolute -top-24 -left-24 w-64 h-64 rounded-full border-[20px] border-white"
-					>
-					</div>
-					<div
-						class="absolute -bottom-24 -right-24 w-80 h-80 rounded-full bg-turquoise"
-					>
-					</div>
-				</div>
-
-				<div class="relative z-10 max-w-2xl mx-auto px-4">
-					<h2
-						class="text-2xl sm:text-3xl md:text-5xl font-bold text-white mb-4 md:mb-6 font-serif"
-					>
-						¿Listo para viajar?
-					</h2>
-					<p class="text-blue-100 mb-6 md:mb-10 text-base md:text-lg leading-relaxed">
-						Recibe asesoría personalizada gratuita. Déjanos tu
-						correo y un experto se pondrá en contacto contigo.
-					</p>
-
-					<form
-						id="emailQuickForm"
-						class="max-w-lg mx-auto"
-					>
-						<div class="flex flex-col sm:flex-row gap-3">
-							<input
-								id="quickEmail"
-								type="email"
-								placeholder="Ingresa tu correo electrónico"
-								required
-								class="flex-grow px-6 py-4 rounded-full outline-none text-gray-700 bg-white text-sm md:text-base shadow-lg focus:ring-2 focus:ring-turquoise"
-							/>
-							<button
-								type="submit"
-								class="bg-turquoise text-white px-8 py-4 rounded-full font-bold hover:bg-[#1F5F99] transition-colors shadow-lg cursor-pointer text-sm md:text-base whitespace-nowrap"
-							>
-								Contactar
-							</button>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</section>
-
-	<!-- Contact Form Modal -->
-	<ContactFormModal />
+  <!-- Contact Form Modal -->
+  <ContactFormModal />
 </Layout>
 
 <script>
-	// Handle quick email form submission
-	const emailQuickForm = document.getElementById("emailQuickForm");
-	const quickEmailInput = document.getElementById(
-		"quickEmail",
-	) as HTMLInputElement;
+  // Handle quick email form submission
+  const emailQuickForm = document.getElementById("emailQuickForm");
+  const quickEmailInput = document.getElementById(
+    "quickEmail",
+  ) as HTMLInputElement;
 
-	emailQuickForm?.addEventListener("submit", (e) => {
-		e.preventDefault();
-		const email = quickEmailInput?.value || "";
+  emailQuickForm?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const email = quickEmailInput?.value || "";
 
-		// Open modal with prefilled email
-		if ((window as any).openContactModal) {
-			(window as any).openContactModal(email);
-		}
-	});
+    // Open modal with prefilled email
+    if ((window as any).openContactModal) {
+      (window as any).openContactModal(email);
+    }
+  });
 </script>
+
+<style>
+  .move-turtle{
+  	animation: mover_turtle 4s infinite;
+  }
+
+  @keyframes mover_turtle {
+	0% {
+	transform: rotate(1deg);
+  }
+  50% {
+    transform: rotate(-1deg);
+  }
+  100% {
+    transform: rotate(1deg);
+  }
+}
+</style>

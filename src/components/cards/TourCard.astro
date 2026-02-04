@@ -1,0 +1,31 @@
+---
+// TourCard.astro
+// Este es el componente que YA TIENES diseñado según la imagen
+const { img, title, price } = Astro.props;
+---
+<article class="relative w-full h-full border-r border-white/20 overflow-hidden tour-card rounded-[0.5rem] shadow-lg">
+  <img 
+    src={img} 
+    alt={title} 
+    class="absolute inset-0 w-full h-full object-cover transition-transform duration-500"
+  />
+  
+  <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40"></div>
+
+  <div class="absolute inset-0 flex flex-col justify-between p-6">
+    <h3 class="text-white text-2xl font-serif text-center drop-shadow-md">
+      {title}
+    </h3>
+    
+    <div class="text-center rounded-full bg-black/40 px-4 py-2 mx-auto w-max backdrop-blur-sm">
+         <p class="text-white font-light tracking-widest text-md">From {price} USD</p>
+    </div>
+  </div>
+</article>
+
+<style>
+  .tour-card:hover img {
+    transform: scale(1.1);
+    border-radius: 1.5rem;
+  }
+</style>

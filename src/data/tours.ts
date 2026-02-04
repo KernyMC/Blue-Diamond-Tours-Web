@@ -99,7 +99,7 @@ export const TOURS_DATA = [
     duration: "Full Day",
     price: 160,
     image:
-      "https://images.unsplash.com/photo-1621617633282-3c1d47157833?auto=format&fit=crop&q=80&w=800",
+      "https://images.pexels.com/photos/18426871/pexels-photo-18426871.jpeg?_gl=1*dojgnz*_ga*MTQ0MjcxODcxLjE3NTcwNDgwMzM.*_ga_8JE65Q40S6*czE3NzAxNzY1MDUkbzUkZzEkdDE3NzAxNzY2MzIkajYwJGwwJGgw",
     difficulty: "Alto",
     location: "San Cristóbal",
     rating: 4.9,
