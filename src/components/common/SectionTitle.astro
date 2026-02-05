@@ -1,15 +1,40 @@
 ---
-const { title, subtitle, centered = false } = Astro.props;
+const { title, subtitle, centered = false, urlImg1, urlImg2 } = Astro.props;
 ---
 
 <div class={`mb-12 ${centered ? "text-center" : ""}`}>
-    {
+   {
         subtitle && (
             <h3 class="text-turquoise font-bold tracking-[0.2em] uppercase text-sm mb-3 animate-fade-in">
                 {subtitle}
             </h3>
         )
-    }
+        }
+    <div class="flex flex-row justify-center items-center gap-4">
+        
+         
+        {
+            urlImg1 ? (
+                <img 
+                    src={urlImg1[0]} 
+                    alt={urlImg1[1]} 
+                    class="h-16 md:h-20 animate-fade-in move-turtle"
+                />
+            ) : null
+        }
+        {
+            urlImg1 ? (
+                <img 
+                    src={urlImg2[0]} 
+                    alt={urlImg2[1]} 
+                    class="h-16 md:h-20 animate-fade-in move-turtle"
+                />
+            ) : null
+        }
+
+
+    </div>
+   
     <h2
         class="text-navy text-4xl md:text-5xl font-bold font-serif leading-tight relative inline-block"
     >
@@ -20,3 +45,21 @@ const { title, subtitle, centered = false } = Astro.props;
         </div>
     </h2>
 </div>
+
+<style>
+  .move-turtle{
+  	animation: mover_turtle 4s infinite;
+  }
+
+  @keyframes mover_turtle {
+	0% {
+	transform: rotate(1deg);
+  }
+  50% {
+    transform: rotate(-1deg);
+  }
+  100% {
+    transform: rotate(1deg);
+  }
+}
+</style>

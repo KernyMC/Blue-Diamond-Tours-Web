@@ -4,16 +4,30 @@ interface Props {
   heightClass?: string;
   // CUANTOS items quieres ver a la vez (2, 3, 4, 5...)
   visibleItems?: number;
+  // Si el carrusel debe ser infinito
+  infinite?: boolean;
+  // Tipo de indicador: 'numbers' (1/5), 'dots' (puntos), 'none' (ninguno)
+  indicator?: 'numbers' | 'dots' | 'none';
+  // Tiempo en milisegundos para autoplay (0 = desactivado)
+  autoplay?: number;
 }
 
-const { heightClass = "h-[500px]", visibleItems = 4 } = Astro.props;
+const { 
+  heightClass = "h-[500px]", 
+  visibleItems = 4,
+  infinite = false,
+  indicator = "numbers",
+  autoplay = 0
+} = Astro.props;
+
+// Generar ID único para este carousel
+const carouselId = `carousel-${Math.random().toString(36).substr(2, 9)}`;
 ---
 
-<div class={`relative w-full ${heightClass} group`}>
+<div class={`relative w-full ${heightClass} group carousel-container`} data-carousel-id={carouselId}>
   
   <button 
-    id="btn-prev"
-    class="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-black/20 hover:bg-black/60 text-white p-3 rounded-full transition-colors backdrop-blur-[2px]"
+    class="btn-prev absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-black/20 hover:bg-black/60 text-white p-3 rounded-full transition-colors backdrop-blur-[2px]"
   >
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
       <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
@@ -21,27 +35,36 @@ const { heightClass = "h-[500px]", visibleItems = 4 } = Astro.props;
   </button>
 
   <div 
-    id="carousel-track" 
-    class="flex w-full h-full overflow-x-auto snap-x snap-mandatory scrollbar-hide"
+    class="carousel-track flex w-full h-full overflow-x-auto snap-x snap-mandatory scrollbar-hide"
     style={`--items-count: ${visibleItems};`}
+    data-infinite={infinite}
+    data-autoplay={autoplay}
   >
     <slot />
   </div>
 
   <button 
-    id="btn-next"
-    class="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-black/20 hover:bg-black/60 text-white p-3 rounded-full transition-colors backdrop-blur-[2px]"
+    class="btn-next absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-black/20 hover:bg-black/60 text-white p-3 rounded-full transition-colors backdrop-blur-[2px]"
   >
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
       <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
     </svg>
   </button>
 
-  <div class="absolute bottom-[-2rem] left-1/2 -translate-x-1/2 z-20">
-    <span id="counter" class="bg-black/50 text-white px-4 py-1 rounded-full text-sm font-bold border border-white/30 backdrop-blur-md">
-      1 / --
-    </span>
-  </div>
+  {indicator !== 'none' && (
+    <div class="absolute bottom-2 left-1/2 -translate-x-1/2 z-[100]">
+      {indicator === 'numbers' ? (
+        <span class="counter bg-black/50 text-white px-4 py-1 rounded-full text-sm font-bold border border-white/30 backdrop-blur-md">
+          1 / --
+        </span>
+      ) : (
+        <div class="dots-container flex gap-2 bg-black/50 px-3 py-2 rounded-full border border-white/30 backdrop-blur-md">
+          <!-- Los dots se generarán dinámicamente con JavaScript -->
+        </div>
+      )}
+    </div>
+  )}
+
 
 </div>
 
@@ -57,7 +80,7 @@ const { heightClass = "h-[500px]", visibleItems = 4 } = Astro.props;
     2. Escritorio (md en adelante): Usamos TU PROP 'visibleItems'.
        La fórmula calc(100% / número) hace que encajen exactos.
   */
-  :global(#carousel-track > *) {
+  :global(.carousel-track > *) {
     flex-shrink: 0;
     height: 100%;
     scroll-snap-align: start;
@@ -65,46 +88,183 @@ const { heightClass = "h-[500px]", visibleItems = 4 } = Astro.props;
   }
 
   @media (min-width: 768px) {
-    :global(#carousel-track > *) {
+    :global(.carousel-track > *) {
       width: calc(100% / var(--items-count));
     }
   }
 </style>
 
 <script>
-  // Script simple para botones y contador
-  const track = document.getElementById('carousel-track');
-  const btnPrev = document.getElementById('btn-prev');
-  const btnNext = document.getElementById('btn-next');
-  const counter = document.getElementById('counter');
+  // Inicializar todos los carouseles en la página
+  document.querySelectorAll('.carousel-container').forEach((container) => {
+    const track = container.querySelector('.carousel-track') as HTMLElement;
+    const btnPrev = container.querySelector('.btn-prev') as HTMLElement;
+    const btnNext = container.querySelector('.btn-next') as HTMLElement;
+    const counter = container.querySelector('.counter') as HTMLElement;
+    const dotsContainer = container.querySelector('.dots-container') as HTMLElement;
   
-  if (track && btnPrev && btnNext && counter) {
-    const items = track.children;
-    const total = items.length;
+    if (track && btnPrev && btnNext) {
+      const items = Array.from(track.children);
+      const total = items.length;
+      const isInfinite = track.dataset.infinite === 'true';
+      const autoplayTime = parseInt(track.dataset.autoplay || '0');
+      let clonedItems: Element[] = [];
+      let autoplayInterval: number | null = null;
+      let isJumping = false; // Bandera para evitar actualizar indicador durante saltos
 
-    // Actualizar contador inicial
-    updateCounter();
+      // Si es infinito, clonar items al inicio y al final
+      if (isInfinite && total > 0) {
+        // Clonar los últimos items al inicio
+        for (let i = total - 1; i >= 0; i--) {
+          const clone = items[i].cloneNode(true) as Element;
+          clone.classList.add('cloned');
+          track.insertBefore(clone, track.firstChild);
+          clonedItems.push(clone);
+        }
+        
+        // Clonar los primeros items al final
+        for (let i = 0; i < total; i++) {
+          const clone = items[i].cloneNode(true) as Element;
+          clone.classList.add('cloned');
+          track.appendChild(clone);
+          clonedItems.push(clone);
+        }
 
-    // Eventos Click
-    btnNext.addEventListener('click', () => {
-      const itemWidth = items[0].clientWidth;
-      track.scrollBy({ left: itemWidth, behavior: 'smooth' });
-    });
+        // Posicionar en el primer item real (después de los clones iniciales)
+        const itemWidth = items[0].clientWidth;
+        track.scrollLeft = itemWidth * total;
+      }
 
-    btnPrev.addEventListener('click', () => {
-      const itemWidth = items[0].clientWidth;
-      track.scrollBy({ left: -itemWidth, behavior: 'smooth' });
-    });
+      // Inicializar indicadores
+      if (dotsContainer) {
+        for (let i = 0; i < total; i++) {
+          const dot = document.createElement('div');
+          dot.className = `w-2 h-2 rounded-full transition-all ${i === 0 ? 'bg-white scale-125' : 'bg-white/50'}`;
+          dot.dataset.index = i.toString();
+          dotsContainer.appendChild(dot);
+        }
+      }
 
-    // Evento Scroll (para actualizar contador)
-    track.addEventListener('scroll', updateCounter);
+      // Actualizar indicador inicial
+      updateIndicator();
 
-    function updateCounter() {
-      const itemWidth = items[0].clientWidth;
-      const scrollPos = track.scrollLeft;
-      // Calculamos índice actual basado en el scroll
-      const current = Math.round(scrollPos / itemWidth) + 1;
-      counter.innerText = `${Math.min(current, total)} / ${total}`;
+      // Función para avanzar al siguiente item
+      function goToNext() {
+        const itemWidth = track.children[0].clientWidth;
+        track.scrollBy({ left: itemWidth, behavior: 'smooth' });
+      }
+
+      // Configurar autoplay si está habilitado
+      function startAutoplay() {
+        if (autoplayTime > 0 && !autoplayInterval) {
+          autoplayInterval = window.setInterval(goToNext, autoplayTime);
+        }
+      }
+
+      function stopAutoplay() {
+        if (autoplayInterval) {
+          clearInterval(autoplayInterval);
+          autoplayInterval = null;
+        }
+      }
+
+      // Iniciar autoplay
+      startAutoplay();
+
+      // Pausar autoplay al hover o interacción
+      container.addEventListener('mouseenter', stopAutoplay);
+      container.addEventListener('mouseleave', startAutoplay);
+
+      // Eventos Click
+      btnNext.addEventListener('click', () => {
+        stopAutoplay();
+        goToNext();
+        startAutoplay();
+      });
+
+      btnPrev.addEventListener('click', () => {
+        stopAutoplay();
+        const itemWidth = track.children[0].clientWidth;
+        track.scrollBy({ left: -itemWidth, behavior: 'smooth' });
+        startAutoplay();
+      });
+
+      // Pausar autoplay cuando el usuario hace scroll manual
+      let scrollTimeout: number;
+      track.addEventListener('scroll', () => {
+        if (!isJumping) {
+          updateIndicator();
+        }
+        
+        if (isInfinite) {
+          handleInfiniteScroll();
+        }
+
+        // Detectar scroll manual y pausar autoplay temporalmente
+        if (autoplayTime > 0) {
+          stopAutoplay();
+          clearTimeout(scrollTimeout);
+          scrollTimeout = window.setTimeout(startAutoplay, 3000);
+        }
+      });
+
+      function handleInfiniteScroll() {
+        const itemWidth = track.children[0].clientWidth;
+        const scrollPos = track.scrollLeft;
+        const maxScroll = track.scrollWidth - track.clientWidth;
+
+        // Si llegó al final (clones finales), saltar al inicio real
+        if (scrollPos >= maxScroll - 10) {
+          isJumping = true;
+          track.scrollLeft = itemWidth * total;
+          requestAnimationFrame(() => {
+            updateIndicator();
+            isJumping = false;
+          });
+        }
+        
+        // Si llegó al inicio (clones iniciales), saltar al final real
+        else if (scrollPos <= 10) {
+          isJumping = true;
+          track.scrollLeft = itemWidth * total * 2 - track.clientWidth;
+          requestAnimationFrame(() => {
+            updateIndicator();
+            isJumping = false;
+          });
+        }
+      }
+
+      function updateIndicator() {
+        const itemWidth = track.children[0].clientWidth;
+        const scrollPos = track.scrollLeft;
+        
+        // Calcular índice actual
+        let current = Math.round(scrollPos / itemWidth);
+        
+        // Ajustar índice para carrusel infinito
+        if (isInfinite && total > 0) {
+          current = ((current - total) % total + total) % total;
+        }
+        
+        current = Math.max(0, Math.min(current, total - 1));
+
+        // Actualizar contador numérico
+        if (counter) {
+          counter.innerText = `${current + 1} / ${total}`;
+        }
+
+        // Actualizar dots
+        if (dotsContainer) {
+          const dots = dotsContainer.querySelectorAll('div');
+          dots.forEach((dot, index) => {
+            if (index === current) {
+              dot.className = 'w-2 h-2 rounded-full transition-all bg-white scale-125';
+            } else {
+              dot.className = 'w-2 h-2 rounded-full transition-all bg-white/50';
+            }
+          });
+        }
+      }
     }
-  }
+  });
 </script>

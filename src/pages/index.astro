@@ -12,6 +12,7 @@ import { CATEGORIES, TOURS_DATA } from "../data/tours";
 import { sanityClient } from "../lib/sanityClient";
 import Carousel from "../components/common/Carousel.astro";
 import TourCard from "../components/cards/TourCard.astro";
+import PaqueteCard from "../components/cards/PaqueteCard.astro";
 
 // Fetch featured packages from Sanity
 const packages = await sanityClient.fetch(`
@@ -242,10 +243,10 @@ const featuredTours = [TOURS_DATA,TOURS_DATA].flat();
         </h2>
 		<div class="mt-4 flex justify-center">
 			<figure class="w-50">
-				<img src="images/turtle2.png" class="move-turtle"/>
+				<img src="https://cdn.sanity.io/images/f6sa56jz/production/29827c08ccdcb004030c1bb53f6086395282524e-600x400.webp" alt="Tortuga" class="move-turtle"/>
 			</figure>
 			<figure class="w-50">
-				<img src="images/turtle1.png" class="move-turtle"/>
+				<img src="https://cdn.sanity.io/images/f6sa56jz/production/3bfa03099948cd42cc30d205a980551fa556e2aa-600x400.webp" alt="Tortuga" class="move-turtle"/>
 			</figure>
 		</div>
       </div>
@@ -266,7 +267,7 @@ const featuredTours = [TOURS_DATA,TOURS_DATA].flat();
 	-->
       <div>
 
-        <Carousel heightClass="h-[500px]" visibleItems={5}>
+        <Carousel heightClass="h-[500px] rounded-[1rem] overflow-hidden" visibleItems={5} infinite={false} indicator="dots" autoplay={1000}>
           {
           featuredTours.map((tour) => (
             <div class="h-full">
@@ -293,13 +294,38 @@ const featuredTours = [TOURS_DATA,TOURS_DATA].flat();
     <div class="container mx-auto px-6">
       <SectionTitle
         title="Paquetes Destacados"
-        subtitle="Top Destinations"
+        subtitle="Mejores Destinos"
         centered={true}
+        urlImg1={["https://cdn.sanity.io/images/f6sa56jz/production/c3f0a3bbfcf0c4af874546ec9a7e8c03d20a79a2-333x400.webp",
+                "Pinguinos Galapagos"]}
+        urlImg2={["https://cdn.sanity.io/images/f6sa56jz/production/44631523c3cfc89e572eed9fb66ee877f91c81aa-600x400.webp",
+                "Galapagos torgugas"]}
+
       />
 
       {
         packages && packages.length > 0 ? (
-          <PackageCarousel packages={packages} />
+          <PackageCarousel packages={packages}/>
+        ) : (
+          <div class="bg-gray-200 rounded-[2.5rem] h-[500px] flex items-center justify-center text-gray-500">
+            No hay paquetes destacados disponibles
+          </div>
+        )
+      }
+
+      {
+         packages && packages.length > 0 ? (
+          <div class="my-4">
+          <Carousel heightClass="h-[550px] rounded-[1rem] overflow-hidden" visibleItems={3} infinite={false} indicator="dots" autoplay={1000}>
+          {
+          packages.map((pkg) => (
+            <div class="h-full">
+              <PaqueteCard pkg={pkg}/>
+            </div>
+          ))
+        }
+        </Carousel>
+          </div>
         ) : (
           <div class="bg-gray-200 rounded-[2.5rem] h-[500px] flex items-center justify-center text-gray-500">
             No hay paquetes destacados disponibles
