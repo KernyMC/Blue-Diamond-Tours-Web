@@ -38,11 +38,14 @@ export default defineType({
       type: 'array',
       of: [{type: 'image', options: {hotspot: true}}],
     }),
+
     defineField({
-      name: 'difficulty',
-      title: 'Difficulty',
-      type: 'string',
+      name: 'generalDescription',
+      title: 'General Description',
+      type: 'text',
+      rows: 5,
     }),
+
     defineField({
       name: 'location',
       title: 'Location',
@@ -52,12 +55,6 @@ export default defineType({
       name: 'rating',
       title: 'Rating',
       type: 'number',
-    }),
-    defineField({
-      name: 'overview',
-      title: 'Overview',
-      type: 'text',
-      rows: 4,
     }),
     defineField({
       name: 'includes',
@@ -78,21 +75,50 @@ export default defineType({
       of: [{type: 'string'}],
     }),
     defineField({
-      name: 'itinerary',
-      title: 'Itinerary',
+      name: 'detailedDescription',
+      title: 'Detailed Description',
+      type: 'text',
+      rows: 5,
+    }),
+    defineField({
+      name: 'importantInfo',
+      title: 'Important Info',
+      type: 'text',
+      rows: 4,
+    }),
+    defineField({
+      name: 'whatToBring',
+      title: 'What To Bring',
+      type: 'text',
+      rows: 4,
+    }),
+    defineField({
+      name: 'extra-info-resumen',
+      title: 'Info Extra - Resumen',
       type: 'array',
-      of: [{type: 'itineraryItem'}],
+      of: [{type: 'itemText'}],
     }),
     defineField({
-      name: 'prep',
-      title: 'Preparation Info',
-      type: 'prepInfo',
+      name: 'extra-info-detalles',
+      title: 'Info Extra - Detalles',
+      type: 'array',
+      of: [{type: 'itemText'}],
     }),
     defineField({
-      name: 'accommodation',
-      title: 'Accommodation',
-      type: 'accommodation',
+      name: 'extra-info-importante',
+      title: 'Info Extra - Importante',
+      type: 'array',
+      of: [{type: 'itemText'}],
     }),
+    defineField({
+      name: 'bookingWidgetHtml',
+      title: 'Widget HTML de WeTravel',
+      type: 'text',
+      rows: 8,
+      description:
+        'Pega aquí el código HTML completo del botón de WeTravel (incluyendo <script> y <style>)',
+    }),
+
     defineField({
       name: 'bookingEnabled',
       title: 'Reserva activa (WeTravel)',

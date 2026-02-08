@@ -35,7 +35,7 @@ const carouselId = `carousel-${Math.random().toString(36).substr(2, 9)}`;
   </button>
 
   <div 
-    class="carousel-track flex w-full h-full overflow-x-auto snap-x snap-mandatory scrollbar-hide"
+    class="carousel-track flex w-full h-full overflow-x-auto snap-x snap-mandatory scrollbar-hide cursor-grab active:cursor-grabbing"
     style={`--items-count: ${visibleItems};`}
     data-infinite={infinite}
     data-autoplay={autoplay}
@@ -73,6 +73,14 @@ const carouselId = `carousel-${Math.random().toString(36).substr(2, 9)}`;
   .scrollbar-hide::-webkit-scrollbar { display: none; }
   .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
+  /* Evitar selección de texto durante el drag */
+  .carousel-track {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+  }
+
   /* LÓGICA DE LOS ITEMS:
     Seleccionamos todos los hijos directos del track (tus cards).
     
@@ -85,6 +93,7 @@ const carouselId = `carousel-${Math.random().toString(36).substr(2, 9)}`;
     height: 100%;
     scroll-snap-align: start;
     width: 100%; /* Por defecto en móvil se ve 1 */
+    pointer-events: auto;
   }
 
   @media (min-width: 768px) {
@@ -105,17 +114,65 @@ const carouselId = `carousel-${Math.random().toString(36).substr(2, 9)}`;
   
     if (track && btnPrev && btnNext) {
       const items = Array.from(track.children);
-      const total = items.length;
+      const totalItems = items.length;
       const isInfinite = track.dataset.infinite === 'true';
       const autoplayTime = parseInt(track.dataset.autoplay || '0');
       let clonedItems: Element[] = [];
       let autoplayInterval: number | null = null;
-      let isJumping = false; // Bandera para evitar actualizar indicador durante saltos
+      let isJumping = false;
+
+      // Variables para el drag con mouse
+      let isDragging = false;
+      let startX = 0;
+      let scrollLeft = 0;
+      let momentumID: number | null = null;
+      let velocity = 0;
+      let lastX = 0;
+      let lastTime = 0;
+
+      // Constante de sensibilidad del drag (0.0 - 1.0)
+      // Valores más bajos = movimiento más suave y pesado (estilo Netflix/Apple)
+      const DRAG_SENSITIVITY = 0.9;
+
+      // === ESTADO DEL CARRUSEL BASADO EN POSICIONES ===
+      let currentIndex = 0; // Índice de la posición actual del viewport
+      let visibleItems = getVisibleItems(); // Cantidad de items visibles en el viewport
+      let totalPositions = Math.max(1, totalItems - visibleItems + 1); // Total de posiciones posibles
+
+      // Función para obtener la cantidad de items visibles según el viewport
+      function getVisibleItems(): number {
+        if (window.innerWidth < 768) {
+          return 1; // En móvil siempre 1
+        }
+        // En desktop, leer del CSS custom property
+        const computedStyle = getComputedStyle(track);
+        const itemsCount = computedStyle.getPropertyValue('--items-count').trim();
+        return parseInt(itemsCount) || 4;
+      }
+
+      // Actualizar cálculos cuando cambie el tamaño de pantalla
+      function recalculate() {
+        const newVisibleItems = getVisibleItems();
+        if (newVisibleItems !== visibleItems) {
+          visibleItems = newVisibleItems;
+          totalPositions = Math.max(1, totalItems - visibleItems + 1);
+          currentIndex = Math.min(currentIndex, totalPositions - 1);
+          regenerateDots();
+          updateIndicator();
+        }
+      }
+
+      // Listener para responsive
+      let resizeTimeout: number;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = window.setTimeout(recalculate, 150);
+      });
 
       // Si es infinito, clonar items al inicio y al final
-      if (isInfinite && total > 0) {
+      if (isInfinite && totalItems > 0) {
         // Clonar los últimos items al inicio
-        for (let i = total - 1; i >= 0; i--) {
+        for (let i = totalItems - 1; i >= 0; i--) {
           const clone = items[i].cloneNode(true) as Element;
           clone.classList.add('cloned');
           track.insertBefore(clone, track.firstChild);
@@ -123,7 +180,7 @@ const carouselId = `carousel-${Math.random().toString(36).substr(2, 9)}`;
         }
         
         // Clonar los primeros items al final
-        for (let i = 0; i < total; i++) {
+        for (let i = 0; i < totalItems; i++) {
           const clone = items[i].cloneNode(true) as Element;
           clone.classList.add('cloned');
           track.appendChild(clone);
@@ -132,26 +189,70 @@ const carouselId = `carousel-${Math.random().toString(36).substr(2, 9)}`;
 
         // Posicionar en el primer item real (después de los clones iniciales)
         const itemWidth = items[0].clientWidth;
-        track.scrollLeft = itemWidth * total;
+        track.scrollLeft = itemWidth * totalItems;
       }
 
-      // Inicializar indicadores
-      if (dotsContainer) {
-        for (let i = 0; i < total; i++) {
+      // Generar dots basados en totalPositions
+      function regenerateDots() {
+        if (!dotsContainer) return;
+        
+        // Limpiar dots existentes
+        dotsContainer.innerHTML = '';
+        
+        // Crear dots basados en posiciones del viewport
+        for (let i = 0; i < totalPositions; i++) {
           const dot = document.createElement('div');
-          dot.className = `w-2 h-2 rounded-full transition-all ${i === 0 ? 'bg-white scale-125' : 'bg-white/50'}`;
+          dot.className = `w-2 h-2 rounded-full transition-all cursor-pointer ${i === 0 ? 'bg-white scale-125' : 'bg-white/50'}`;
           dot.dataset.index = i.toString();
+          
+          // Click en dot navega a esa posición
+          dot.addEventListener('click', () => {
+            goToPosition(i);
+          });
+          
           dotsContainer.appendChild(dot);
         }
       }
 
-      // Actualizar indicador inicial
+      // Inicializar indicadores
+      regenerateDots();
       updateIndicator();
 
-      // Función para avanzar al siguiente item
+      // === FUNCIONES DE NAVEGACIÓN ===
+      
+      // Navegar a una posición específica del viewport
+      function goToPosition(index: number) {
+        // Limitar índice
+        index = Math.max(0, Math.min(index, totalPositions - 1));
+        currentIndex = index;
+        
+        // Calcular scroll necesario
+        const itemWidth = items[0].clientWidth;
+        const targetScroll = itemWidth * currentIndex;
+        
+        track.scrollTo({ left: targetScroll, behavior: 'smooth' });
+      }
+
+      // Avanzar al siguiente slide (viewport completo o parcial)
       function goToNext() {
-        const itemWidth = track.children[0].clientWidth;
-        track.scrollBy({ left: itemWidth, behavior: 'smooth' });
+        if (currentIndex < totalPositions - 1) {
+          goToPosition(currentIndex + 1);
+        } else if (isInfinite) {
+          // En modo infinito, continuar
+          const itemWidth = items[0].clientWidth;
+          track.scrollBy({ left: itemWidth, behavior: 'smooth' });
+        }
+      }
+
+      // Retroceder al slide anterior
+      function goToPrev() {
+        if (currentIndex > 0) {
+          goToPosition(currentIndex - 1);
+        } else if (isInfinite) {
+          // En modo infinito, continuar
+          const itemWidth = items[0].clientWidth;
+          track.scrollBy({ left: -itemWidth, behavior: 'smooth' });
+        }
       }
 
       // Configurar autoplay si está habilitado
@@ -175,7 +276,7 @@ const carouselId = `carousel-${Math.random().toString(36).substr(2, 9)}`;
       container.addEventListener('mouseenter', stopAutoplay);
       container.addEventListener('mouseleave', startAutoplay);
 
-      // Eventos Click
+      // Eventos Click en botones
       btnNext.addEventListener('click', () => {
         stopAutoplay();
         goToNext();
@@ -184,8 +285,7 @@ const carouselId = `carousel-${Math.random().toString(36).substr(2, 9)}`;
 
       btnPrev.addEventListener('click', () => {
         stopAutoplay();
-        const itemWidth = track.children[0].clientWidth;
-        track.scrollBy({ left: -itemWidth, behavior: 'smooth' });
+        goToPrev();
         startAutoplay();
       });
 
@@ -193,7 +293,7 @@ const carouselId = `carousel-${Math.random().toString(36).substr(2, 9)}`;
       let scrollTimeout: number;
       track.addEventListener('scroll', () => {
         if (!isJumping) {
-          updateIndicator();
+          updateIndicatorFromScroll();
         }
         
         if (isInfinite) {
@@ -208,6 +308,98 @@ const carouselId = `carousel-${Math.random().toString(36).substr(2, 9)}`;
         }
       });
 
+      // === DRAG CON MOUSE ===
+      
+      // Función para aplicar inercia (momentum scrolling)
+      function applyMomentum() {
+        if (Math.abs(velocity) > 0.5) {
+          track.scrollLeft -= velocity;
+          velocity *= 0.95; // Fricción
+          momentumID = requestAnimationFrame(applyMomentum);
+        } else {
+          velocity = 0;
+          if (momentumID) {
+            cancelAnimationFrame(momentumID);
+            momentumID = null;
+          }
+        }
+      }
+
+      // Iniciar drag
+      track.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        startX = e.pageX - track.offsetLeft;
+        scrollLeft = track.scrollLeft;
+        lastX = e.pageX;
+        lastTime = Date.now();
+        velocity = 0;
+        
+        // Cancelar momentum anterior
+        if (momentumID) {
+          cancelAnimationFrame(momentumID);
+          momentumID = null;
+        }
+        
+        // Pausar autoplay
+        stopAutoplay();
+        
+        // Prevenir selección de texto
+        e.preventDefault();
+      });
+
+      // Mover mientras arrastra
+      track.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        
+        e.preventDefault();
+        const x = e.pageX - track.offsetLeft;
+        const walk = (x - startX) * DRAG_SENSITIVITY; // Aplicar sensibilidad al movimiento
+        
+        // Calcular velocidad
+        const now = Date.now();
+        const deltaTime = now - lastTime;
+        const deltaX = e.pageX - lastX;
+        
+        if (deltaTime > 0) {
+          velocity = (deltaX * DRAG_SENSITIVITY) / deltaTime * 10; // Aplicar sensibilidad a la velocidad
+        }
+        
+        lastX = e.pageX;
+        lastTime = now;
+        
+        track.scrollLeft = scrollLeft - walk;
+      });
+
+      // Finalizar drag
+      const endDrag = () => {
+        if (isDragging) {
+          isDragging = false;
+          
+          // Aplicar momentum si hay velocidad
+          if (Math.abs(velocity) > 1) {
+            applyMomentum();
+          }
+          
+          // Reanudar autoplay después de un tiempo
+          if (autoplayTime > 0) {
+            setTimeout(startAutoplay, 3000);
+          }
+        }
+      };
+
+      track.addEventListener('mouseup', endDrag);
+      track.addEventListener('mouseleave', endDrag);
+
+      // Prevenir clicks en enlaces durante drag
+      track.addEventListener('click', (e) => {
+        if (Math.abs(velocity) > 1) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      }, true);
+
+      // === FIN DRAG CON MOUSE ===
+
       function handleInfiniteScroll() {
         const itemWidth = track.children[0].clientWidth;
         const scrollPos = track.scrollLeft;
@@ -216,9 +408,9 @@ const carouselId = `carousel-${Math.random().toString(36).substr(2, 9)}`;
         // Si llegó al final (clones finales), saltar al inicio real
         if (scrollPos >= maxScroll - 10) {
           isJumping = true;
-          track.scrollLeft = itemWidth * total;
+          track.scrollLeft = itemWidth * totalItems;
           requestAnimationFrame(() => {
-            updateIndicator();
+            updateIndicatorFromScroll();
             isJumping = false;
           });
         }
@@ -226,43 +418,68 @@ const carouselId = `carousel-${Math.random().toString(36).substr(2, 9)}`;
         // Si llegó al inicio (clones iniciales), saltar al final real
         else if (scrollPos <= 10) {
           isJumping = true;
-          track.scrollLeft = itemWidth * total * 2 - track.clientWidth;
+          track.scrollLeft = itemWidth * totalItems * 2 - track.clientWidth;
           requestAnimationFrame(() => {
-            updateIndicator();
+            updateIndicatorFromScroll();
             isJumping = false;
           });
         }
       }
 
-      function updateIndicator() {
-        const itemWidth = track.children[0].clientWidth;
+      // Actualizar indicador basado en la posición actual del scroll
+      function updateIndicatorFromScroll() {
+        const itemWidth = items[0].clientWidth;
         const scrollPos = track.scrollLeft;
         
-        // Calcular índice actual
-        let current = Math.round(scrollPos / itemWidth);
+        // Calcular el índice de posición basado en el scroll
+        let calculatedIndex = Math.round(scrollPos / itemWidth);
         
         // Ajustar índice para carrusel infinito
-        if (isInfinite && total > 0) {
-          current = ((current - total) % total + total) % total;
+        if (isInfinite && totalItems > 0) {
+          calculatedIndex = ((calculatedIndex - totalItems) % totalItems + totalItems) % totalItems;
         }
         
-        current = Math.max(0, Math.min(current, total - 1));
+        // Limitar al rango válido de posiciones
+        calculatedIndex = Math.max(0, Math.min(calculatedIndex, totalPositions - 1));
+        
+        // Actualizar currentIndex
+        currentIndex = calculatedIndex;
+        
+        updateIndicator();
+      }
 
+      // Actualizar la UI de los indicadores basado en currentIndex
+      function updateIndicator() {
         // Actualizar contador numérico
         if (counter) {
-          counter.innerText = `${current + 1} / ${total}`;
+          counter.innerText = `${currentIndex + 1} / ${totalPositions}`;
         }
 
         // Actualizar dots
         if (dotsContainer) {
           const dots = dotsContainer.querySelectorAll('div');
           dots.forEach((dot, index) => {
-            if (index === current) {
-              dot.className = 'w-2 h-2 rounded-full transition-all bg-white scale-125';
+            if (index === currentIndex) {
+              dot.className = 'w-2 h-2 rounded-full transition-all cursor-pointer bg-white scale-125';
             } else {
-              dot.className = 'w-2 h-2 rounded-full transition-all bg-white/50';
+              dot.className = 'w-2 h-2 rounded-full transition-all cursor-pointer bg-white/50';
             }
           });
+        }
+
+        // Actualizar estado de botones (solo si no es infinito)
+        if (!isInfinite) {
+          if (currentIndex === 0) {
+            btnPrev.classList.add('opacity-50', 'pointer-events-none');
+          } else {
+            btnPrev.classList.remove('opacity-50', 'pointer-events-none');
+          }
+
+          if (currentIndex === totalPositions - 1) {
+            btnNext.classList.add('opacity-50', 'pointer-events-none');
+          } else {
+            btnNext.classList.remove('opacity-50', 'pointer-events-none');
+          }
         }
       }
     }
