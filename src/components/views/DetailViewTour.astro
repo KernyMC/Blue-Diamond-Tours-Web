@@ -1,0 +1,728 @@
+---
+import { Icon } from "astro-icon/components";
+import AnchorIcon from "../common/AnchorIcon.astro";
+import Button from "../common/Button.astro";
+
+const { item } = Astro.props;
+const bookingHref =
+  item?.bookingHref ||
+  (item?.bookingUuid
+    ? `https://www.wetravel.com/checkout_embed?uuid=${item.bookingUuid}`
+    : "");
+---
+
+<div class="min-h-screen bg-[#F2F6FA]">
+  {/* Hero Banner */}
+  <div class="relative h-[60vh] md:h-[70vh] w-full">
+    <img src={item.image} alt={item.title} class="w-full h-full object-cover" />
+    <div
+      class="absolute inset-0 bg-gradient-to-b from-black/40 via-black/50 to-black/70"
+    >
+    </div>
+    <div class="absolute inset-0 flex flex-col items-center justify-center">
+      <div
+        class="container mx-auto px-4 text-center flex-1 flex items-center justify-center"
+      >
+        <h1
+          class="text-4xl md:text-6xl font-bold text-white font-serif leading-tight"
+        >
+          {item.title}
+        </h1>
+      </div>
+
+      {/* Info Bar - Dentro del Banner */}
+      <div class="w-full py-6">
+        <div
+          class="container mx-auto px-4 flex flex-wrap justify-center md:justify-between items-center gap-4 text-sm"
+        >
+          <div class="flex items-center gap-6">
+            <span class="flex items-center gap-2 text-white"
+              ><Icon
+                name="ant-design:clock-circle-outlined"
+                size={18}
+                class="text-turquoise"
+              />
+              {item.duration}</span
+            >
+
+            <span class="flex items-center gap-2 text-white"
+              ><Icon
+                name="ant-design:calendar-outlined"
+                size={18}
+                class="text-turquoise"
+              /> Salidas Diarias</span
+            >
+          </div>
+          <div class="flex items-center gap-2 font-medium text-white">
+            <Icon
+              name="ant-design:environment-outlined"
+              size={18}
+              class="text-turquoise"
+            />
+            {item.location}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {/* Breadcrumb Navigation */}
+  <div class="bg-navy">
+    <div class="container mx-auto px-4 py-3">
+      <nav class="flex items-center gap-2 text-sm">
+        <a href="/" class="text-white hover:text-turquoise transition-colors">
+          Home
+        </a>
+        <Icon
+          name="ant-design:right-outlined"
+          size={12}
+          class="text-white/60"
+        />
+        <a
+          href="/paquetes"
+          class="text-white hover:text-turquoise transition-colors"
+        >
+          Paquetes
+        </a>
+        <Icon
+          name="ant-design:right-outlined"
+          size={12}
+          class="text-white/60"
+        />
+        <span class="text-white font-bold uppercase">
+          {item.title}
+        </span>
+      </nav>
+    </div>
+  </div>
+
+  <div
+    class="container mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8"
+  >
+    {/* Main Content */}
+    <div class="lg:col-span-2 space-y-8">
+      {/* Tabs Navigation */}
+      <div
+        class="flex border-b border-gray-200 mb-8 overflow-x-auto no-scrollbar gap-8"
+      >
+        <button
+          class="tab-btn active pb-4 text-lg font-bold text-navy border-b-4 border-turquoise transition-colors whitespace-nowrap"
+          data-tab="overview"
+        >
+          Resumen
+        </button>
+        <button
+          class="tab-btn pb-4 text-lg font-bold text-gray-400 border-b-4 border-transparent hover:text-navy transition-colors whitespace-nowrap"
+          data-tab="itinerary"
+        >
+          Detalles
+        </button>
+        <button
+          class="tab-btn pb-4 text-lg font-bold text-gray-400 border-b-4 border-transparent hover:text-navy transition-colors whitespace-nowrap"
+          data-tab="preparation"
+        >
+          Preparación
+        </button>
+        {
+          item.gallery && item.gallery.length > 0 && (
+            <button
+              class="tab-btn pb-4 text-lg font-bold text-gray-400 border-b-4 border-transparent hover:text-navy transition-colors whitespace-nowrap"
+              data-tab="gallery"
+            >
+              Galería
+            </button>
+          )
+        }
+      </div>
+
+      {/* Tab Content */}
+      <div
+        class="bg-white p-6 md:p-10 rounded-[2rem] shadow-lg border border-gray-100 min-h-[400px]"
+      >
+        {/* Overview Tab */}
+        <div id="overview" class="tab-content block animate-fade-in">
+          <h3 class="text-2xl font-bold text-navy mb-4 font-serif">
+            Descripción General
+          </h3>
+          <p class="text-gray-600 leading-relaxed text-lg mb-8">
+            {item.overview}
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="bg-blue-50/50 p-6 rounded-2xl border border-blue-100">
+              <h4 class="font-bold text-navy mb-4 flex items-center gap-2">
+                <Icon
+                  name="ant-design:check-circle-outlined"
+                  size={20}
+                  class="text-green-500"
+                /> Incluye
+              </h4>
+              <ul class="space-y-3">
+                {
+                  (item.includes || []).map((inc) => (
+                    <li class="flex items-start gap-3 text-gray-600 text-sm">
+                      <span class="text-green-500 mt-0.5">✓</span>
+                      {inc}
+                    </li>
+                  ))
+                }
+              </ul>
+            </div>
+            <div class="bg-red-50/50 p-6 rounded-2xl border border-red-100">
+              <h4 class="font-bold text-navy mb-4 flex items-center gap-2">
+                <Icon
+                  name="ant-design:close-circle-outlined"
+                  size={20}
+                  class="text-red-500"
+                /> No Incluye
+              </h4>
+              <ul class="space-y-3">
+                {
+                  (item.notIncludes || []).map((exc) => (
+                    <li class="flex items-start gap-3 text-gray-600 text-sm">
+                      <span class="text-red-500 mt-0.5">✕</span>
+                      {exc}
+                    </li>
+                  ))
+                }
+              </ul>
+            </div>
+          </div>
+
+          <div class="mt-8">
+            <h4 class="font-bold text-navy mb-4 flex items-center gap-2">
+              <Icon
+                name="ant-design:sun-outlined"
+                size={20}
+                class="text-yellow-500"
+              /> Destacados
+            </h4>
+            <div class="flex flex-wrap gap-2">
+              {
+                (item.highlights || []).map((h) => (
+                  <span class="bg-yellow-50 text-yellow-700 px-3 py-1 rounded-full text-sm font-medium border border-yellow-100">
+                    {h}
+                  </span>
+                ))
+              }
+            </div>
+          </div>
+        </div>
+
+        {/* Itinerary Tab */}
+        <div id="itinerary" class="tab-content hidden animate-fade-in">
+          <h3 class="text-2xl font-bold text-navy mb-6 font-serif">
+            Itinerario Detallado
+          </h3>
+          <div class="space-y-4">
+            {
+              (item.itinerary || []).map((day, index) => (
+                <div class="relative group">
+                  <div class="bg-gray-50 rounded-2xl border border-gray-100 hover:shadow-md transition-shadow overflow-hidden">
+                    <button
+                      class="accordion-btn w-full text-left p-6 flex items-center justify-between gap-4 hover:bg-gray-100 transition-colors"
+                      data-index={index}
+                    >
+                      <h4 class="font-bold text-navy text-lg flex-1">
+                        Día {day.day}: {day.title}
+                      </h4>
+                      <Icon
+                        name="ant-design:down-outlined"
+                        size={16}
+                        class="accordion-icon text-navy transition-transform"
+                      />
+                    </button>
+                    <div class="accordion-content hidden px-6 pb-6">
+                      <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                        {day.description}
+                      </p>
+                      {day.meals && day.meals.trim() && (
+                        <div class="flex items-center gap-2 text-xs font-bold text-turquoise bg-white px-3 py-1 rounded-full w-fit shadow-sm border border-gray-100">
+                          <Icon name="ant-design:coffee-outlined" size={14} />{" "}
+                          {day.meals}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+
+        {/* Preparation Tab */}
+        <div id="preparation" class="tab-content hidden animate-fade-in">
+          <h3 class="text-2xl font-bold text-navy mb-6 font-serif">
+            Información Importante
+          </h3>
+          <div class="space-y-6">
+            <div class="flex gap-4 items-start">
+              <div class="bg-blue-100 p-3 rounded-full text-navy">
+                <Icon name="ant-design:info-circle-outlined" size={24} />
+              </div>
+              <div>
+                <h4 class="font-bold text-navy mb-2">Tips de Viaje</h4>
+                <p class="text-gray-600 leading-relaxed">
+                  {item.prep?.tips || ""}
+                </p>
+              </div>
+            </div>
+            <div class="flex gap-4 items-start">
+              <div class="bg-yellow-100 p-3 rounded-full text-yellow-700">
+                <Icon name="ant-design:sun-outlined" size={24} />
+              </div>
+              <div>
+                <h4 class="font-bold text-navy mb-2">Clima y Ropa</h4>
+                <p class="text-gray-600 leading-relaxed">
+                  {item.prep?.weather || ""}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Gallery Tab */}
+        {
+          item.gallery && item.gallery.length > 0 && (
+            <div id="gallery" class="tab-content hidden animate-fade-in">
+              <h3 class="text-2xl font-bold text-navy mb-8 font-serif">
+                Galería de Fotos
+              </h3>
+              <div class="gallery-main-container">
+                {item.gallery.length === 1 && (
+                  <div class="gallery-column gallery-col-1">
+                    <div class="gallery-item" data-index={0}>
+                      <img
+                        src={item.gallery[0]}
+                        alt={`${item.title} - Foto 1`}
+                        class="w-full h-full object-cover"
+                      />
+                    </div>
+                  </div>
+                )}
+                {item.gallery.length === 2 && (
+                  <>
+                    <div class="gallery-column gallery-col-1">
+                      <div class="gallery-item" data-index={0} style="flex: 1;">
+                        <img
+                          src={item.gallery[0]}
+                          alt={`${item.title} - Foto 1`}
+                          class="w-full h-full object-cover"
+                        />
+                      </div>
+                    </div>
+                    <div class="gallery-column gallery-col-2">
+                      <div class="gallery-item" data-index={1} style="flex: 1;">
+                        <img
+                          src={item.gallery[1]}
+                          alt={`${item.title} - Foto 2`}
+                          class="w-full h-full object-cover"
+                        />
+                      </div>
+                    </div>
+                  </>
+                )}
+                {item.gallery.length >= 3 && (
+                  <>
+                    <div class="gallery-column gallery-col-1">
+                      <div
+                        class="gallery-item"
+                        data-index={0}
+                        style="flex: {item.gallery[0] ? '3.5' : '1'};"
+                      >
+                        <img
+                          src={item.gallery[0]}
+                          alt={`${item.title} - Foto 1`}
+                          class="w-full h-full object-cover"
+                        />
+                      </div>
+                      {item.gallery.length > 3 && (
+                        <div
+                          class="gallery-item"
+                          data-index={1}
+                          style="flex: 6.5;"
+                        >
+                          <img
+                            src={item.gallery[1]}
+                            alt={`${item.title} - Foto 2`}
+                            class="w-full h-full object-cover"
+                          />
+                        </div>
+                      )}
+                    </div>
+
+                    {item.gallery.length >= 4 && (
+                      <div class="gallery-column gallery-col-2">
+                        <div
+                          class="gallery-item"
+                          data-index={2}
+                          style="flex: 3.5;"
+                        >
+                          <img
+                            src={item.gallery[2]}
+                            alt={`${item.title} - Foto 3`}
+                            class="w-full h-full object-cover"
+                          />
+                        </div>
+                        <div
+                          class="gallery-item"
+                          data-index={3}
+                          style="flex: 6.5;"
+                        >
+                          <img
+                            src={item.gallery[3]}
+                            alt={`${item.title} - Foto 4`}
+                            class="w-full h-full object-cover"
+                          />
+                        </div>
+                      </div>
+                    )}
+
+                    {item.gallery.length >= 5 && (
+                      <div class="gallery-column gallery-col-3">
+                        <div
+                          class="gallery-item"
+                          data-index={4}
+                          style="flex: 4;"
+                        >
+                          <img
+                            src={item.gallery[4]}
+                            alt={`${item.title} - Foto 5`}
+                            class="w-full h-full object-cover"
+                          />
+                        </div>
+                        {item.gallery.length > 5 && (
+                          <>
+                            <div
+                              class="gallery-item"
+                              data-index={5}
+                              style="flex: 2.5;"
+                            >
+                              <img
+                                src={item.gallery[5]}
+                                alt={`${item.title} - Foto 6`}
+                                class="w-full h-full object-cover"
+                              />
+                            </div>
+                            {item.gallery.length > 6 && (
+                              <div
+                                class="gallery-item"
+                                data-index={6}
+                                style="flex: 3.5;"
+                              >
+                                <img
+                                  src={item.gallery[6]}
+                                  alt={`${item.title} - Foto 7`}
+                                  class="w-full h-full object-cover"
+                                />
+                              </div>
+                            )}
+                          </>
+                        )}
+                      </div>
+                    )}
+
+                    {item.gallery.length >= 7 && (
+                      <div class="gallery-column gallery-col-4">
+                        <div
+                          class="gallery-item"
+                          data-index={item.gallery.length > 8 ? 7 : 6}
+                          style="flex: 6;"
+                        >
+                          <img
+                            src={item.gallery[item.gallery.length > 8 ? 7 : 6]}
+                            alt={`${item.title} - Foto ${item.gallery.length > 8 ? 8 : 7}`}
+                            class="w-full h-full object-cover"
+                          />
+                        </div>
+                        {item.gallery.length > 8 && (
+                          <div
+                            class="gallery-item"
+                            data-index={8}
+                            style="flex: 4;"
+                          >
+                            <img
+                              src={item.gallery[8]}
+                              alt={`${item.title} - Foto 9`}
+                              class="w-full h-full object-cover"
+                            />
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+            </div>
+          )
+        }
+      </div>
+    </div>
+
+    {/* Sidebar Sticky */}
+    <div class="lg:col-span-1">
+      <div
+        class="sticky top-28 bg-white p-8 rounded-[2rem] shadow-xl border border-gray-100"
+      >
+        <div class="text-center mb-4 pb-3 border-b border-gray-100">
+          <p class="text-gray-400 text-sm uppercase tracking-wider mb-2">
+            Desde
+          </p>
+          <div class="text-5xl font-bold text-navy font-serif">
+            ${item.price}
+          </div>
+          <p class="text-turquoise text-sm font-bold mt-2">
+            Mejor precio garantizado
+          </p>
+        </div>
+
+        <div class="mb-4">
+          {
+            item.bookingEnabled && item.bookingWidgetHtml ? (
+              <div set:html={item.bookingWidgetHtml} />
+            ) : (
+              <a href="/contacto" class="no-underline block">
+                <Button
+                  variant="primary"
+                  className="w-full py-4 text-lg shadow-lg"
+                >
+                  Reservar Ahora
+                </Button>
+              </a>
+            )
+          }
+        </div>
+
+        <div class="text-center">
+          <p class="text-xs text-gray-400">
+            ¿Tienes dudas? <a
+              href="/contacto"
+              class="text-turquoise font-bold hover:underline">Contáctanos</a
+            >
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {/* Gallery Section - Removed to avoid duplication */}
+</div>
+
+<script>
+  // Tab Switching Logic
+  const tabBtns = document.querySelectorAll(".tab-btn");
+  const tabContents = document.querySelectorAll(".tab-content");
+
+  tabBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      // Remove active class from all buttons
+      tabBtns.forEach((b) => {
+        b.classList.remove("active", "text-navy", "border-turquoise");
+        b.classList.add("text-gray-400", "border-transparent");
+      });
+
+      // Add active class to clicked button
+      btn.classList.add("active", "text-navy", "border-turquoise");
+      btn.classList.remove("text-gray-400", "border-transparent");
+
+      // Hide all contents
+      tabContents.forEach((content) => {
+        content.classList.add("hidden");
+        content.classList.remove("block");
+      });
+
+      // Show target content
+      const targetId = btn.getAttribute("data-tab");
+      const targetContent = document.getElementById(targetId);
+      if (targetContent) {
+        targetContent.classList.remove("hidden");
+        targetContent.classList.add("block");
+      }
+    });
+  });
+
+  // Accordion Logic for Itinerary
+  const accordionBtns = document.querySelectorAll(".accordion-btn");
+
+  accordionBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const content = btn.nextElementSibling;
+      const icon = btn.querySelector(".accordion-icon");
+
+      if (content.classList.contains("hidden")) {
+        content.classList.remove("hidden");
+        icon.style.transform = "rotate(180deg)";
+      } else {
+        content.classList.add("hidden");
+        icon.style.transform = "rotate(0deg)";
+      }
+    });
+  });
+
+  // Gallery Lightbox Logic
+  const galleryItems = document.querySelectorAll(".gallery-item");
+  let currentImageIndex = 0;
+  let images = [];
+
+  galleryItems.forEach((item, index) => {
+    const img = item.querySelector("img");
+    if (img) images.push(img.src);
+
+    item.addEventListener("click", () => {
+      currentImageIndex = index;
+      openLightbox();
+    });
+  });
+
+  function openLightbox() {
+    const lightbox = document.createElement("div");
+    lightbox.id = "lightbox";
+    lightbox.className =
+      "fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4";
+    lightbox.innerHTML = `
+            <button class="absolute top-4 right-4 text-white text-4xl hover:text-turquoise transition-colors" onclick="closeLightbox()">&times;</button>
+            ${
+              images.length > 1
+                ? `
+                <button class="absolute left-4 top-1/2 -translate-y-1/2 text-white text-4xl hover:text-turquoise transition-colors" onclick="prevImage()">&lsaquo;</button>
+                <button class="absolute right-4 top-1/2 -translate-y-1/2 text-white text-4xl hover:text-turquoise transition-colors" onclick="nextImage()">&rsaquo;</button>
+            `
+                : ""
+            }
+            <img id="lightbox-img" src="${images[currentImageIndex]}" class="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl" />
+            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 text-white text-sm">${currentImageIndex + 1} / ${images.length}</div>
+        `;
+    document.body.appendChild(lightbox);
+    document.body.style.overflow = "hidden";
+  }
+
+  window.closeLightbox = function () {
+    const lightbox = document.getElementById("lightbox");
+    if (lightbox) {
+      lightbox.remove();
+      document.body.style.overflow = "";
+    }
+  };
+
+  window.nextImage = function () {
+    currentImageIndex = (currentImageIndex + 1) % images.length;
+    document.getElementById("lightbox-img").src = images[currentImageIndex];
+    document.querySelector("#lightbox .bottom-4").textContent =
+      `${currentImageIndex + 1} / ${images.length}`;
+  };
+
+  window.prevImage = function () {
+    currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+    document.getElementById("lightbox-img").src = images[currentImageIndex];
+    document.querySelector("#lightbox .bottom-4").textContent =
+      `${currentImageIndex + 1} / ${images.length}`;
+  };
+
+  document.addEventListener("keydown", (e) => {
+    if (document.getElementById("lightbox")) {
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowRight") nextImage();
+      if (e.key === "ArrowLeft") prevImage();
+    }
+  });
+</script>
+
+<style>
+  /* estilo boton wetravel*/
+  :global(#wetravel_button_widget) {
+    width: 100% !important;
+    padding: 1rem 0 !important;
+    font-size: 1.125rem !important;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+    border-radius: 0.5rem !important;
+    background-color: #0b3c6d !important;
+  }
+
+  :global(#wetravel_button_widget:hover) {
+    background-color: #38bdf8 !important;
+    color: white !important;
+    box-shadow: 0 10px 15px -3px rgba(56, 189, 248, 0.5) !important;
+  }
+
+  /* Gallery Grid Layouts - Old styles removed */
+
+  /* New Gallery Column Layout */
+  .gallery-main-container {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    height: 550px;
+  }
+
+  .gallery-column {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: 100%;
+  }
+
+  .gallery-col-1 {
+    flex: 1.6;
+  }
+  .gallery-col-2 {
+    flex: 3.2;
+  }
+  .gallery-col-3 {
+    flex: 2.3;
+  }
+  .gallery-col-4 {
+    flex: 2.9;
+  }
+
+  .gallery-item {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    cursor: pointer;
+    border-radius: 1rem;
+  }
+
+  .gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+
+  .gallery-item:hover img {
+    transform: scale(1.05);
+  }
+
+  @media (max-width: 1024px) {
+    .gallery-main-container {
+      flex-direction: column;
+      height: auto;
+      gap: 12px;
+    }
+
+    .gallery-column {
+      flex-direction: row;
+      height: 250px;
+    }
+
+    .gallery-item {
+      flex: 1;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .gallery-main-container {
+      gap: 8px;
+    }
+
+    .gallery-column {
+      height: 150px;
+      gap: 8px;
+    }
+
+    .gallery-item {
+      border-radius: 0.75rem;
+    }
+  }
+</style>
