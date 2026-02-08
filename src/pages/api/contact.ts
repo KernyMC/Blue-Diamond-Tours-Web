@@ -17,8 +17,8 @@ export const POST: APIRoute = async ({ request }) => {
 
     // Validar variables de entorno
     if (
-      !import.meta.env.NODEMAILER_EMAIL ||
-      !import.meta.env.NODEMAILER_APP_PASSWORD
+      !import.meta.env.NODEMAILER_EMAIL_2 ||
+      !import.meta.env.NODEMAILER_APP_PASSWORD_2
     ) {
       console.error("❌ [API] Variables de entorno no configuradas");
       return new Response(
