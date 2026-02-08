@@ -45,6 +45,12 @@ export default defineType({
       type: 'text',
       rows: 5,
     }),
+    defineField({
+      name: 'detailedDescription',
+      title: 'Detailed Description',
+      type: 'array',
+      of: [{type: 'block'}],
+    }),
 
     defineField({
       name: 'location',
@@ -74,12 +80,7 @@ export default defineType({
       type: 'array',
       of: [{type: 'string'}],
     }),
-    defineField({
-      name: 'detailedDescription',
-      title: 'Detailed Description',
-      type: 'text',
-      rows: 5,
-    }),
+
     defineField({
       name: 'importantInfo',
       title: 'Important Info',
@@ -93,19 +94,19 @@ export default defineType({
       rows: 4,
     }),
     defineField({
-      name: 'extra-info-resumen',
+      name: 'extraInfoResumen',
       title: 'Info Extra - Resumen',
       type: 'array',
       of: [{type: 'itemText'}],
     }),
     defineField({
-      name: 'extra-info-detalles',
+      name: 'extraInfoDetalles',
       title: 'Info Extra - Detalles',
       type: 'array',
       of: [{type: 'itemText'}],
     }),
     defineField({
-      name: 'extra-info-importante',
+      name: 'extraInfoImportante',
       title: 'Info Extra - Importante',
       type: 'array',
       of: [{type: 'itemText'}],

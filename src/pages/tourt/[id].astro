@@ -1,19 +1,49 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import DetailView from "../../components/views/DetailView.astro";
-import { TOURS_DATA } from "../../data/tours";
+import DetailViewTour from "../../components/views/DetailViewTour.astro";
+import { sanityClient } from "../../lib/sanityClient";
 
 export async function getStaticPaths() {
-  return TOURS_DATA.map((tour) => ({
-    params: { id: tour.id.toString() },
-    props: { tour },
+  const packages = await sanityClient.fetch(`
+            *[_type == "tour"]{
+                _id,
+                "slug": slug.current
+            }
+        `);
+
+  return packages.map((tour) => ({
+    params: { id: tour.slug || tour._id },
   }));
 }
 
-const { tour } = Astro.props;
+const { id } = Astro.params;
+
+const tour = await sanityClient.fetch(
+  `
+            *[_type == "tour" && (slug.current == $id || _id == $id)][0]{
+                title,
+                duration,
+                price,
+                location,
+                rating,
+                "image": image.asset->url,
+                "gallery": gallery[].asset->url,
+                "includes": coalesce(includes, []),
+                "notIncludes": coalesce(notIncludes, []),
+                "highlights": coalesce(highlights, []),
+                "extraInfoResumen": coalesce(extraInfoResumen, []),
+                bookingWidgetHtml,
+                bookingEnabled,
+                bookingUuid,
+                bookingUid,
+                bookingHref,
+            }
+        `,
+  { id },
+);
 ---
 
 <Layout title={`${tour.title} | Galápagos Bluediamond`}>
   {/* client:only="react" was previous, now we use native Astro */}
-  <DetailView item={tour} />
+  <DetailViewTour item={tour} />
 </Layout>

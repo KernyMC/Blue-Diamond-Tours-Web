@@ -6,6 +6,7 @@ import category from './category'
 import ferry from './ferry'
 import accommodation from './accommodation'
 import socialLink from './socialLink'
+import itemText from './itemText'
 
 export const schemaTypes = [
   category,
@@ -16,4 +17,5 @@ export const schemaTypes = [
   tour,
   packageSchema,
   ferry,
+  itemText,
 ]
